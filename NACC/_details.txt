@@ -1,0 +1,22 @@
+==================================================
+	_details
+==================================================
+
+*INFO
+
+*DETAIL
+--------------------------------------------------
+#1. New database structure and migration factor 
+
+	-Don't use full path (prefix such like /var/...), use only last path component for identify-key in NSUserDefaults and adhoc, db.
+		->migrate
+			+scan all string of NSUserDefaults and text db, remove all full-path prefixes	
+			+search all NSUserDefaults key with "guide:" prefix, for each, remove if value is false.	
+
+	-Don't use tmp folder (outside of Document folder, it seem iOS 7+ default folder, so it will be deleted once app launch), change to "Documents/Downloadeds" folder instead
+		->migrate : move folder tmp to "Documents/Downloadeds"	
+	
+	-
+		->migrate : before doing migration, backup "/tmp", "/Documents", "preference"
+	
+ 	

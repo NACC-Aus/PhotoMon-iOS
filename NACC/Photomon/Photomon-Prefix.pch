@@ -1,0 +1,61 @@
+//
+// Prefix header for all source files of the 'NACC' target in the 'NACC' project
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#define     PATH_DOCUMENT_FOLDER [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"]
+
+
+#define     PATH_CACHE_PHOTO    ([[PATH_DOCUMENT_FOLDER stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"tmp"])
+
+#define RUN_ON_MAIN_QUEUE(BLOCK_CODE)           dispatch_async(dispatch_get_main_queue(),BLOCK_CODE)
+#define RUN_ON_BACKGROUND_QUEUE(BLOCK_CODE)      dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),BLOCK_CODE)
+
+#ifdef DEBUG
+#	define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#   define NLog(...) NSLog(__VA_ARGS__)
+#else
+#	define DLog(...)
+#   define NLog(...)
+#endif
+
+// Convenient RGB macro
+#define UIColorFromRGB(rgbValue) [UIColor \
+colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
+blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
+#define IS_IOS_7    (([[[[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."]objectAtIndex:0]intValue] == 7)?YES:NO)
+
+#define appDelegate ((AppDelegate*)[[UIApplication sharedApplication] delegate])
+
+#define NetworkTypeOffline                  -1
+#define NetworkTypeWifi                     0
+#define NetworkTypeCellular                 1
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+    #import "NavViewController.h"
+    #import "BaseAppViewController.h"
+    #import "ExtImagePickerController.h"
+    #import "NetworkManager.h"
+
+    #import "UIViewExtension.h"
+    #import "APIController.h"
+    #import "AppDelegate.h"
+    #import "UIImage+Extend.h"
+    #import "UIImage+Resize.h"
+    #import "Service.h"
+
+    #import "MD5.h"
+    #import "SynthesizeSingleton.h"
+    #import "Downloader.h"
+
+#endif
