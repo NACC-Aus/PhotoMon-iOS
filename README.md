@@ -18,7 +18,7 @@ Photomon will be useful for coastal and land managers who are looking to develop
 NACC currently operates Photomon configured to a dedicated database which is administered by the app developer. Third parties wishing to use Photomon with the same database can enter into a financial arrangement with the app developer to provide the service. Please contact NACC for further details;
 Photomon is covered by the GNU General Public License and as such can be altered to facilitate connection to a different database, please contact NACC for further information.
 
-Photomon Android is covered by the GNU GPL 3.0 License, which can be found here: https://github.com/NACC-Aus/Photomon-Android/blob/master/LICENSE.md
+The Photomon iOS app is covered by the GNU GPL 3.0 License, which can be found here: https://github.com/NACC-Aus/Photomon-iOS/blob/master/LICENSE.md
 
 The Photomon Android app source can be found here: https://github.com/NACC-Aus/Photomon-Android
 
