@@ -47,5 +47,24 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 	</array>
+    
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <!--Include to allow all connections (DANGER)-->
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+    
+    <!--  Photo Library -->
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>$(PRODUCT_NAME) photo use</string>
+    
+    <!-- Camera -->
+    <key>NSCameraUsageDescription</key>
+    <string>$(PRODUCT_NAME) camera use</string>
+    
+    <!-- Location When In Use -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>$(PRODUCT_NAME) location use</string>
 </dict>
 </plist>
