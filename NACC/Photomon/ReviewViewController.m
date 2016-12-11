@@ -3,11 +3,9 @@
 #import "MainViewController.h"
 
 @interface ReviewViewController ()
-
 @end
 
 @implementation ReviewViewController
-
 @synthesize photo, source;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andSourcePhoto:(NSArray*)source_ andImage:(Photo*)photo_ andBlock:(ReturnBlock)finished
@@ -26,7 +24,6 @@
         self.title = self.photo.siteID;
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLoadAllSites:) name:DID_LOAD_SITES object:nil];
-        
     }
     return self;
 }
@@ -64,7 +61,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }
@@ -101,6 +98,7 @@
 //    [btMakeGuide addTarget:self action:@selector(makeGuide:) forControlEvents:UIControlEventTouchUpInside];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
+    tap.delegate = self;
     [holder setGestureRecognizers:@[tap]];
     
     [btViewPhoto addTarget:self action:@selector(onTap2:) forControlEvents:UIControlEventTouchUpInside];
@@ -131,6 +129,28 @@
     [toolBarNotes sizeToFit];
     
     txtAdhocSite.inputAccessoryView = toolBarNotes;
+    guideSlider.minimumValue = 0;
+    guideSlider.maximumValue = 1;
+    [guideSlider setValue:0];
+    
+    if(self.guideImage)
+    {
+        guidePhoto.alpha = 0;
+        guidePhoto.hidden = NO;
+        guidePhoto.image = self.guideImage;
+    }else
+    {
+        guidePhoto.hidden = YES;
+    }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if ([holder isDescendantOfView:guidePhoto]) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 -(void)onTap:(UITapGestureRecognizer*)tap
@@ -246,6 +266,10 @@
         }];
         [txtViewNotes becomeFirstResponder];
     }
+}
+
+- (IBAction)guideAlphaChanged:(id)sender {
+    guidePhoto.alpha = guideSlider.value;
 }
 
 - (void)didReceiveMemoryWarning

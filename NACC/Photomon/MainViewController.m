@@ -336,6 +336,8 @@
         lbGuide3_5.text = lbGuide4.text = @"No Guide";
         btGuide3_5.userInteractionEnabled = btGuide4.userInteractionEnabled = NO;
     }
+    
+    guideImage = img;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -596,6 +598,7 @@
                 });
             }];
             controll.controllerMain = self;
+            controll.guideImage = guideImage;
             NavViewController *navi = [[NavViewController alloc] initWithRootViewController: controll];
             
             NLog(@"Present controller 4");
@@ -2437,6 +2440,15 @@
         }
     }
     
+    if(!picker){
+        picker = [[ExtImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        picker.showsCameraControls = NO;
+        picker.wantsFullScreenLayout = YES;
+        picker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
+    }
 
 	picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     picker.allowsEditing = YES;
@@ -2963,7 +2975,7 @@
         [self refreshView];
         
         id response = [notify.object objectForKey:@"response"];
-        if (response)
+        if (response && [response objectForKey:@"ID"])
         {
             id obj2 = [[Service shared] getDataOfRecordPath:[photo.imgPath lastPathComponent]];
             [obj2 setObject:[response objectForKey:@"ID"] forKey:@"photoID"];

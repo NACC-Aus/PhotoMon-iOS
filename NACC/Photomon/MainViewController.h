@@ -111,6 +111,8 @@
 
     //project pick
     ProjectPickObserver* prjPick;
+    
+    UIImage* guideImage;
 }
 
 @property(nonatomic, strong) UIImage *thumbnail;

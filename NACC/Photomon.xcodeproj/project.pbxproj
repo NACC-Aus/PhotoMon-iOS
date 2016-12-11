@@ -651,7 +651,7 @@
 				ORGANIZATIONNAME = Appiphany;
 				TargetAttributes = {
 					17100DEC169BCF0E00352821 = {
-						DevelopmentTeam = 6VKVE5E8S2;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -813,8 +813,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "213A6C3C-8315-4BCD-9928-3046011F1F80";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "213A6C3C-8315-4BCD-9928-3046011F1F80";
+				PROVISIONING_PROFILE = "30cb7615-efc1-4a86-a7b4-a23179ecc103";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "30cb7615-efc1-4a86-a7b4-a23179ecc103";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -837,7 +837,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "213A6C3C-8315-4BCD-9928-3046011F1F80";
+				PROVISIONING_PROFILE = "1e329589-b272-4263-91ff-668ff0392d1c";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "213A6C3C-8315-4BCD-9928-3046011F1F80";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -849,6 +849,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Adrian DeWitts (MA76BMYLZ6)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrian DeWitts (MA76BMYLZ6)";
+				DEVELOPMENT_TEAM = 6VKVE5E8S2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Photomon/ZooZSDK.embeddedframework\"",
@@ -863,8 +864,9 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = Photomon;
-				PROVISIONING_PROFILE = "f412f625-994a-421d-9a45-e182e06f7010";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "f412f625-994a-421d-9a45-e182e06f7010";
+				PROVISIONING_PROFILE = "30cb7615-efc1-4a86-a7b4-a23179ecc103";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1e329589-b272-4263-91ff-668ff0392d1c";
+				PROVISIONING_PROFILE_SPECIFIER = appi_dev_all_apps_5;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -875,7 +877,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Northern Agricultural Catchments Council Inc. (M665F4MD2M)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Northern Agricultural Catchments Council Inc. (M665F4MD2M)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Photomon/ZooZSDK.embeddedframework\"",
@@ -890,8 +893,9 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = Photomon;
-				PROVISIONING_PROFILE = "089c9234-4b7a-4d55-8926-e0c084b26f61";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "089c9234-4b7a-4d55-8926-e0c084b26f61";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
