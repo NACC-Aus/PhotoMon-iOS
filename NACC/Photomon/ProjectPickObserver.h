@@ -7,7 +7,8 @@
     UINavigationController* controllerNav;
     UIPickerView* pickerView;
     UIView* vwFade;
-    
+    NSInteger selectedRow;
+    UIView* containerView;
 }
 
 #pragma mark MAIN
