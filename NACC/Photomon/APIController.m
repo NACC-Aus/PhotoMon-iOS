@@ -116,6 +116,9 @@ static APIController* shared_ = nil;
     [request addPostValue:created_at forKey:@"created_at"];
     [request addPostValue:note forKey:@"note"];
     
+    unsigned long long fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil] fileSize];
+    [request addPostValue:[NSString stringWithFormat:@"%llu", fileSize] forKey:@"Content-Length"];
+    
     request.userInfo = info;
     [uploadingPaths addObject:path];
     

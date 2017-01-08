@@ -637,14 +637,14 @@
     [[ReminderViewController shared] updateReminder];
 }
 
-- (NSUInteger)application:(UIApplication *)application  supportedInterfaceOrientationsForWindow:(UIWindow *)window
+- (UIInterfaceOrientationMask)application:(UIApplication *)application  supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
     return UIInterfaceOrientationMaskAll;
 }
 
 - (void)application:(UIApplication *)application willChangeStatusBarOrientation:(UIInterfaceOrientation)newStatusBarOrientation duration:(NSTimeInterval)duration
 {
-    NSLog(@"WILL CHANGE ORIENTATION TO %d",newStatusBarOrientation);
+    NSLog(@"WILL CHANGE ORIENTATION TO %ld",newStatusBarOrientation);
     
     [[NSNotificationCenter defaultCenter] postNotificationName:NotifyAppWillChangeOrientation object:[NSNumber numberWithInt:newStatusBarOrientation]];
 }
