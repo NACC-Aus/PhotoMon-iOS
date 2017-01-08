@@ -127,7 +127,7 @@
     NLog(@"RELEASE %@",NSStringFromClass([self class]));
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }

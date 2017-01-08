@@ -254,6 +254,7 @@
         guide3_5.image = guide4.image = img;
         UIImage *img = guide3_5.image;
         if (img) {
+            guideImage = img;
             if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown) {
                 float scale = [UIScreen mainScreen].bounds.size.width/img.size.width;
                 guide3_5.width = guide4.width = img.size.width*scale;
@@ -335,9 +336,8 @@
         guide3_5.hidden = guide4.hidden = YES;
         lbGuide3_5.text = lbGuide4.text = @"No Guide";
         btGuide3_5.userInteractionEnabled = btGuide4.userInteractionEnabled = NO;
+        guideImage = nil;
     }
-    
-    guideImage = img;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

@@ -138,15 +138,17 @@
         guidePhoto.alpha = 0;
         guidePhoto.hidden = NO;
         guidePhoto.image = self.guideImage;
+        guideSlider.hidden = NO;
     }else
     {
+        guideSlider.hidden = YES;
         guidePhoto.hidden = YES;
     }
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    if ([holder isDescendantOfView:guidePhoto]) {
+    if ([touch.view isDescendantOfView:guidePhoto] || [touch.view isDescendantOfView:guideSlider]) {
         return NO;
     }
     
