@@ -1945,14 +1945,14 @@
     
     //...
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    ViewSavedPhotosViewController *control = [[ViewSavedPhotosViewController alloc] initWithNibName:@"ViewSavedPhotosViewController" bundle:nil andPhotos:source andSelectedIndex: indexPath.row];
+    ViewSavedPhotosViewController *control = [[ViewSavedPhotosViewController alloc] initWithNibName:@"ViewSavedPhotosViewController" bundle:nil andPhotos:lstObjsForTbPhotos andSelectedIndex: indexPath.row];
     control.controllerMain = self;
     self.controllerSavedPhotos = control;
     __weak ViewSavedPhotosViewController* weakControl = control;
     __weak MainViewController* weakSelf = self;
     
     control.onAttemptToRemovePhoto = ^(id p){
-        [self->source removeObject:p];
+        [self->lstObjsForTbPhotos removeObject:p];
     };
     
     control.onDidTouchNavItemBack = ^(id b){
@@ -2669,7 +2669,7 @@
              NSArray *com = [imgName componentsSeparatedByString:@"_"];
             NSString* siteId = [com objectAtIndex:0];
             NSString* photoDirection = [com objectAtIndex:2];
-            if ([userDefault boolForKey:imgName] && [site.ID isEqualToString:siteId])
+            if ([userDefault boolForKey:[NSString stringWithFormat:@"guide:%@",imgName]] && [site.ID isEqualToString:siteId])
             {
                 [guideDict setObject:imgName forKey:photoDirection];
                 continue;
