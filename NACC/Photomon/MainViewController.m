@@ -2657,6 +2657,7 @@
     
 }
 
+#pragma mark ALERT DIRECTION
 - (void) alertForDirectionWithOnDone:(void(^)(id))onDone
 {
     // try to search in guide
@@ -2664,6 +2665,7 @@
     NSArray *guidePhotos = [userDefault objectForKey:@"SavedPhotos"];
     NSMutableDictionary* guideDict = [[NSMutableDictionary alloc] init];
     Site *site= [self selectSite];
+    
     if (guidePhotos && site) {
         for (NSString *imgName in guidePhotos) {
              NSArray *com = [imgName componentsSeparatedByString:@"_"];
@@ -2671,12 +2673,22 @@
             NSString* photoDirection = [com objectAtIndex:2];
             if ([userDefault boolForKey:[NSString stringWithFormat:@"guide:%@",imgName]] && [site.ID isEqualToString:siteId])
             {
-                [guideDict setObject:imgName forKey:photoDirection];
+                [guideDict setObject:imgName forKey:[photoDirection uppercaseString]];
                 continue;
             }
         }
     }
 
+    // search from downloaded guide photos
+    guidePhotos = [userDefault objectForKey:@"GuidePhotos"];
+    if (guidePhotos) {
+        for (NSMutableDictionary  *dict in guidePhotos) {
+            if([[dict objectForKey:@"SiteId"] isEqualToString:site.ID] && [[dict objectForKey:@"IsGuide"] boolValue]){
+                [guideDict setObject:dict forKey:[[dict objectForKey:@"Direction"] uppercaseString]];
+            }
+
+        }
+    }
     
     UIView* contentView = [[[NSBundle mainBundle] loadNibNamed:@"DirectionAlertView" owner:self options:nil] objectAtIndex:0];
     contentView.layer.cornerRadius = 7;
@@ -2698,11 +2710,11 @@
         UIButton* btn = [contentView viewWithTag:i + 1];
         [btn addTarget:self action:@selector(chooseDirection:) forControlEvents: UIControlEventTouchUpInside];
         
-        BOOL hasGuide = (i == 0 && [guideDict objectForKey:@"North"])
-                        | (i == 1 && [guideDict objectForKey:@"South"])
-                        | (i == 2 && [guideDict objectForKey:@"East"])
-                        | (i == 3 && [guideDict objectForKey:@"West"])
-                        | (i == 4 && [guideDict objectForKey:@"Photo Point"]);
+        BOOL hasGuide = (i == 0 && [guideDict objectForKey:@"NORTH"])
+                        | (i == 1 && [guideDict objectForKey:@"SOUTH"])
+                        | (i == 2 && [guideDict objectForKey:@"EAST"])
+                        | (i == 3 && [guideDict objectForKey:@"WEST"])
+                        | (i == 4 && [guideDict objectForKey:@"PHOTO POINT"]);
         
         if(hasGuide)
         {

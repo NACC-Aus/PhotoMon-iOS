@@ -659,7 +659,6 @@
 				ORGANIZATIONNAME = Appiphany;
 				TargetAttributes = {
 					17100DEC169BCF0E00352821 = {
-						DevelopmentTeam = 6VKVE5E8S2;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -811,6 +810,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Adrian DeWitts (MA76BMYLZ6)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrian DeWitts (MA76BMYLZ6)";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -839,17 +839,18 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Adrian DeWitts (MA76BMYLZ6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrian DeWitts (MA76BMYLZ6)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Appiphany Pty Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Appiphany Pty Ltd";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "1e329589-b272-4263-91ff-668ff0392d1c";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "213A6C3C-8315-4BCD-9928-3046011F1F80";
+				PROVISIONING_PROFILE = "a444da5a-aa3e-41b5-8ccf-92d3a474a6f4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "a444da5a-aa3e-41b5-8ccf-92d3a474a6f4";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -859,7 +860,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Adrian DeWitts (MA76BMYLZ6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrian DeWitts (MA76BMYLZ6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 6VKVE5E8S2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -887,8 +888,8 @@
 		17100E12169BCF0E00352821 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Northern Agricultural Catchments Council Inc. (M665F4MD2M)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Appiphany Pty Ltd";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -904,8 +905,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = Photomon;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "089c9234-4b7a-4d55-8926-e0c084b26f61";
+				PROVISIONING_PROFILE = "a444da5a-aa3e-41b5-8ccf-92d3a474a6f4";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "a444da5a-aa3e-41b5-8ccf-92d3a474a6f4";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;

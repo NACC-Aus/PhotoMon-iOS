@@ -39,9 +39,9 @@ static RootViewController* shared_ = nil;
     [btSubmit addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
     [self registerForNotifications];
     float height = [UIScreen mainScreen].bounds.size.height;
-    if (height == 480)
+    if (height >= 480)
     {
-        svContentView.top = 90;
+        svContentView.top = 10;
     }
     
     svContentView.contentSize = CGSizeMake(320, 600);
