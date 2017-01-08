@@ -2659,11 +2659,90 @@
 
 - (void) alertForDirectionWithOnDone:(void(^)(id))onDone
 {
-    self.onAskDirectionDone = onDone;
-    alertAskDirection = [[UIAlertView alloc] initWithTitle:@"" message:@"Please select a direction" delegate:self cancelButtonTitle:nil otherButtonTitles:@"North",@"South",@"East",@"West",@"Point", nil];
-    alertAskDirection.tag = 989;
+    // try to search in guide
+    NSUserDefaults  *userDefault = [NSUserDefaults standardUserDefaults];
+    NSArray *guidePhotos = [userDefault objectForKey:@"SavedPhotos"];
+    NSMutableDictionary* guideDict = [[NSMutableDictionary alloc] init];
+    Site *site= [self selectSite];
+    if (guidePhotos && site) {
+        for (NSString *imgName in guidePhotos) {
+             NSArray *com = [imgName componentsSeparatedByString:@"_"];
+            NSString* siteId = [com objectAtIndex:0];
+            NSString* photoDirection = [com objectAtIndex:2];
+            if ([userDefault boolForKey:imgName] && [site.ID isEqualToString:siteId])
+            {
+                [guideDict setObject:imgName forKey:photoDirection];
+                continue;
+            }
+        }
+    }
+
     
-    [alertAskDirection show];
+    UIView* contentView = [[[NSBundle mainBundle] loadNibNamed:@"DirectionAlertView" owner:self options:nil] objectAtIndex:0];
+    contentView.layer.cornerRadius = 7;
+    contentView.layer.masksToBounds = YES;
+//    self.onAskDirectionDone = onDone;
+//    alertAskDirection = [[UIAlertView alloc] initWithTitle:@"" message:@"Please select a direction" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+//    alertAskDirection.tag = 989;
+//    [alertAskDirection setValue:contentView forKey:@"accessoryView"];
+//    alertAskDirection.backgroundColor = [UIColor blackColor];
+//    
+//    [alertAskDirection show];
+    
+    directionAlertView = [[CustomIOSAlertView alloc] init];
+    
+    // Add some custom content to the alert view
+    
+    // North, South, East, West, Point
+    for (int i = 0; i < 5; i++) {
+        UIButton* btn = [contentView viewWithTag:i + 1];
+        [btn addTarget:self action:@selector(chooseDirection:) forControlEvents: UIControlEventTouchUpInside];
+        
+        BOOL hasGuide = (i == 0 && [guideDict objectForKey:@"North"])
+                        | (i == 1 && [guideDict objectForKey:@"South"])
+                        | (i == 2 && [guideDict objectForKey:@"East"])
+                        | (i == 3 && [guideDict objectForKey:@"West"])
+                        | (i == 4 && [guideDict objectForKey:@"Photo Point"]);
+        
+        if(hasGuide)
+        {
+            [btn setBackgroundColor:UIColorFromRGB(0x4f7a28)];
+            [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        }
+
+    }
+
+    [directionAlertView setContainerView:contentView];
+    directionAlertView.buttonTitles = nil;
+    [directionAlertView setUseMotionEffects:true];
+    directionAlertView.backgroundColor = UIColorFromRGB(0xeeeeee);
+    [directionAlertView show];
+}
+
+-(void)chooseDirection:(id) sender
+{
+    NSArray* arr = @[btN,btS,btE,btW,btP];
+    NSInteger buttonIndex = ((UIButton*) sender).tag;
+    [self selectDirection:[arr objectAtIndex:buttonIndex - 1]];
+    if (self.onAskDirectionDone) self.onAskDirectionDone(nil);
+    [directionAlertView close];
+}
+
+- (void)customIOS7dialogButtonTouchUpInside: (CustomIOSAlertView *)alertView clickedButtonAtIndex: (NSInteger)buttonIndex
+{
+    NSLog(@"Delegate: Button at position %d is clicked on alertView %d.", (int)buttonIndex, (int)[alertView tag]);
+    [alertView close];
+}
+
+- (UIView *)createDemoView
+{
+    UIView *demoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 290, 200)];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 270, 180)];
+    [imageView setImage:[UIImage imageNamed:@"demo"]];
+    [demoView addSubview:imageView];
+    
+    return demoView;
 }
 
 - (void) redownloadImages

@@ -15,6 +15,8 @@
 		17100E00169BCF0E00352821 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 17100DFF169BCF0E00352821 /* main.m */; };
 		17100E04169BCF0E00352821 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 17100E03169BCF0E00352821 /* AppDelegate.m */; };
 		17100E0D169BCF0E00352821 /* Photomon.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 17100E0B169BCF0E00352821 /* Photomon.xcdatamodeld */; };
+		525879B01DFD821B00FD40D0 /* CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 525879AF1DFD821B00FD40D0 /* CustomIOSAlertView.m */; };
+		525879B21DFD87E900FD40D0 /* DirectionAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */; };
 		5A15F804184DC8E20014AD44 /* NavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A15F803184DC8E20014AD44 /* NavViewController.m */; };
 		5A228F03183B446D00FD9F51 /* AdhocSitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A228F01183B446D00FD9F51 /* AdhocSitesViewController.m */; };
 		5A228F04183B446D00FD9F51 /* AdhocSitesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A228F02183B446D00FD9F51 /* AdhocSitesViewController.xib */; };
@@ -124,6 +126,9 @@
 		17100E02169BCF0E00352821 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		17100E03169BCF0E00352821 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		17100E0C169BCF0E00352821 /* Photomon.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Photomon.xcdatamodel; sourceTree = "<group>"; };
+		525879AE1DFD821B00FD40D0 /* CustomIOSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIOSAlertView.h; sourceTree = "<group>"; };
+		525879AF1DFD821B00FD40D0 /* CustomIOSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOSAlertView.m; sourceTree = "<group>"; };
+		525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectionAlertView.xib; sourceTree = "<group>"; };
 		5A15F802184DC8E20014AD44 /* NavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavViewController.h; sourceTree = "<group>"; };
 		5A15F803184DC8E20014AD44 /* NavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavViewController.m; sourceTree = "<group>"; };
 		5A228F00183B446D00FD9F51 /* AdhocSitesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdhocSitesViewController.h; sourceTree = "<group>"; };
@@ -422,6 +427,7 @@
 				B26CED6616A79FA100BE7D39 /* ViewSavedPhotosViewController.xib */,
 				5AEFBDC1176B295E0088A9D7 /* DonateCell.xib */,
 				FB1B614718B4A86A006B1860 /* DownloadViewController.xib */,
+				525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -490,6 +496,8 @@
 		B299EE1F169BD03100B8655D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				525879AE1DFD821B00FD40D0 /* CustomIOSAlertView.h */,
+				525879AF1DFD821B00FD40D0 /* CustomIOSAlertView.m */,
 				CB4813EA1B1F69AF005D663D /* LibDefines.h */,
 				CB4813E71B1F6597005D663D /* NSURLConnection+Wrapper.h */,
 				CB4813E81B1F6597005D663D /* NSURLConnection+Wrapper.m */,
@@ -651,6 +659,7 @@
 				ORGANIZATIONNAME = Appiphany;
 				TargetAttributes = {
 					17100DEC169BCF0E00352821 = {
+						DevelopmentTeam = 6VKVE5E8S2;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -692,6 +701,7 @@
 				B249AEEB16B8DAB5001C4DC4 /* Icon-Small-50.png in Resources */,
 				B249AEEC16B8DAB5001C4DC4 /* Icon-Small-50@2x.png in Resources */,
 				B249AEED16B8DAB5001C4DC4 /* Icon-Small.png in Resources */,
+				525879B21DFD87E900FD40D0 /* DirectionAlertView.xib in Resources */,
 				B249AEEE16B8DAB5001C4DC4 /* Icon-Small@2x.png in Resources */,
 				B249AEEF16B8DAB5001C4DC4 /* Icon.png in Resources */,
 				B249AEF016B8DAB5001C4DC4 /* Icon@2x.png in Resources */,
@@ -766,6 +776,7 @@
 				5A9AF91B1A3AA7C700AC1071 /* NetworkManager.m in Sources */,
 				FB1B614618B4A845006B1860 /* DownloadViewController.m in Sources */,
 				5A23D3C016F976E200BCF7C1 /* TimerWithBlock.m in Sources */,
+				525879B01DFD821B00FD40D0 /* CustomIOSAlertView.m in Sources */,
 				5A15F804184DC8E20014AD44 /* NavViewController.m in Sources */,
 				5A6243B9174DF9DE00016B1D /* InfoViewController.m in Sources */,
 				5A6243BD174E13BF00016B1D /* UIImage+Resize.m in Sources */,

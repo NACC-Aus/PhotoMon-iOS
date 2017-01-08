@@ -16,6 +16,7 @@
 #import "UIImage+Extend.h"
 #import "ProjectPickObserver.h"
 #import "WDatePicker.h"
+#import "CustomIOSAlertView.h"
 
 #define RadiansToDegrees(radians)(radians * 180.0/M_PI)
 #define DegreesToRadians(degrees)(degrees * M_PI / 180.0)
@@ -113,6 +114,8 @@
     ProjectPickObserver* prjPick;
     
     UIImage* guideImage;
+    
+    CustomIOSAlertView *directionAlertView;
 }
 
 @property(nonatomic, strong) UIImage *thumbnail;
