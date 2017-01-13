@@ -133,6 +133,10 @@
     guideSlider.maximumValue = 1;
     [guideSlider setValue:0];
     
+    guidePhoto.frame = imgCapturedPhoto.frame;
+    guidePhoto.size = imgCapturedPhoto.size;
+    guidePhoto.center = imgCapturedPhoto.center;
+    
     if(self.guideImage)
     {
         guidePhoto.alpha = 0;
