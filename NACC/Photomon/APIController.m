@@ -237,7 +237,9 @@ static APIController* shared_ = nil;
         retBlock(retArr);
     }
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?project_id=%@", self.server, @"/sites.json",[self.currentProject objectForKey:@"uid"]]];
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+    NSString* accToken = [def objectForKey:@"AccessToken"];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?project_id=%@&access_token=%@", self.server, @"/sites.json",[self.currentProject objectForKey:@"uid"], accToken]];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
     [request setTimeOutSeconds:TIME_OUT];
     [request setNumberOfTimesToRetryOnTimeout: 5];
@@ -295,7 +297,7 @@ static APIController* shared_ = nil;
             [def setObject:arrProjects forKey:[NSString stringWithFormat:@"projects_%@",self.user]];
             [def synchronize];
             
-            [self loadProjects];
+            [self loadProjects:YES];
         }
         else
         {
@@ -308,14 +310,17 @@ static APIController* shared_ = nil;
     }];
 }
 
-- (void) loadProjects
+- (void) loadProjects:(BOOL)isNotify
 {
     if ([self checkIfDemo])
     {
         self.projects = [[NSMutableArray alloc] initWithArray:@[@{@"uid":@"1",@"name":@"Demo"}]];
         self.currentProject = [self.projects objectAtIndex:0];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:NotifProjectsDidRefresh object:@{@"projects":self.projects,@"current-project":self.currentProject}];
+        if(isNotify)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:NotifProjectsDidRefresh object:@{@"projects":self.projects,@"current-project":self.currentProject}];
+        }
         
         return;
     }
@@ -332,12 +337,16 @@ static APIController* shared_ = nil;
             self.currentProject = [self.projects objectAtIndex:0];
         }
         
-        if (self.currentProject)
+        if (self.currentProject && isNotify)
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:NotifProjectsDidRefresh object:@{@"projects":self.projects,@"current-project":self.currentProject}];
         }
     }
-    [self cacheProjectsOfUser];
+    
+    if(isNotify)
+    {
+        [self cacheProjectsOfUser];
+    }
 }
 
 - (void) getProjectsOfUserWithOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError

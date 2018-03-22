@@ -59,7 +59,7 @@ typedef void (^FinishedBlockWithArray)(NSArray*);
 -(void)downloadAllSites:(FinishedBlockWithArray)retBlock;
 
 - (void) cacheProjectsOfUser;
-- (void) loadProjects;
+- (void) loadProjects:(BOOL)isNotify;
 - (void) getProjectsOfUserWithOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
 - (void) updateCurrentProject:(id)prj;
 

@@ -1020,8 +1020,13 @@
         vwNotes.frame = CGRectMake(0, -300, 320, 244);
     }
     
+    if ([APIController shared].currentProject)
+    {
+        self.title = [[APIController shared].currentProject objectForKey:@"name"];
+    }
+    
     [[APIController shared] downloadAllSites:^(NSArray *sites) {
-        //NSLog(@"Site: %@", sites);
+        NSLog(@"Site: %@", sites);
         
         if (sites)
         {
