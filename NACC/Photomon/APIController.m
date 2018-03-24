@@ -297,6 +297,56 @@ static APIController* shared_ = nil;
     [request addPostValue:lng forKey:@"longitude"];
     [request addPostValue:[self.currentProject objectForKey:@"uid"] forKey:@"project_id"];
     
+    [request setCompletionBlock:^{
+        onDone(nil);
+    }];
+    
+    [request setFailedBlock:^{
+        onError(nil);
+    }];
+    
+    [request startAsynchronous];
+}
+
+-(void) removeGuide:(Photo*) photo withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError
+{
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+    NSString* accToken = [def objectForKey:@"AccessToken"];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@", self.server, @"/photos/", photo.photoID, @".json"]];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
+    [request setTimeOutSeconds:TIME_OUT];
+    [request setNumberOfTimesToRetryOnTimeout: 5];
+    [request setDefaultResponseEncoding:NSUTF8StringEncoding];
+    [request setRequestMethod:@"PUT"];
+    [request addPostValue:accToken forKey:@"access_token"];
+    [request addPostValue:[self.currentProject objectForKey:@"uid"] forKey:@"project_id"];
+    [request addPostValue:@"false" forKey:@"guide_photo"];
+    
+    [request setCompletionBlock:^{
+        onDone(nil);
+    }];
+    
+    [request setFailedBlock:^{
+        onError(nil);
+    }];
+    
+    [request startAsynchronous];
+}
+
+- (void) markGuide: (Photo*) photo withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError
+{
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+    NSString* accToken = [def objectForKey:@"AccessToken"];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@", self.server, @"/photos/", photo.photoID, @".json"]];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
+    [request setTimeOutSeconds:TIME_OUT];
+    [request setNumberOfTimesToRetryOnTimeout: 5];
+    [request setDefaultResponseEncoding:NSUTF8StringEncoding];
+    [request setRequestMethod:@"PUT"];
+    [request addPostValue:accToken forKey:@"access_token"];
+    [request addPostValue:[self.currentProject objectForKey:@"uid"] forKey:@"project_id"];
+    [request addPostValue:@"true" forKey:@"guide_photo"];
+    
     __weak ASIFormDataRequest* weakRequest = request;
     
     [request setCompletionBlock:^{
@@ -307,7 +357,7 @@ static APIController* shared_ = nil;
         st.Longitude = [dic objectForKey:@"Longitude"];
         st.ID = [dic objectForKey:@"ID"];
         st.Latitude = [dic objectForKey:@"Latitude"];
-        st.ProjectID = [dic objectForKey:@"ProjectId"];        
+        st.ProjectID = [dic objectForKey:@"ProjectId"];
         onDone(st);
     }];
     
@@ -318,6 +368,7 @@ static APIController* shared_ = nil;
     
     [request startAsynchronous];
 }
+
 - (void) cacheProjectsOfUser
 {
     if ([self checkIfDemo])

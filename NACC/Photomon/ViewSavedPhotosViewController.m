@@ -413,6 +413,11 @@
         });
         [sender setTitle:@"Remove Guide" forState:UIControlStateNormal];
         
+        [[APIController shared] markGuide:pt withOnDone:^(id r) {
+            
+        } andOnError:^(id e) {
+            
+        }];
     }
     else
     {
@@ -468,6 +473,12 @@
 //                    [[NSUserDefaults standardUserDefaults] synchronize];
 //                });
             });
+            
+            [[APIController shared] removeGuide:pt withOnDone:^(id r) {
+                
+            } andOnError:^(id e) {
+                
+            }];
             
         } onCancel:^{
             [sender setTitle:@"Remove Guide" forState:UIControlStateNormal];
