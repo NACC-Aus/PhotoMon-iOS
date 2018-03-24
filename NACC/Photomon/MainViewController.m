@@ -1025,7 +1025,7 @@
         self.title = [[APIController shared].currentProject objectForKey:@"name"];
     }
     
-    [[APIController shared] downloadAllSites:^(NSArray *sites) {
+    [[APIController shared] downloadAllSites:^(NSMutableArray *sites) {
         NSLog(@"Site: %@", sites);
         
         if (sites)
@@ -1984,7 +1984,7 @@
     isAddForDirection = NO;
     
     APIController *api = [APIController shared];
-    [api downloadAllSites:^(NSArray *sites) {
+    [api downloadAllSites:^(NSMutableArray *sites) {
         //NSLog(@"Site: %@", sites);
         
         if (sites)
@@ -2078,7 +2078,7 @@
 
 - (void) updateAllSites:(NSArray*)newAllSites
 {
-    allSites = [[NSArray alloc] initWithArray:newAllSites];
+    allSites = [[NSMutableArray alloc] initWithArray:newAllSites];
 }
 
 - (void) selectSiteAndOnDone:(void(^)(id))onDone
@@ -2122,7 +2122,7 @@
     {
         [UIAlertView alertViewTitle:@"Error" andMsg:@"No site retrieved , server unavailable" onOK:^{}];
         
-        [api downloadAllSites:^(NSArray *sites)
+        [api downloadAllSites:^(NSMutableArray *sites)
          {
              if (sites)
              {
@@ -2138,7 +2138,7 @@
     
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 //        APIController *api = [APIController shared];
-        [api downloadAllSites:^(NSArray *sites) {
+        [api downloadAllSites:^(NSMutableArray *sites) {
             //NSLog(@"Site: %@", sites);
             if (sites)
             {
@@ -3209,6 +3209,7 @@
         else if ([cmd isEqualToString:@"ManageAdhoc"])
         {
             AdhocSitesViewController* ctrl = [[AdhocSitesViewController alloc] init];
+            ctrl.allSites = allSites;
             __weak AdhocSitesViewController* weakCtrl = ctrl;
             
             ctrl.onDidTouchNavItemBack = ^(id b){

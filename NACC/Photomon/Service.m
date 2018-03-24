@@ -194,7 +194,7 @@ static Service* shared_ = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:NotifyAdhocSitesGetChanged object:nil];
 }
 
-- (NSArray*) getAllSiteModels
+- (NSMutableArray*) getAllSiteModels
 {
     NSMutableArray* models = [[NSMutableArray alloc] init];
     for (id it in self.adHocSites)

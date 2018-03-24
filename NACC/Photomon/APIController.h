@@ -29,7 +29,7 @@
 
 typedef void (^FinishedBlockWithBOOL)(BOOL);
 typedef void (^UpdateStatusBlock)(id);
-typedef void (^FinishedBlockWithArray)(NSArray*);
+typedef void (^FinishedBlockWithArray)(NSMutableArray*);
 
 @class JKDictionary;
 
@@ -62,6 +62,7 @@ typedef void (^FinishedBlockWithArray)(NSArray*);
 - (void) loadProjects:(BOOL)isNotify;
 - (void) getProjectsOfUserWithOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
 - (void) updateCurrentProject:(id)prj;
+- (void) addNewSite:(NSString*) siteName lat:(NSString*)lat lng:(NSString*)lng withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
 
 -(ASIHTTPRequest*)uploadPhoto:(NSData*)photoData withInfo:(id)info andCreatedAt:(NSString*)created_at andNote:(NSString*)note andDirection:(NSString*)direction andSiteID:(NSString*)siteID andUpdateBlock:(UpdateStatusBlock)block andBackground:(BOOL)isBackGround;
 

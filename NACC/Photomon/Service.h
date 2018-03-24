@@ -27,7 +27,7 @@
 - (BOOL) checkIfSiteNameAvailable:(NSString*)name;
 - (void) addNewAdHocSiteWithData:(NSDictionary*)data;
 - (void) updateAdhocSite:(NSDictionary*)data withNewName:(NSString*)newName;
-- (NSArray*) getAllSiteModels;
+- (NSMutableArray*) getAllSiteModels;
 
 - (NSString*) getNonce;
 

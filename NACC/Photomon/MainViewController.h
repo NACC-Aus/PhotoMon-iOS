@@ -68,7 +68,7 @@
     UIImage *thumbnail, *cellThumb;
 
     NSMutableArray *source;
-    NSArray *allSites;
+    NSMutableArray *allSites;
     ExtImagePickerController* picker;
     Site *selectedSite;
     float GeoAngle;

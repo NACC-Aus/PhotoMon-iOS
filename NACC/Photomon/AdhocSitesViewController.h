@@ -19,8 +19,11 @@
     
     UIBarButtonItem* btEdit;
     UIBarButtonItem* btDone;
+    UIBarButtonItem* btAdd;
+    NSMutableArray* datasource;
 }
 
 #pragma mark MAIN
+@property (nonatomic, weak) NSMutableArray* allSites;
 - (void) setupView;
 @end

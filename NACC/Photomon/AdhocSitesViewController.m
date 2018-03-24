@@ -1,6 +1,6 @@
 
 #import "AdhocSitesViewController.h"
-
+#import "AlertViewWithBlock.h"
 //**************************************************
 @implementation AdhocSiteTextField
 @end
@@ -30,7 +30,7 @@
     {
         toolBarEdit = [[UIToolbar alloc] init];
         toolBarEdit.barStyle = UIBarStyleBlackTranslucent;
-        UIBarButtonItem* btCancel2 = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(onEditCancel:)];
+        UIBarButtonItem* btCancel2 = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(onEditCancel:)];
         UIBarButtonItem* bt = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         UIBarButtonItem* btDone2 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(onEditDone:)];
         [toolBarEdit setItems:@[btCancel2, bt,btDone2]];
@@ -41,7 +41,19 @@
     
     btEdit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(onEditModeBegin:)];
     btDone = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onEditModeEnd:)];
-    self.navigationItem.rightBarButtonItem = btEdit;
+    btAdd = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(onModeAdd:)];
+    
+    
+    if ([[APIController shared] checkIfDemo])
+    {
+        datasource = [Service shared].adHocSites;
+        self.navigationItem.rightBarButtonItem = btEdit;
+    }
+    else
+    {
+        datasource = self.allSites;
+        self.navigationItem.rightBarButtonItem = btAdd;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,7 +69,7 @@
     [self setupView];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }
@@ -86,7 +98,7 @@
         [targetView addSubview:lb];
     }
 
-    NSUInteger count = [Service shared].adHocSites.count;
+    NSUInteger count = datasource.count;
     if (count == 0)
     {
         self.navigationItem.rightBarButtonItem = nil;
@@ -96,7 +108,15 @@
     }
     else
     {
-        self.navigationItem.rightBarButtonItem = btEdit;
+        if ([[APIController shared] checkIfDemo])
+        {
+            self.navigationItem.rightBarButtonItem = btEdit;
+        }
+        else
+        {
+            self.navigationItem.rightBarButtonItem = btAdd;
+        }
+        
         tbView.alpha = 1.0;
         [lb setAlpha:0.0];
     }
@@ -133,10 +153,18 @@
 
     [cell.textLabel setHidden:YES];
     AdhocSiteTextField* txt = (AdhocSiteTextField*)[cell viewWithTag:777];
-    id d = [[Service shared].adHocSites objectAtIndex:indexPath.row];
+    id d = [datasource objectAtIndex:indexPath.row];
     [cell bringSubviewToFront:txt];
-    txt.text = [d objectForKey:@"Name"];
-    txt.data = d;
+    if ([[APIController shared] checkIfDemo])
+    {
+        txt.text = [d objectForKey:@"Name"];
+        txt.data = d;
+    }
+    else
+    {
+        Site* site = d;
+        txt.text = site.Name;
+    }
     
     if (self.navigationItem.rightBarButtonItem == btDone)
     {
@@ -232,4 +260,79 @@
     }
 }
 
+- (void) onModeAdd:(id)sender
+{
+    UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"Ad hoc site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
+    alertViewAskAdhocSiteName.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alertViewAskAdhocSiteName.tag = 31124;
+    [alertViewAskAdhocSiteName show];
+}
+
+#pragma mark SELECTOR
+
+- (void) onNoteDone:(NSString*)text
+{
+    NSAssert([NSThread isMainThread], @"MAIN THREAD ERROR");
+    if (appDelegate.newestUserLocation.coordinate.latitude == 0)
+    {
+        [[[UIAlertView alloc] initWithTitle:@"Require location" message:@"We can't see your location. Please turn location services on in your Settings!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        return;
+    }
+    
+    
+    if (text.length < 1)
+    {
+        [UIAlertView alertViewTitle:@"Require" andMsg:@"Please provide valid Ad hoc site name" onOK:^{
+            UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"Ad hoc site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
+            alertViewAskAdhocSiteName.alertViewStyle = UIAlertViewStylePlainTextInput;
+            alertViewAskAdhocSiteName.tag = 31124;
+            [alertViewAskAdhocSiteName show];
+            
+        }];
+    }
+    else
+    {
+        if (![[Service shared] checkIfSiteNameAvailable:text])
+        {
+            [[[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"The name '%@' not available, please select other",text] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            return;
+        }
+        
+        NSString* lat = [[NSNumber numberWithDouble:appDelegate.newestUserLocation.coordinate.latitude] stringValue];
+        NSString* lng = [[NSNumber numberWithDouble:appDelegate.newestUserLocation.coordinate.longitude] stringValue];
+
+        [[APIController shared] addNewSite:text lat:lat lng:lng withOnDone:^(id result) {
+            if(result)
+            {
+                [datasource addObject:result];
+                [tbView reloadData];
+            }
+        } andOnError:^(id error) {
+            
+        }];
+    }
+}
+
+- (void) onNoteCancel:(id)sender
+{
+    NSAssert([NSThread isMainThread], @"MAIN THREAD ERROR");
+    
+    //    [UIView animateWithDuration:0.3 animations:^{
+    //        self->vwNotes.frame = CGRectMake(0, -300, 320, self->vwNotes.frame.size.height);
+    //    }];
+    //    [txtAdhocSite endEditing:YES];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) //cancel
+    {
+        [self onNoteCancel:nil];
+    }
+    else //done
+    {
+        NSString* text = [alertView textFieldAtIndex:0].text;
+        [self onNoteDone:text];
+    }
+}
 @end

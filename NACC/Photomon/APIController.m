@@ -281,6 +281,43 @@ static APIController* shared_ = nil;
 //    self.mainRequest = request;
 }
 
+- (void) addNewSite:(NSString*) siteName lat:(NSString*)lat lng:(NSString*)lng withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError
+{
+    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+    NSString* accToken = [def objectForKey:@"AccessToken"];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", self.server, @"/sites"]];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
+    [request setTimeOutSeconds:TIME_OUT];
+    [request setNumberOfTimesToRetryOnTimeout: 5];
+    [request setDefaultResponseEncoding:NSUTF8StringEncoding];
+    [request setRequestMethod:@"POST"];
+    [request addPostValue:accToken forKey:@"access_token"];
+    [request addPostValue:siteName forKey:@"name"];
+    [request addPostValue:lat forKey:@"latitude"];
+    [request addPostValue:lng forKey:@"longitude"];
+    [request addPostValue:[self.currentProject objectForKey:@"uid"] forKey:@"project_id"];
+    
+    __weak ASIFormDataRequest* weakRequest = request;
+    
+    [request setCompletionBlock:^{
+        JSONDecoder *json = [[JSONDecoder alloc] init];
+        NSDictionary *dic = [json objectWithData:weakRequest.responseData];
+        Site *st = [[Site alloc] init];
+        st.Name = [dic objectForKey:@"Name"];
+        st.Longitude = [dic objectForKey:@"Longitude"];
+        st.ID = [dic objectForKey:@"ID"];
+        st.Latitude = [dic objectForKey:@"Latitude"];
+        st.ProjectID = [dic objectForKey:@"ProjectId"];        
+        onDone(st);
+    }];
+    
+    [request setFailedBlock:^{
+        onError(nil);
+        //        retBlock(nil);
+    }];
+    
+    [request startAsynchronous];
+}
 - (void) cacheProjectsOfUser
 {
     if ([self checkIfDemo])
