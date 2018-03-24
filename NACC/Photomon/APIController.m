@@ -422,7 +422,13 @@ static APIController* shared_ = nil;
         
         if (self.projects.count > 0)
         {
-            self.currentProject = [self.projects objectAtIndex:0];
+            if([def objectForKey:@"current-project"]){
+                self.currentProject = [def objectForKey:@"current-project"];
+            }
+            else
+            {
+                self.currentProject = [self.projects objectAtIndex:0];
+            }
         }
         
         if (self.currentProject && isNotify)
@@ -478,6 +484,8 @@ static APIController* shared_ = nil;
     
     if (self.currentProject)
     {
+        NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+        [def setObject:self.currentProject forKey:@"current-project"];
         [[NSNotificationCenter defaultCenter] postNotificationName:NotifProjectsDidRefresh object:@{@"projects":self.projects,@"current-project":self.currentProject}];
     }
 }

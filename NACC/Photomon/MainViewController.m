@@ -3238,6 +3238,8 @@
 
 - (void) onNotifProjectsDidRefresh:(NSNotification*)notif
 {
+    [lstObjsForTbPhotos removeAllObjects];
+    [tbPhotos reloadData];
     [self reloadAll];
 }
 @end
