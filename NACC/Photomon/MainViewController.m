@@ -2012,6 +2012,7 @@
     DownloadViewController  *downloadController = [[DownloadViewController alloc] initWithNibName:@"DownloadViewController" bundle:[NSBundle mainBundle]];
     downloadController.arrList = [[NSMutableArray alloc] initWithArray:allSites];
     downloadController.mainController = self;
+    downloadController.photos = lstObjsForTbPhotos;
     UINavigationController  *nav = [[NavViewController alloc] initWithRootViewController:downloadController];
     
     NLog(@"Present controller 7");
@@ -3254,5 +3255,10 @@
     [lstObjsForTbPhotos removeAllObjects];
     [tbPhotos reloadData];
     [self reloadAll];
+}
+
+-(void) reloadTable
+{
+    [tbPhotos reloadData];
 }
 @end

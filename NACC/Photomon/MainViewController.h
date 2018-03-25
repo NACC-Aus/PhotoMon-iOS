@@ -153,5 +153,5 @@
 - (void) redownloadImages;
 
 - (void) refreshView;
-
+-(void) reloadTable;
 @end

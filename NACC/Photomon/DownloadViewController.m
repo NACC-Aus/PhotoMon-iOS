@@ -56,7 +56,7 @@
 
 -(void) touchDone {
     NSMutableArray  *arrSiteId = [NSMutableArray new];
-    
+    NSUserDefaults* def = [NSUserDefaults standardUserDefaults];
     // set guides that need to be downloaded here
     for (int i =0 ; i < _arrList.count; i++) {
         NSDictionary    *dict = [_arrList objectAtIndex:i];
@@ -80,10 +80,11 @@
     
     {
         //remove guide photos that not include
-        NSArray* arrOldSiteIds = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"ListOfGuideSites_%@_%@",[[APIController shared].currentProject objectForKey:@"uid"],[APIController shared].server]];
+        NSArray* arrOldSiteIds = [def objectForKey:[NSString stringWithFormat:@"ListOfGuideSites_%@_%@",[[APIController shared].currentProject objectForKey:@"uid"],[APIController shared].server]];
     
         NSArray* arrGuidePhotos = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuidePhotos"] ;
         NSMutableArray* arrNewGuidePhotos = [NSMutableArray array];
+        NSMutableArray* photoIds = [NSMutableArray array];
         for (id photo in arrGuidePhotos)
         {
             NSString* psiteId = [photo objectForKey:@"SiteId"];
@@ -91,15 +92,47 @@
                 || (![arrOldSiteIds containsObject:psiteId] && ![arrSiteId containsObject:psiteId]))
             {
                 [arrNewGuidePhotos addObject:photo];
+                
+                NSString* photoId = [photo objectForKey:@"ID"];
+                [photoIds addObject:photoId];
+                for (Photo* p in self.photos) {
+                    if([photoId isEqualToString:p.photoID]) {
+                        p.isGuide = YES;
+                        [def setBool:YES forKey: [NSString stringWithFormat:@"guide:%@",[p.imgPath lastPathComponent]]];
+                        
+                        
+                        NSString* comm = [NSString stringWithFormat:@"%@_%@",p.siteID,p.direction];
+                        [[Service shared].refSiteToGuides setObject:[p.imgPath lastPathComponent] forKey:comm];
+                        break;
+                    }
+                }
             }
         }
         
-        [[NSUserDefaults standardUserDefaults] setObject:arrNewGuidePhotos forKey:@"GuidePhotos"];
-        [[NSUserDefaults standardUserDefaults] setObject:arrSiteId forKey:[NSString stringWithFormat:@"ListOfGuideSites_%@_%@",[[APIController shared].currentProject objectForKey:@"uid"],[APIController shared].server]];
+        
+        for (int i=0; i<arrNewGuidePhotos.count; i++) {
+            NSDictionary    *dict = [arrNewGuidePhotos objectAtIndex:i];
+            for (int j = 0; j < photoIds.count; j++) {
+                NSString* photoId = [photoIds objectAtIndex:j];
+                if ([photoId isEqualToString:[dict objectForKey:@"ID"]]) {
+                    NSMutableDictionary *mutDict = [[NSMutableDictionary alloc] initWithDictionary:dict copyItems:NO];
+                    [mutDict setObject:[NSNumber numberWithBool:YES] forKey:@"IsGuide"];
+                    NSInteger idx = [arrNewGuidePhotos indexOfObject:dict];
+                    [arrNewGuidePhotos replaceObjectAtIndex:idx withObject:mutDict];
+                    
+                    break;
+                }
+            }
+        }
+        
+        //[def setBool:YES forKey: [NSString stringWithFormat:@"guide:%@",[pt.imgPath lastPathComponent]]];
+        [def setObject:arrNewGuidePhotos forKey:@"GuidePhotos"];
+        [def setObject:arrSiteId forKey:[NSString stringWithFormat:@"ListOfGuideSites_%@_%@",[[APIController shared].currentProject objectForKey:@"uid"],[APIController shared].server]];
 
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [def synchronize];
     }
     
+    [_mainController reloadTable];
     // then go back to the previous screen
     [_mainController dismissViewControllerAnimated:YES completion:nil];
     
