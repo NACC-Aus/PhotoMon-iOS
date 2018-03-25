@@ -565,18 +565,18 @@
     @autoreleasepool {
         UIImage* imgOrg = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
         
-        if (imgOrg.size.width < imgOrg.size.height)
-        {
-            int width = 1280;
-            imgOrg = [imgOrg resizedImageEx:CGSizeMake(width, (width/imgOrg.size.width)*imgOrg.size.height) interpolationQuality:kCGInterpolationHigh];
-        }
-        else
-        {
-            int height = 1280;
-            imgOrg = [imgOrg resizedImageEx:CGSizeMake( (height/imgOrg.size.height)*imgOrg.size.width,height) interpolationQuality:kCGInterpolationHigh];
-        }
+//        if (imgOrg.size.width < imgOrg.size.height)
+//        {
+//            int width = 1280;
+//            imgOrg = [imgOrg resizedImageEx:CGSizeMake(width, (width/imgOrg.size.width)*imgOrg.size.height) interpolationQuality:kCGInterpolationHigh];
+//        }
+//        else
+//        {
+//            int height = 1280;
+//            imgOrg = [imgOrg resizedImageEx:CGSizeMake( (height/imgOrg.size.height)*imgOrg.size.width,height) interpolationQuality:kCGInterpolationHigh];
+//        }
         
-        NSData  *aData = UIImageJPEGRepresentation(imgOrg, 0.9);
+        NSData  *aData = UIImageJPEGRepresentation(imgOrg, 0.8);
         [aData writeToFile:tmpImgPath atomically:YES];
     }
     
@@ -2455,7 +2455,8 @@
         picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         picker.showsCameraControls = NO;
-        picker.wantsFullScreenLayout = YES;
+        picker.edgesForExtendedLayout = YES;
+
         picker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
     }
 
@@ -2493,7 +2494,8 @@
     picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     picker.showsCameraControls = NO;
-    picker.wantsFullScreenLayout = YES;
+    //picker.wantsFullScreenLayout = YES;
+    picker.edgesForExtendedLayout = YES;
     picker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
     
     if ([UIScreen mainScreen].bounds.size.height == 568)
