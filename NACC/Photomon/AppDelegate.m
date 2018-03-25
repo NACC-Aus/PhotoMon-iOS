@@ -227,6 +227,10 @@
                     p.direction = [com objectAtIndex:2];
                     p.date = [[com objectAtIndex:3] stringByReplacingOccurrencesOfString:@".jpg" withString:@""];
                     p.isFinished = [def boolForKey:it];
+                    if([obj objectForKey:@"photoID"])
+                    {
+                        p.photoID = [obj objectForKey:@"photoID"];
+                    }
                     
                     p.img =  [appDelegate loadImageOfFile:fullPath]; //[UIImage imageWithContentsOfFile:fullPath];
                     

@@ -1097,6 +1097,10 @@
             p.isFinished = [def boolForKey:it];
             p.imgPath = fullPath;
             p.note = [obj objectForKey:@"note"];
+            if([obj objectForKey:@"photoID"])
+            {
+                p.photoID = [obj objectForKey:@"photoID"];
+            }
             
             [refPhotos setObject:p forKey:p.date];
             
@@ -3044,7 +3048,7 @@
     if (!photo) return;
     
     PhotoCell* cell = photo.view;
-    int i = [source indexOfObject:photo];    
+    NSUInteger i = [source indexOfObject:photo];
     NLog(@"index %d progress %.2f",i,progress);
 
     if (progress < 0)
@@ -3073,6 +3077,13 @@
         id response = [notify.object objectForKey:@"response"];
         if (response && [response objectForKey:@"ID"])
         {
+            photo.photoID = [response objectForKey:@"ID"];
+            photo.projectID = [response objectForKey:@"ProjectId"];
+            
+            Photo* item = [source objectAtIndex:i];
+            item.photoID = [response objectForKey:@"ID"];
+            item.projectID = [response objectForKey:@"ProjectId"];
+            
             id obj2 = [[Service shared] getDataOfRecordPath:[photo.imgPath lastPathComponent]];
             [obj2 setObject:[response objectForKey:@"ID"] forKey:@"photoID"];
             [[Service shared] updateRecordPath:[photo.imgPath lastPathComponent] andData:obj2];

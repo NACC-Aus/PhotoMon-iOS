@@ -297,8 +297,19 @@ static APIController* shared_ = nil;
     [request addPostValue:lng forKey:@"longitude"];
     [request addPostValue:[self.currentProject objectForKey:@"uid"] forKey:@"project_id"];
     
+    __weak ASIFormDataRequest* weakRequest = request;
+
     [request setCompletionBlock:^{
-        onDone(nil);
+        JSONDecoder *json = [[JSONDecoder alloc] init];
+        NSDictionary *dic = [json objectWithData:weakRequest.responseData];
+        Site *st = [[Site alloc] init];
+        st.Name = [dic objectForKey:@"Name"];
+        st.Longitude = [dic objectForKey:@"Longitude"];
+        st.ID = [dic objectForKey:@"ID"];
+        st.Latitude = [dic objectForKey:@"Latitude"];
+        st.ProjectID = [dic objectForKey:@"ProjectId"];
+        onDone(st);
+
     }];
     
     [request setFailedBlock:^{
@@ -347,18 +358,8 @@ static APIController* shared_ = nil;
     [request addPostValue:[self.currentProject objectForKey:@"uid"] forKey:@"project_id"];
     [request addPostValue:@"true" forKey:@"guide_photo"];
     
-    __weak ASIFormDataRequest* weakRequest = request;
-    
     [request setCompletionBlock:^{
-        JSONDecoder *json = [[JSONDecoder alloc] init];
-        NSDictionary *dic = [json objectWithData:weakRequest.responseData];
-        Site *st = [[Site alloc] init];
-        st.Name = [dic objectForKey:@"Name"];
-        st.Longitude = [dic objectForKey:@"Longitude"];
-        st.ID = [dic objectForKey:@"ID"];
-        st.Latitude = [dic objectForKey:@"Latitude"];
-        st.ProjectID = [dic objectForKey:@"ProjectId"];
-        onDone(st);
+        onDone(nil);
     }];
     
     [request setFailedBlock:^{
