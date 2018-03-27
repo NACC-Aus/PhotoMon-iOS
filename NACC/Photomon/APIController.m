@@ -416,10 +416,12 @@ static APIController* shared_ = nil;
     
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     NSArray* arr = [def objectForKey:[NSString stringWithFormat:@"projects_%@",self.user]];
-    
+
     if (arr)
     {
-        self.projects = [[NSMutableArray alloc] initWithArray:arr];
+        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+        NSArray* sortedArray = [arr sortedArrayUsingDescriptors:@[sort]];
+        self.projects = [[NSMutableArray alloc] initWithArray:sortedArray];
         
         if (self.projects.count > 0)
         {
