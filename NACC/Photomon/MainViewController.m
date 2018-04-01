@@ -2849,11 +2849,16 @@
             
             //filter all photo belong to filtered sites
             NSMutableArray* filteredPhotos = [NSMutableArray array];
+            NSMutableArray* filteredPhotoIDs = [NSMutableArray array];
             for (Photo* p in self->source)
             {
-                if ([filteredSiteIDs containsObject:p.sID])
+                if ([filteredSiteIDs containsObject:p.sID] && ![filteredPhotoIDs containsObject:p.photoID])
                 {
                     [filteredPhotos addObject:p];
+                    if(p.photoID)
+                    {
+                        [filteredPhotoIDs addObject:p.photoID];
+                    }
                 }
             }
             
