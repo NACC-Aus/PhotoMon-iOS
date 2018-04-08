@@ -64,7 +64,7 @@
          [lstObjs addObject:@{@"cmd":@"RefreshGuides",@"text":@"Refresh Guide Photos",@"transition":@"none"}];
     }
     
-    [lstObjs addObject:@{@"cmd":@"ManageAdhoc",@"text":@"Manage ad hoc sites",@"transition":@"push"}];
+    [lstObjs addObject:@{@"cmd":@"ManageAdhoc",@"text":@"Manage sites",@"transition":@"push"}];
     [lstObjs addObject:@{@"cmd":@"Logout",@"text":@"Logout",@"transition":@"none"}];
     
     [self refreshView];

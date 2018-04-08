@@ -2111,7 +2111,7 @@
 //            txtAdhocSite.text = @"";
 //            [txtAdhocSite becomeFirstResponder];
             
-            UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"Ad hoc site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
+            UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"New site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
             alertViewAskAdhocSiteName.alertViewStyle = UIAlertViewStylePlainTextInput;
             alertViewAskAdhocSiteName.tag = 31124;
             [alertViewAskAdhocSiteName show];
@@ -2976,8 +2976,8 @@
     
     if (name.length < 1)
     {
-        [UIAlertView alertViewTitle:@"Require" andMsg:@"Please provide valid Ad hoc site name" onOK:^{
-            UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"Ad hoc site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
+        [UIAlertView alertViewTitle:@"Require" andMsg:@"Please provide valid site name" onOK:^{
+            UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"New site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
             alertViewAskAdhocSiteName.alertViewStyle = UIAlertViewStylePlainTextInput;
             alertViewAskAdhocSiteName.tag = 31124;
             [alertViewAskAdhocSiteName show];
