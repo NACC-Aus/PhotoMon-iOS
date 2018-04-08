@@ -26,6 +26,7 @@
 #define NotifAppDidRefreshGuidePhotos       @"NotifAppDidRefreshGuidePhotos"
 
 #define NotifProjectsDidRefresh             @"NotifProjectsDidRefresh"
+#define NotifSiteDidRefresh                 @"NotifSiteDidRefresh"
 
 typedef void (^FinishedBlockWithBOOL)(BOOL);
 typedef void (^UpdateStatusBlock)(id);
@@ -62,7 +63,7 @@ typedef void (^FinishedBlockWithArray)(NSMutableArray*);
 - (void) loadProjects:(BOOL)isNotify;
 - (void) getProjectsOfUserWithOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
 - (void) updateCurrentProject:(id)prj;
-- (void) addNewSite:(NSString*) siteName lat:(NSString*)lat lng:(NSString*)lng withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
+- (void) addNewSite:(NSString*) siteName withProjectId:(NSString*) projectId lat:(NSString*)lat lng:(NSString*)lng withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
 -(void) removeGuide:(Photo*) photo withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
 - (void) markGuide: (Photo*) photo withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
 

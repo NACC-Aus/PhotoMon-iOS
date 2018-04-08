@@ -15,6 +15,7 @@
 		17100E00169BCF0E00352821 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 17100DFF169BCF0E00352821 /* main.m */; };
 		17100E04169BCF0E00352821 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 17100E03169BCF0E00352821 /* AppDelegate.m */; };
 		17100E0D169BCF0E00352821 /* Photomon.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 17100E0B169BCF0E00352821 /* Photomon.xcdatamodeld */; };
+		523625372079FF0F0027D045 /* CacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 523625362079FF0F0027D045 /* CacheManager.m */; };
 		525879B01DFD821B00FD40D0 /* CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 525879AF1DFD821B00FD40D0 /* CustomIOSAlertView.m */; };
 		525879B21DFD87E900FD40D0 /* DirectionAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */; };
 		527800962069456D00D4948B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 527800952069456D00D4948B /* Images.xcassets */; };
@@ -127,6 +128,8 @@
 		17100E02169BCF0E00352821 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		17100E03169BCF0E00352821 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		17100E0C169BCF0E00352821 /* Photomon.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Photomon.xcdatamodel; sourceTree = "<group>"; };
+		523625352079FF0F0027D045 /* CacheManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CacheManager.h; sourceTree = "<group>"; };
+		523625362079FF0F0027D045 /* CacheManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CacheManager.m; sourceTree = "<group>"; };
 		525879AE1DFD821B00FD40D0 /* CustomIOSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIOSAlertView.h; sourceTree = "<group>"; };
 		525879AF1DFD821B00FD40D0 /* CustomIOSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOSAlertView.m; sourceTree = "<group>"; };
 		525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectionAlertView.xib; sourceTree = "<group>"; };
@@ -592,6 +595,8 @@
 			children = (
 				B299EE75169C0E1000B8655D /* APIController.h */,
 				B299EE76169C0E1000B8655D /* APIController.m */,
+				523625352079FF0F0027D045 /* CacheManager.h */,
+				523625362079FF0F0027D045 /* CacheManager.m */,
 			);
 			name = APIController;
 			sourceTree = "<group>";
@@ -755,6 +760,7 @@
 				B299EE4E169BD0A600B8655D /* UIViewExtension.m in Sources */,
 				5A228F03183B446D00FD9F51 /* AdhocSitesViewController.m in Sources */,
 				5A648D1C1A398B1F00210875 /* SettingViewController.m in Sources */,
+				523625372079FF0F0027D045 /* CacheManager.m in Sources */,
 				CB4813E91B1F6597005D663D /* NSURLConnection+Wrapper.m in Sources */,
 				B299EE4F169BD0A600B8655D /* UIImage+Extend.m in Sources */,
 				B299EE5D169BD1E700B8655D /* RootViewController.m in Sources */,

@@ -361,6 +361,7 @@
         prjPick = [[ProjectPickObserver alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNotifProjectsDidRefresh:) name:NotifProjectsDidRefresh object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSites:) name:NotifSiteDidRefresh object:nil];
         [self refreshView];
     }
     
@@ -3265,5 +3266,18 @@
 -(void) reloadTable
 {
     [tbPhotos reloadData];
+}
+
+- (void) reloadSites: (NSNotification*)notif
+{
+    APIController *api = [APIController shared];
+    [api downloadAllSites:^(NSMutableArray *sites) {
+        //NSLog(@"Site: %@", sites);
+        
+        if (sites)
+        {
+            self->allSites = sites;
+        }
+    }];
 }
 @end

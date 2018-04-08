@@ -281,7 +281,7 @@ static APIController* shared_ = nil;
 //    self.mainRequest = request;
 }
 
-- (void) addNewSite:(NSString*) siteName lat:(NSString*)lat lng:(NSString*)lng withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError
+- (void) addNewSite:(NSString*) siteName withProjectId:(NSString*) projectId lat:(NSString*)lat lng:(NSString*)lng withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError
 {
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     NSString* accToken = [def objectForKey:@"AccessToken"];
@@ -295,7 +295,7 @@ static APIController* shared_ = nil;
     [request addPostValue:siteName forKey:@"name"];
     [request addPostValue:lat forKey:@"latitude"];
     [request addPostValue:lng forKey:@"longitude"];
-    [request addPostValue:[self.currentProject objectForKey:@"uid"] forKey:@"project_id"];
+    [request addPostValue:projectId forKey:@"project_id"];
     
     __weak ASIFormDataRequest* weakRequest = request;
 

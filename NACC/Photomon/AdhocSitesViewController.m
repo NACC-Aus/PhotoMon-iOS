@@ -1,6 +1,7 @@
 
 #import "AdhocSitesViewController.h"
 #import "AlertViewWithBlock.h"
+#import "CacheManager.h"
 //**************************************************
 @implementation AdhocSiteTextField
 @end
@@ -326,13 +327,24 @@
         NSString* lat = [[NSNumber numberWithDouble:appDelegate.newestUserLocation.coordinate.latitude] stringValue];
         NSString* lng = [[NSNumber numberWithDouble:appDelegate.newestUserLocation.coordinate.longitude] stringValue];
 
-        [[APIController shared] addNewSite:text lat:lat lng:lng withOnDone:^(id result) {
+        NSString* projectId = [[APIController shared].currentProject objectForKey:@"uid"];
+        NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                              projectId, @"projectId",
+                              text, @"name",
+                              lat, @"lat",
+                              lng, @"lng",
+                              nil];
+
+        NSString* cacheKey = [[NSUUID UUID] UUIDString];
+        [[CacheManager share] addCache:dict forKey:cacheKey];
+        [[APIController shared] addNewSite:text withProjectId:projectId lat:lat lng:lng withOnDone:^(id result) {
             if(result)
             {
                 [datasource addObject:result];
                 [tbView reloadData];
+                [[CacheManager share] removeCache:cacheKey];
             }
-        } andOnError:^(id error) {
+        } andOnError:^(id err) {
             
         }];
     }

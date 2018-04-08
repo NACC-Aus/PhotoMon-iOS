@@ -8,6 +8,7 @@
 
 #import "ExifContainer.h"
 #import "UIImage+Exif.h"
+#import "CacheManager.h"
 
 @implementation AppDelegate
 
@@ -321,6 +322,29 @@
     
     //force start update
     [self.locationManager startUpdatingLocation];
+    NSArray *arr = [[CacheManager share] getCaches];
+    if(arr)
+    {
+        for (id item in arr)
+        {
+            NSString* cacheKey = [item objectForKey:CACHE_ID];
+            NSString* name = [item objectForKey:@"name"];
+            NSString* projectId = [item objectForKey:@"projectId"];
+            NSString* lat = [item objectForKey:@"lat"];
+            NSString* lng = [item objectForKey:@"lng"];
+            
+            [[APIController shared] addNewSite:name withProjectId:projectId lat:lat lng:lng withOnDone:^(id result) {
+                if(result)
+                {
+                    [[CacheManager share] removeCache:cacheKey];
+                     [[NSNotificationCenter defaultCenter] postNotificationName:NotifSiteDidRefresh object:nil];
+                }
+            } andOnError:^(id err) {
+                
+            }];
+        }
+    }
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
