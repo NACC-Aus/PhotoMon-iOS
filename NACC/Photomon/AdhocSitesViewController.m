@@ -37,7 +37,7 @@
         [toolBarEdit sizeToFit];
     }
     
-    [self setTitle:@"Ad hoc sites"];
+    [self setTitle:@"Sites"];
     
     btEdit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(onEditModeBegin:)];
     btDone = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onEditModeEnd:)];
@@ -262,7 +262,32 @@
 
 - (void) onModeAdd:(id)sender
 {
-    UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"Ad hoc site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
+    BOOL hasFound = NO;
+    AppDelegate *del = appDelegate;
+    //MKMapPoint currentPoint = MKMapPointForCoordinate(del.newestUserLocation.coordinate);
+    CLLocation  *currentPoint = [[CLLocation alloc] initWithLatitude:del.newestUserLocation.coordinate.latitude longitude:del.newestUserLocation.coordinate.longitude];
+    
+    for (Site* site in datasource)
+    {
+        CLLocation *branchPoint = [[CLLocation alloc] initWithLatitude:[site.Latitude doubleValue] longitude:[site.Longitude doubleValue]];
+        //distance = MKMetersBetweenMapPoints(currentPoint, branchPoint);
+        CGFloat distance = [currentPoint distanceFromLocation:branchPoint];
+        if(distance <= 100) {
+            hasFound = YES;
+            break;
+        }
+    }
+    
+    if(hasFound)
+    {
+        UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"'Site' exists in this location." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Continue", nil];
+        alertViewAskAdhocSiteName.alertViewStyle = UIAlertViewStyleDefault;
+        alertViewAskAdhocSiteName.tag = 212;
+        [alertViewAskAdhocSiteName show];
+        return;
+    }
+    
+    UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"New site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
     alertViewAskAdhocSiteName.alertViewStyle = UIAlertViewStylePlainTextInput;
     alertViewAskAdhocSiteName.tag = 31124;
     [alertViewAskAdhocSiteName show];
@@ -282,8 +307,8 @@
     
     if (text.length < 1)
     {
-        [UIAlertView alertViewTitle:@"Require" andMsg:@"Please provide valid Ad hoc site name" onOK:^{
-            UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"Ad hoc site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
+        [UIAlertView alertViewTitle:@"Require" andMsg:@"Please provide valid site name" onOK:^{
+            UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"New site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
             alertViewAskAdhocSiteName.alertViewStyle = UIAlertViewStylePlainTextInput;
             alertViewAskAdhocSiteName.tag = 31124;
             [alertViewAskAdhocSiteName show];
@@ -325,14 +350,30 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 0) //cancel
+    if(alertView.tag == 31124)
     {
-        [self onNoteCancel:nil];
-    }
-    else //done
+        if (buttonIndex == 0) //cancel
+        {
+            [self onNoteCancel:nil];
+        }
+        else //done
+        {
+            NSString* text = [alertView textFieldAtIndex:0].text;
+            [self onNoteDone:text];
+        }
+    } else if (alertView.tag == 212)
     {
-        NSString* text = [alertView textFieldAtIndex:0].text;
-        [self onNoteDone:text];
+        if (buttonIndex == 0) //cancel
+        {
+            
+        }
+        else //done
+        {
+            UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"New site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
+            alertViewAskAdhocSiteName.alertViewStyle = UIAlertViewStylePlainTextInput;
+            alertViewAskAdhocSiteName.tag = 31124;
+            [alertViewAskAdhocSiteName show];
+        }
     }
 }
 @end
