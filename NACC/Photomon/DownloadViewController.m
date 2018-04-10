@@ -7,7 +7,7 @@
 -(void) viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Guide Photo";
+    self.title = @"Guide photo";
     
 
     
@@ -20,7 +20,7 @@
     [self filterNoPhotoSite];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
 }
@@ -351,7 +351,13 @@
     }
     
     int cellHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
-    cell.textLabel.text = site.Name;
+    NSString* name = site.Name;
+    if (name.length > 0) {
+        name = [name stringByReplacingCharactersInRange:NSMakeRange(0,1)
+                                             withString:[[name substringToIndex:1] capitalizedString]];
+    }
+    
+    cell.textLabel.text = name;
     cell.textLabel.backgroundColor = [UIColor clearColor];
     
     UIView  *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cellHeight -1, 320, 1)];
