@@ -59,12 +59,14 @@
                                    @{@"cmd":@"Reminder",@"text":@"Reminder",@"transition":@"push"},
                                    ]];
     
-    if (![[APIController shared] checkIfDemo])
-    {
-         [lstObjs addObject:@{@"cmd":@"RefreshGuides",@"text":@"Refresh Guide Photos",@"transition":@"none"}];
-    }
+    
     
     [lstObjs addObject:@{@"cmd":@"ManageAdhoc",@"text":@"Manage sites",@"transition":@"push"}];
+    
+//    if (![[APIController shared] checkIfDemo])
+//    {
+//        [lstObjs addObject:@{@"cmd":@"RefreshGuides",@"text":@"Refresh guide photos",@"transition":@"none"}];
+//    }
     [lstObjs addObject:@{@"cmd":@"Logout",@"text":@"Logout",@"transition":@"none"}];
     
     [self refreshView];
