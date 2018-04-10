@@ -54,6 +54,18 @@
     {
         datasource = self.allSites;
         self.navigationItem.rightBarButtonItem = btAdd;
+        [self sortData];
+    }
+    
+    
+}
+
+-(void)sortData{
+    if(datasource)
+    {
+        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"Name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+        NSArray* sortedArray = [datasource sortedArrayUsingDescriptors:@[sort]];
+        datasource = [[NSMutableArray alloc] initWithArray:sortedArray];
     }
 }
 
@@ -158,13 +170,27 @@
     [cell bringSubviewToFront:txt];
     if ([[APIController shared] checkIfDemo])
     {
-        txt.text = [d objectForKey:@"Name"];
+        NSString* name = [d objectForKey:@"Name"];
+        if (name.length > 0) {
+            name = [name stringByReplacingCharactersInRange:NSMakeRange(0,1)
+                                                                      withString:[[name substringToIndex:1] capitalizedString]];
+            
+        }
+        
+        txt.text = name;
         txt.data = d;
     }
     else
     {
         Site* site = d;
-        txt.text = site.Name;
+        NSString* name = site.Name;
+        if (name.length > 0) {
+            name = [name stringByReplacingCharactersInRange:NSMakeRange(0,1)
+                                                 withString:[[name substringToIndex:1] capitalizedString]];
+            
+        }
+        
+        txt.text = name;
     }
     
     if (self.navigationItem.rightBarButtonItem == btDone)
@@ -263,7 +289,7 @@
 
 - (void) onModeAdd:(id)sender
 {
-    BOOL hasFound = NO;
+    Site* nearestSite = nil;
     AppDelegate *del = appDelegate;
     //MKMapPoint currentPoint = MKMapPointForCoordinate(del.newestUserLocation.coordinate);
     CLLocation  *currentPoint = [[CLLocation alloc] initWithLatitude:del.newestUserLocation.coordinate.latitude longitude:del.newestUserLocation.coordinate.longitude];
@@ -274,14 +300,21 @@
         //distance = MKMetersBetweenMapPoints(currentPoint, branchPoint);
         CGFloat distance = [currentPoint distanceFromLocation:branchPoint];
         if(distance <= 100) {
-            hasFound = YES;
+            nearestSite = site;
             break;
         }
     }
     
-    if(hasFound)
+    if(nearestSite)
     {
-        UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"'Site' exists in this location." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Continue", nil];
+        NSString* name = nearestSite.Name;
+        if (name.length > 0) {
+            name = [name stringByReplacingCharactersInRange:NSMakeRange(0,1)
+                                                 withString:[[name substringToIndex:1] capitalizedString]];
+            
+        }
+        
+        UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat:@"'%@' exists in this location", name] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Continue", nil];
         alertViewAskAdhocSiteName.alertViewStyle = UIAlertViewStyleDefault;
         alertViewAskAdhocSiteName.tag = 212;
         [alertViewAskAdhocSiteName show];
@@ -341,6 +374,7 @@
             if(result)
             {
                 [datasource addObject:result];
+                [self sortData];
                 [tbView reloadData];
                 [[CacheManager share] removeCache:cacheKey];
             }

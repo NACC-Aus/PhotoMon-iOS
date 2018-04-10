@@ -419,7 +419,7 @@ static APIController* shared_ = nil;
 
     if (arr)
     {
-        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+         NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
         NSArray* sortedArray = [arr sortedArrayUsingDescriptors:@[sort]];
         self.projects = [[NSMutableArray alloc] initWithArray:sortedArray];
         
