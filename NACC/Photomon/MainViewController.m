@@ -3260,6 +3260,10 @@
 {
     [lstObjsForTbPhotos removeAllObjects];
     [tbPhotos reloadData];
+    if(self->allSites){
+        [self->allSites removeAllObjects];
+    }
+    
     [self reloadAll];
 }
 
