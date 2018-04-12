@@ -2114,6 +2114,7 @@
             
             UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"New site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
             alertViewAskAdhocSiteName.alertViewStyle = UIAlertViewStylePlainTextInput;
+            [alertViewAskAdhocSiteName textFieldAtIndex:0].autocapitalizationType = UITextAutocapitalizationTypeSentences;
             alertViewAskAdhocSiteName.tag = 31124;
             [alertViewAskAdhocSiteName show];
             
@@ -2980,6 +2981,7 @@
         [UIAlertView alertViewTitle:@"Require" andMsg:@"Please provide valid site name" onOK:^{
             UIAlertView* alertViewAskAdhocSiteName = [[UIAlertView alloc] initWithTitle:@"New site name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
             alertViewAskAdhocSiteName.alertViewStyle = UIAlertViewStylePlainTextInput;
+            [alertViewAskAdhocSiteName textFieldAtIndex:0].autocapitalizationType = UITextAutocapitalizationTypeSentences;
             alertViewAskAdhocSiteName.tag = 31124;
             [alertViewAskAdhocSiteName show];
 
