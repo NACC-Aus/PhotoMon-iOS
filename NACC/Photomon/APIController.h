@@ -64,8 +64,8 @@ typedef void (^FinishedBlockWithArray)(NSMutableArray*);
 - (void) getProjectsOfUserWithOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
 - (void) updateCurrentProject:(id)prj;
 - (void) addNewSite:(NSString*) siteName withProjectId:(NSString*) projectId lat:(NSString*)lat lng:(NSString*)lng withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
--(void) removeGuide:(Photo*) photo withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
-- (void) markGuide: (Photo*) photo withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
+-(void) removeGuide:(NSString*) photoId withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
+- (void) markGuide: (NSString*) photoId withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError;
 
 -(ASIHTTPRequest*)uploadPhoto:(NSData*)photoData withInfo:(id)info andCreatedAt:(NSString*)created_at andNote:(NSString*)note andDirection:(NSString*)direction andSiteID:(NSString*)siteID andUpdateBlock:(UpdateStatusBlock)block andBackground:(BOOL)isBackGround;
 

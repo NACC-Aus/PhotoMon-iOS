@@ -13,6 +13,7 @@
 #import "ExifContainer.h"
 #import "UIImage+Exif.h"
 #import "NSURLConnection+Wrapper.h"
+#import "CacheManager.h"
 
 @interface PhotoCell : UITableViewCell
 {
@@ -3098,6 +3099,27 @@
             id obj2 = [[Service shared] getDataOfRecordPath:[photo.imgPath lastPathComponent]];
             [obj2 setObject:[response objectForKey:@"ID"] forKey:@"photoID"];
             [[Service shared] updateRecordPath:[photo.imgPath lastPathComponent] andData:obj2];
+            
+            NSDictionary* cache = [[CacheManager share] getCache:item.imgPath];
+            if(cache)
+            {
+                NSNumber *type = [cache objectForKey:CACHE_TYPE];
+                if([type intValue] == TYPE_MARK_GUIDE)
+                {
+                    [[APIController shared] markGuide:item.photoID withOnDone:^(id r) {
+                        [[CacheManager share] removeCache:item.imgPath];
+                    } andOnError:^(id e) {
+                        
+                    }];
+                }else if ([type intValue] == TYPE_REMOVE_GUIDE)
+                {
+                    [[APIController shared] removeGuide:item.photoID withOnDone:^(id r) {
+                        [[CacheManager share] removeCache:item.imgPath];
+                    } andOnError:^(id e) {
+                        
+                    }];
+                }
+            }
         }
     }
     else

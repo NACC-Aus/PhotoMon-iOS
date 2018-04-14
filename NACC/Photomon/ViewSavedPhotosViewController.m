@@ -2,6 +2,7 @@
 #import "TimerWithBlock.h"
 #import "ViewSavedPhotosViewController.h"
 #import "AlertViewWithBlock.h"
+#import "CacheManager.h"
 
 @interface ViewSavedPhotosViewController ()
 
@@ -413,11 +414,18 @@
         });
         [sender setTitle:@"Remove Guide" forState:UIControlStateNormal];
         
-        [[APIController shared] markGuide:pt withOnDone:^(id r) {
-            
-        } andOnError:^(id e) {
-            
-        }];
+        NSString* cacheKey = pt.imgPath;
+        NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"path" ,cacheKey, nil];
+        [[CacheManager share] removeCache:cacheKey];
+        [[CacheManager share] addCache:dict forKey:cacheKey andType:TYPE_MARK_GUIDE];
+        
+        if(pt.photoID && [pt.photoID length] > 0){
+            [[APIController shared] markGuide:pt.photoID withOnDone:^(id r) {
+                [[CacheManager share] removeCache:cacheKey];
+            } andOnError:^(id e) {
+                
+            }];
+        }
     }
     else
     {
@@ -474,11 +482,19 @@
 //                });
             });
             
-            [[APIController shared] removeGuide:pt withOnDone:^(id r) {
-                
-            } andOnError:^(id e) {
-                
-            }];
+            NSString* cacheKey = pt.imgPath;
+            NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"path" ,cacheKey, nil];
+            [[CacheManager share] removeCache:cacheKey];
+            [[CacheManager share] addCache:dict forKey:cacheKey andType:TYPE_REMOVE_GUIDE];
+            
+            if(pt.photoID && [pt.photoID length] > 0)
+            {
+                [[APIController shared] removeGuide:pt.photoID withOnDone:^(id r) {
+                    [[CacheManager share] removeCache:cacheKey];
+                } andOnError:^(id e) {
+                    
+                }];
+            }
             
         } onCancel:^{
             [sender setTitle:@"Remove Guide" forState:UIControlStateNormal];

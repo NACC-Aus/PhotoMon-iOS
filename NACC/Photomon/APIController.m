@@ -319,11 +319,11 @@ static APIController* shared_ = nil;
     [request startAsynchronous];
 }
 
--(void) removeGuide:(Photo*) photo withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError
+-(void) removeGuide:(NSString*) photoId withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError
 {
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     NSString* accToken = [def objectForKey:@"AccessToken"];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@", self.server, @"/photos/", photo.photoID, @".json"]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@", self.server, @"/photos/", photoId, @".json"]];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
     [request setTimeOutSeconds:TIME_OUT];
     [request setNumberOfTimesToRetryOnTimeout: 5];
@@ -344,11 +344,11 @@ static APIController* shared_ = nil;
     [request startAsynchronous];
 }
 
-- (void) markGuide: (Photo*) photo withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError
+- (void) markGuide: (NSString*) photoId withOnDone:(void(^)(id))onDone andOnError:(void(^)(id))onError
 {
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     NSString* accToken = [def objectForKey:@"AccessToken"];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@", self.server, @"/photos/", photo.photoID, @".json"]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@%@", self.server, @"/photos/", photoId, @".json"]];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
     [request setTimeOutSeconds:TIME_OUT];
     [request setNumberOfTimesToRetryOnTimeout: 5];

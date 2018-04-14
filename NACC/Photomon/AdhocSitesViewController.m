@@ -371,7 +371,7 @@
                               nil];
 
         NSString* cacheKey = [[NSUUID UUID] UUIDString];
-        [[CacheManager share] addCache:dict forKey:cacheKey];
+        [[CacheManager share] addCache:dict forKey:cacheKey andType:TYPE_SITE];
         [[APIController shared] addNewSite:text withProjectId:projectId lat:lat lng:lng withOnDone:^(id result) {
             if(result)
             {

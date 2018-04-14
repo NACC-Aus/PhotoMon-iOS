@@ -322,26 +322,29 @@
     
     //force start update
     [self.locationManager startUpdatingLocation];
-    NSArray *arr = [[CacheManager share] getCaches];
-    if(arr)
+    NSDictionary *dict = [[CacheManager share] getCaches];
+    if(dict)
     {
-        for (id item in arr)
-        {
-            NSString* cacheKey = [item objectForKey:CACHE_ID];
-            NSString* name = [item objectForKey:@"name"];
-            NSString* projectId = [item objectForKey:@"projectId"];
-            NSString* lat = [item objectForKey:@"lat"];
-            NSString* lng = [item objectForKey:@"lng"];
-            
-            [[APIController shared] addNewSite:name withProjectId:projectId lat:lat lng:lng withOnDone:^(id result) {
-                if(result)
-                {
-                    [[CacheManager share] removeCache:cacheKey];
-                     [[NSNotificationCenter defaultCenter] postNotificationName:NotifSiteDidRefresh object:nil];
-                }
-            } andOnError:^(id err) {
+        for (NSString* key in dict) {
+            id item = [dict objectForKey:key];
+            NSNumber *type = [item objectForKey:CACHE_TYPE];
+            if([type intValue] == TYPE_SITE){
+                NSString* cacheKey = [item objectForKey:CACHE_ID];
+                NSString* name = [item objectForKey:@"name"];
+                NSString* projectId = [item objectForKey:@"projectId"];
+                NSString* lat = [item objectForKey:@"lat"];
+                NSString* lng = [item objectForKey:@"lng"];
                 
-            }];
+                [[APIController shared] addNewSite:name withProjectId:projectId lat:lat lng:lng withOnDone:^(id result) {
+                    if(result)
+                    {
+                        [[CacheManager share] removeCache:cacheKey];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:NotifSiteDidRefresh object:nil];
+                    }
+                } andOnError:^(id err) {
+                    
+                }];
+            }
         }
     }
     
