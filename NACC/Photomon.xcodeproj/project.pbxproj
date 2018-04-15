@@ -19,6 +19,9 @@
 		525879B01DFD821B00FD40D0 /* CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 525879AF1DFD821B00FD40D0 /* CustomIOSAlertView.m */; };
 		525879B21DFD87E900FD40D0 /* DirectionAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */; };
 		527800962069456D00D4948B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 527800952069456D00D4948B /* Images.xcassets */; };
+		52B953122083166E002AAD56 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B953102083166D002AAD56 /* Crashlytics.framework */; };
+		52B953132083166E002AAD56 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B953112083166D002AAD56 /* Fabric.framework */; };
+		52B95315208316AB002AAD56 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B95314208316AB002AAD56 /* libc++.tbd */; };
 		5A15F804184DC8E20014AD44 /* NavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A15F803184DC8E20014AD44 /* NavViewController.m */; };
 		5A228F03183B446D00FD9F51 /* AdhocSitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A228F01183B446D00FD9F51 /* AdhocSitesViewController.m */; };
 		5A228F04183B446D00FD9F51 /* AdhocSitesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A228F02183B446D00FD9F51 /* AdhocSitesViewController.xib */; };
@@ -134,6 +137,9 @@
 		525879AF1DFD821B00FD40D0 /* CustomIOSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOSAlertView.m; sourceTree = "<group>"; };
 		525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectionAlertView.xib; sourceTree = "<group>"; };
 		527800952069456D00D4948B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		52B953102083166D002AAD56 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		52B953112083166D002AAD56 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		52B95314208316AB002AAD56 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		5A15F802184DC8E20014AD44 /* NavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavViewController.h; sourceTree = "<group>"; };
 		5A15F803184DC8E20014AD44 /* NavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavViewController.m; sourceTree = "<group>"; };
 		5A228F00183B446D00FD9F51 /* AdhocSitesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdhocSitesViewController.h; sourceTree = "<group>"; };
@@ -288,16 +294,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AEFBE7C176B2EE50088A9D7 /* Security.framework in Frameworks */,
+				52B95315208316AB002AAD56 /* libc++.tbd in Frameworks */,
 				CBB61A281B05D80000C84787 /* ImageIO.framework in Frameworks */,
 				CBB61A261B05D7DA00C84787 /* CoreImage.framework in Frameworks */,
+				52B953122083166E002AAD56 /* Crashlytics.framework in Frameworks */,
 				5AEFBE82176B2F190088A9D7 /* libxml2.dylib in Frameworks */,
 				5AEFBE80176B2F050088A9D7 /* QuartzCore.framework in Frameworks */,
-				5AEFBE7C176B2EE50088A9D7 /* Security.framework in Frameworks */,
 				B2188D1B16BF72CA000FF0E2 /* CoreMotion.framework in Frameworks */,
 				B249AE4316B669FD001C4DC4 /* MediaPlayer.framework in Frameworks */,
 				B26CED5316A6C50B00BE7D39 /* MapKit.framework in Frameworks */,
 				B26CED5016A6B40800BE7D39 /* AVFoundation.framework in Frameworks */,
 				B297A4F5169D5DF900C57214 /* CoreLocation.framework in Frameworks */,
+				52B953132083166E002AAD56 /* Fabric.framework in Frameworks */,
 				B299EE58169BD0FF00B8655D /* CFNetwork.framework in Frameworks */,
 				B299EE56169BD0E100B8655D /* MobileCoreServices.framework in Frameworks */,
 				B299EE54169BD0D300B8655D /* SystemConfiguration.framework in Frameworks */,
@@ -315,6 +324,8 @@
 		17100DE2169BCF0E00352821 = {
 			isa = PBXGroup;
 			children = (
+				52B953102083166D002AAD56 /* Crashlytics.framework */,
+				52B953112083166D002AAD56 /* Fabric.framework */,
 				527800952069456D00D4948B /* Images.xcassets */,
 				CBB61A1E1B05D60E00C84787 /* Externals */,
 				5A6243B2174DF5A800016B1D /* Default-568h@2x.png */,
@@ -336,6 +347,7 @@
 		17100DF0169BCF0E00352821 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				52B95314208316AB002AAD56 /* libc++.tbd */,
 				CBB61A271B05D80000C84787 /* ImageIO.framework */,
 				CBB61A251B05D7DA00C84787 /* CoreImage.framework */,
 				5AEFBE81176B2F190088A9D7 /* libxml2.dylib */,
@@ -647,6 +659,7 @@
 				17100DE9169BCF0E00352821 /* Sources */,
 				17100DEA169BCF0E00352821 /* Frameworks */,
 				17100DEB169BCF0E00352821 /* Resources */,
+				52B9530F20831655002AAD56 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -735,6 +748,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		52B9530F20831655002AAD56 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 5032e75eb6f7beedff552d5f3ec1f33cc0f1d507 7a0397fde2df5dc6317123a1f66e4a6cfea0cec0d2a257e557868c1993d352ce";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		17100DE9169BCF0E00352821 /* Sources */ = {
@@ -877,6 +906,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Photomon/ZooZSDK.embeddedframework\"",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Photomon/Photomon-Prefix.pch";
@@ -907,6 +937,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Photomon/ZooZSDK.embeddedframework\"",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Photomon/Photomon-Prefix.pch";
