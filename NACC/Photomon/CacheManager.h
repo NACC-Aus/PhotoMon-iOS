@@ -5,9 +5,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#define CACHE_KEY @"CacheItems"
-#define CACHE_ID @"CacheId"
-#define CACHE_TYPE @"CacheType"
+#define CACHE_KEY @"Cache_key_data"
+#define CACHE_ID @"Cache_id"
+#define CACHE_TYPE @"Cache_type"
 
 #define TYPE_SITE 0
 #define TYPE_MARK_GUIDE 1
