@@ -74,7 +74,7 @@ static RootViewController* shared_ = nil;
 #else
     if (tfServerName.isHidden)
     {
-        tfServerName.text = @"http://photomon.nacc.com.au";
+        tfServerName.text = @"https://photomon.nacc.com.au";
     }
 #endif
 }
@@ -247,7 +247,7 @@ static RootViewController* shared_ = nil;
 //    DonateViewController* controller = [DonateViewController shared];
 //    [self.navigationController pushViewController:controller animated:YES];
     
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://photomon.nacc.com.au/mobile/index.html"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://photomon.nacc.com.au/mobile/index.html"]];
 }
 
 #pragma mark- UITextFieldDelegate

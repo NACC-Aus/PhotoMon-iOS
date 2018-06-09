@@ -13,7 +13,7 @@
 //#define DEFAULT_SERVER @"http://192.168.11.108:3001"
 
 //#define DEFAULT_SERVER @"http://beachmonitoring.nacc.com.au/"
-#define DEFAULT_SERVER @"http://photomon.nacc.com.au/"
+#define DEFAULT_SERVER @"https://photomon.nacc.com.au/"
 
 #define HOST DEFAULT_SERVER
 
