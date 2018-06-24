@@ -114,7 +114,7 @@
     NSUInteger count = datasource.count;
     if (count == 0)
     {
-        self.navigationItem.rightBarButtonItem = nil;
+        self.navigationItem.rightBarButtonItem = btAdd;
         tbView.alpha = 0;
         lb.frame = CGRectMake(0, (tableView.frame.size.height-20)/2, tableView.frame.size.width, 20);
         [lb setAlpha:1.0];
