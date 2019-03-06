@@ -67,6 +67,7 @@
 //    {
 //        [lstObjs addObject:@{@"cmd":@"RefreshGuides",@"text":@"Refresh guide photos",@"transition":@"none"}];
 //    }
+    [lstObjs addObject:@{@"cmd":@"GuidePhoto",@"text":@"Guide photo",@"transition":@"push"}];
     [lstObjs addObject:@{@"cmd":@"Logout",@"text":@"Logout",@"transition":@"none"}];
     
     [self refreshView];

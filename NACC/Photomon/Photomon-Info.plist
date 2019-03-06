@@ -50,11 +50,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) need to access your camera</string>
+	<string>$(PRODUCT_NAME) need to access your camera to take a photo</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>$(PRODUCT_NAME) need to access your location</string>
+	<string>$(PRODUCT_NAME) need to access your location to get closest site </string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) need to access your photos</string>
+	<string>$(PRODUCT_NAME) need to access your photos to upload photo</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

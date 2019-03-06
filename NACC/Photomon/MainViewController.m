@@ -893,38 +893,38 @@
     //demo sign
     {
         UIView* rootView = barBottom;
-        
-        UIView* vw = [rootView viewWithTag:886];
-        UILabel* lb = (UILabel*) [rootView viewWithTag:887];
-        if (!lb)
-        {
-            vw = [[UIView alloc] initWithFrame:CGRectMake(134, 7+0 , 50, 30)];
-            vw.backgroundColor = [UIColor blackColor];
-            vw.alpha = 0.5;
-            vw.tag  = 886;
-            vw.layer.cornerRadius = 10.0;
-            [rootView addSubview:vw];
-            
-            lb = [[UILabel alloc] initWithFrame:CGRectMake(134+5, 7+5+0, 40, 20)];
-            lb.textColor = [UIColor whiteColor];
-            lb.font = [UIFont boldSystemFontOfSize:10];
-            lb.textAlignment = NSTextAlignmentCenter;
-            lb.backgroundColor = [UIColor clearColor];
-            lb.tag = 887;
-            [rootView addSubview:lb];
-        }
-        
         if ([[APIController shared] checkIfDemo])
         {
+            rootView.hidden = NO;
+            UIView* vw = [rootView viewWithTag:886];
+            UILabel* lb = (UILabel*) [rootView viewWithTag:887];
+            if (!lb)
+            {
+                vw = [[UIView alloc] initWithFrame:CGRectMake(134, 7+0 , 50, 30)];
+                vw.backgroundColor = [UIColor blackColor];
+                vw.alpha = 0.5;
+                vw.tag  = 886;
+                vw.layer.cornerRadius = 10.0;
+                [rootView addSubview:vw];
+                
+                lb = [[UILabel alloc] initWithFrame:CGRectMake(134+5, 7+5+0, 40, 20)];
+                lb.textColor = [UIColor whiteColor];
+                lb.font = [UIFont boldSystemFontOfSize:10];
+                lb.textAlignment = NSTextAlignmentCenter;
+                lb.backgroundColor = [UIColor clearColor];
+                lb.tag = 887;
+                [rootView addSubview:lb];
+            }
             vw.hidden = NO;
             lb.hidden = NO;
+            [btnGuidePhoto setEnabled:NO];
+            [btnGuidePhoto setTintColor: [UIColor clearColor]];
             lb.text = @"DEMO";
             
         }
         else
         {
-            vw.hidden = YES;
-            lb.hidden = YES;
+            rootView.hidden = YES;
         }
     }
 
@@ -3273,6 +3273,14 @@
             [self reloadOldDataFromServer:sites];
             
             weakControllerSetting.onDidTouchNavItemDone(nil);
+        }
+        else if ([cmd isEqualToString:@"GuidePhoto"])
+        {
+            DownloadViewController  *downloadController = [[DownloadViewController alloc] initWithNibName:@"DownloadViewController" bundle:[NSBundle mainBundle]];
+            downloadController.arrList = [[NSMutableArray alloc] initWithArray:allSites];
+            downloadController.mainController = self;
+            downloadController.photos = lstObjsForTbPhotos;
+            [weakControllerSetting.navigationController pushViewController:downloadController animated:YES];
         }
     };
     
