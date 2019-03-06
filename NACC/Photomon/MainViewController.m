@@ -372,21 +372,7 @@
 
     if (alertView == alertAskDirection) return;
     
-    if (alertView.tag == 999) {
-        UIAlertView *noCompassAlert = [[UIAlertView alloc] initWithTitle:@"Information" message:@"By uploading pictures using this app, the user acknowledges the right of the project partners to use those pictures for reasonable purposes" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [noCompassAlert show];
-        noCompassAlert.tag = 777;
-        
-        return;
-    }
-    else if(alertView.tag == 777)
-    {
-        
-        UIAlertView *noCompassAlert = [[UIAlertView alloc] initWithTitle:@"Information" message:@"Photographs containing children must not be uploaded" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [noCompassAlert show];
-        
-    }
-    else if (alertView.tag == 31124) //adhoc site name
+    if (alertView.tag == 31124) //adhoc site name
     {
         if (buttonIndex == 0) //cancel
         {
@@ -871,13 +857,7 @@
     
     //Start the compass updates.
     //    if (CLLocationManager.headingAvailable )
-    {
-        //        [locationManager startUpdatingHeading];
-        
-        UIAlertView *noCompassAlert = [[UIAlertView alloc] initWithTitle:@"Information" message:@"By uploading pictures using this app, the user acknowledges the right of the project partners to use those pictures for reasonable purposes" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [noCompassAlert show];
-        noCompassAlert.tag = 777;
-    }
+    
     
     //    else
     //    {

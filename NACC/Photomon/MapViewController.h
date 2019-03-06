@@ -86,13 +86,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,strong) NSMutableArray* lstPhotoNeedDownload;
 @property (nonatomic,strong) NSMutableArray* lstPhotoBeingDownloaded;
 
--(IBAction) takePhoto:(id)sender;
--(IBAction) gotoPhotoAlbum:(id)sender;
--(IBAction) cancelCamera:(id)sender;
--(IBAction) changeCamera:(id)sender;
--(IBAction) changeFlashLightMode:(id)sender;
--(IBAction) changeGuide:(id)sender;
--(IBAction) selectDirection:(id)sender;
 -(Site*)selectSite;
 - (void) updateAllSites:(NSArray*)newAllSites;
 - (void) selectSiteAndOnDone:(void(^)(id))onDone;

@@ -57,16 +57,6 @@
     return @"Unknown";
 }
 
--(void)setSelectedDirection:(UIButton*)bt
-{
-    
-}
-
--(IBAction)selectDirection:(UIButton*)sender
-{
-    
-}
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -408,10 +398,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    MKUserTrackingButton *buttonItem = [MKUserTrackingButton userTrackingButtonWithMapView:self.mapView];
-    [self.view addSubview:buttonItem];
-    buttonItem.frame = CGRectMake(10.0, self.mapView.frame.size.height - buttonItem.frame.size.height - 110, buttonItem.frame.size.width, buttonItem.frame.size.height);
-    
     [prjPick configNavViewController:self.navigationController];
     
     imgPathPhotos = [[NSMutableDictionary alloc] init];
@@ -600,6 +586,10 @@
     lstObjsForTbPhotos = [[NSMutableArray alloc] init];
     
     [self reloadAll];
+    
+    MKUserTrackingButton *trackingButton = [MKUserTrackingButton userTrackingButtonWithMapView:self.mapView];
+    [self.mapView addSubview:trackingButton];
+    trackingButton.frame = CGRectMake(10.0, self.mapView.frame.size.height - trackingButton.screenFrame.size.height - 170, trackingButton.frame.size.width, trackingButton.frame.size.height);
 }
 
 - (void) reloadAll
@@ -939,8 +929,6 @@
 }
 
 #pragma mark guideline transparency
--(IBAction) guideAlphaChanged:(UISlider*) slider {
-}
 
 #pragma mark reload data from server
 - (void) uploadNoteForGuidePhotos {
@@ -1626,46 +1614,7 @@
 
 #pragma mark- Overlay actions
 
--(IBAction) takePhoto:(id)sender
-{
-   
-}
-
--(IBAction) gotoPhotoAlbum:(id)sender
-{
-    
-}
-
--(IBAction) cancelCamera:(id)sender
-{
-    
-}
-
 -(void)show:(BOOL)isShow
-{
-    
-}
-
--(IBAction) changeCamera:(id)sender
-{
-    
-}
-
--(BOOL)hasFlash
-{
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    BOOL f = [device hasFlash];
-    //NSLog(@"\nhas Flash: %d\n", f);
-    return f;
-}
-
-
--(IBAction) changeFlashLightMode:(id)sender
-{
-    
-}
-
--(void) updateFlashMode
 {
     
 }
@@ -2180,11 +2129,7 @@
 - (void) onNotifAppDidUpdateNewLocation:(NSNotification*)notif
 {
     //only work when picker controller presenting and user selectec direction
-    if (self.presentedViewController && [self.presentedViewController isKindOfClass:[UIImagePickerController class]] && self.direction != nil)
-    {
-        NSString* c = [self.direction substringToIndex:1];
-        [self selectDirection:c];
-    }
+    
 }
 
 - (void) onNotifAppDidRefreshGuidePhotos:(NSNotification*) notif
