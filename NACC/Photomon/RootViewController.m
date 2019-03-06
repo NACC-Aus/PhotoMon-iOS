@@ -1,7 +1,7 @@
 
 #import "RootViewController.h"
-#import "MainViewController.h"
 #import "DonateViewController.h"
+#import "MapViewController.h"
 
 @interface RootViewController ()
 
@@ -160,7 +160,7 @@ static RootViewController* shared_ = nil;
             [[NSUserDefaults standardUserDefaults] synchronize];
             
             NavViewController *navi = (NavViewController*) [appDelegate loadMainControllerForAccessToken:[[NSUserDefaults standardUserDefaults] objectForKey:@"AccessToken"]];
-            appDelegate.mainViewController = [navi.viewControllers objectAtIndex:0];
+            appDelegate.mapViewController = [navi.viewControllers objectAtIndex:0];
             appDelegate.window.rootViewController = navi;
             
             bt.userInteractionEnabled = YES;
@@ -193,7 +193,7 @@ static RootViewController* shared_ = nil;
                     [[NSUserDefaults standardUserDefaults] synchronize];
                     
                     NavViewController *navi = (NavViewController*) [appDelegate loadMainControllerForAccessToken:[[NSUserDefaults standardUserDefaults] objectForKey:@"AccessToken"]];
-                    appDelegate.mainViewController = [navi.viewControllers objectAtIndex:0];
+                    appDelegate.mapViewController = [navi.viewControllers objectAtIndex:0];
                     appDelegate.window.rootViewController = navi;
                     
                     bt.userInteractionEnabled = YES;
@@ -237,7 +237,7 @@ static RootViewController* shared_ = nil;
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     NavViewController *navi = (NavViewController*) [appDelegate loadMainControllerForAccessToken:@"demo"];
-    appDelegate.mainViewController = [navi.viewControllers objectAtIndex:0];
+    appDelegate.mapViewController = [navi.viewControllers objectAtIndex:0];
     appDelegate.window.rootViewController = navi;
 
 }

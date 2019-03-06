@@ -20,7 +20,7 @@
 @synthesize locationManager, direction;
 @synthesize bgTask;
 @synthesize getSource;
-@synthesize mainViewController = _mainViewController;
+@synthesize mapViewController = _mapViewController;
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -90,7 +90,7 @@
         if (accessToken)
         {
             NavViewController *navi = (NavViewController*) [appDelegate loadMainControllerForAccessToken:accessToken];
-            _mainViewController = [navi.viewControllers objectAtIndex:0];
+            self.mapViewController = [navi.viewControllers objectAtIndex:0];
             self.window.rootViewController = navi;            
         }
         else
@@ -508,8 +508,8 @@
     UINavigationController* nav = [self.mapAccessTokenToMainController objectForKey:token];
     if (!nav)
     {
-        MainViewController *mainViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-        NavViewController *navi = [[NavViewController alloc] initWithRootViewController:mainViewController];
+        MapViewController *mapViewController = [[MapViewController alloc] initWithNibName:@"MapViewController" bundle:nil];
+        NavViewController *navi = [[NavViewController alloc] initWithRootViewController:mapViewController];
         nav = navi;
         
         [self.mapAccessTokenToMainController setObject:nav forKey:token];

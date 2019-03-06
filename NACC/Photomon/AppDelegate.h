@@ -2,7 +2,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
-#import "MainViewController.h"
+#import "MapViewController.h"
 
 #define NotifyAppDidActive                              @"NotifyAppDidActive"
 #define NotifyUploadInBackground                        @"NotifyUploadInBackground"
@@ -28,7 +28,7 @@
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) NSString *direction;
-@property   (nonatomic,strong) MainViewController  *mainViewController;
+@property   (nonatomic,strong) MapViewController  *mapViewController;
 
 @property (nonatomic,strong) NetworkManager* mgrNetwork;
 @property (nonatomic) int currentNetworkType;

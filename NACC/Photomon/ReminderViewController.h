@@ -1,7 +1,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class MainViewController;
+@class MapViewController;
 @interface ReminderViewController : BaseAppViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UINavigationBarDelegate>
 {
     IBOutlet UITableView* tbView;
@@ -37,7 +37,7 @@
 + (ReminderViewController *) shared;
 
 //MAIN
-@property (nonatomic,weak) MainViewController* mainController;
+@property (nonatomic,weak) MapViewController* mapController;
 @property (nonatomic,weak) UIAlertView* currentReminderAlert;
 @property (nonatomic,weak) IBOutlet UILabel* lbTest;
 

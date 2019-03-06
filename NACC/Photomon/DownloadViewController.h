@@ -1,7 +1,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Site.h"
-#import "MainViewController.h"
+#import "MapViewController.h"
 
 @interface DownloadViewController : BaseAppViewController <UITableViewDataSource,UITableViewDelegate>{
     IBOutlet UITableView    *tblView;
@@ -12,5 +12,5 @@
 
 @property (nonatomic, strong) NSMutableArray    *arrList;
 @property (nonatomic, strong) NSArray* photos;
-@property  (nonatomic, weak) MainViewController   *mainController;
+@property  (nonatomic, weak) MapViewController  *mainController;
 @end

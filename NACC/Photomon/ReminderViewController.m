@@ -1,6 +1,5 @@
 
 #import "ReminderViewController.h"
-#import "MainViewController.h"
 
 @interface ReminderViewController ()
 
