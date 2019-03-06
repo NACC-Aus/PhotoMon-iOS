@@ -29,7 +29,7 @@
 #define DegreesToRadians(degrees)(degrees * M_PI / 180.0)
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MapViewController : BaseAppViewController<UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, CLLocationManagerDelegate, UIAlertViewDelegate>
+@interface MapViewController : BaseAppViewController<UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIAlertViewDelegate, CLLocationManagerDelegate, UIAlertViewDelegate, MKMapViewDelegate>
 {
     NSMutableArray* lstObjsForTbPhotos;
     
@@ -95,7 +95,6 @@ NS_ASSUME_NONNULL_BEGIN
 -(IBAction) wenDonate:(id)sender;
 -(IBAction) wenMore:(id)sender;
 
--(IBAction) guideAlphaChanged:(UISlider*) slider;
 - (void) refresh;
 
 - (void) alertForDirectionWithOnDone:(void(^)(id))onDone;

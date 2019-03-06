@@ -590,6 +590,10 @@
     MKUserTrackingButton *trackingButton = [MKUserTrackingButton userTrackingButtonWithMapView:self.mapView];
     [self.mapView addSubview:trackingButton];
     trackingButton.frame = CGRectMake(10.0, self.mapView.frame.size.height - trackingButton.screenFrame.size.height - 170, trackingButton.frame.size.width, trackingButton.frame.size.height);
+    
+    self.mapView.delegate = self;
+    self.mapView.showsUserLocation = YES;
+    [self initMapKit];
 }
 
 - (void) reloadAll
@@ -1617,6 +1621,30 @@
 -(void)show:(BOOL)isShow
 {
     
+}
+
+#pragma mark mapkit
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+{
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 1000, 1000);
+    [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+}
+
+- (void) initMapKit
+{
+    if(appDelegate.locationManager.location != nil) {
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(appDelegate.locationManager.location.coordinate, 1000, 1000);
+        [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+        
+        for (Site* site in allSites)
+        {
+            MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
+            
+            point.coordinate = CLLocationCoordinate2DMake(site.Latitude.doubleValue, site.Longitude.doubleValue);
+            point.title = site.Name;
+             [self.mapView addAnnotation:point];
+        }
+    }
 }
 
 #pragma mark- Photo Actions
