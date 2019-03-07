@@ -31,6 +31,7 @@
 }
 
 @property (strong, nonatomic) Site* site;
+@property (strong, nonatomic) Photo* photo;
 @end
 
 @implementation SitePinAnnotation
@@ -2295,10 +2296,18 @@
     for (Site* site in allSites)
     {
         SitePinAnnotation *point = [[SitePinAnnotation alloc] init];
-        
         point.coordinate = CLLocationCoordinate2DMake(site.Latitude.doubleValue, site.Longitude.doubleValue);
         point.title = site.Name;
         point.site = site;
+        for (Photo *p in self->source)
+        {
+            if([p.siteID isEqualToString:site.ID])
+            {
+                point.photo = p;
+                break;
+            }
+        }
+        
         [self.mapView addAnnotation:point];
     }
 }
@@ -2316,9 +2325,17 @@
         view = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"pin"];
     }
 
-    UIImageView* imageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"images/icon-gallery.png"]];
-    imageView.frame = CGRectMake(0, 0, 70, 70);
+    SitePinAnnotation* siteAnnotation = annotation;
+    
+    UIImageView* imageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"images/phototomon-logo.png"]];
+    if(siteAnnotation.photo && siteAnnotation.photo.imageData)
+    {
+        imageView.image = [UIImage imageWithData:siteAnnotation.photo.imageData];
+    }
+    
+    imageView.frame = CGRectMake(0, 0, 50, 50);
     imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.clipsToBounds = YES;
     view.canShowCallout = YES;
     view.leftCalloutAccessoryView = imageView;
     UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 12, 21)];
