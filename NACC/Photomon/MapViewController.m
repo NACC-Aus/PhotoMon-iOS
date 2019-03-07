@@ -23,6 +23,20 @@
 #import "CacheManager.h"
 #import "MainViewController.h"
 
+#pragma mark Map custom annotation
+
+@interface SitePinAnnotation : MKPointAnnotation
+{
+    
+}
+
+@property (strong, nonatomic) Site* site;
+@end
+
+@implementation SitePinAnnotation
+@synthesize coordinate;
+@end
+
 @interface MapViewController ()
 - (void) reuploadFailedPhoto:(Photo*)p;
 @end
@@ -594,6 +608,7 @@
     self.mapView.delegate = self;
     self.mapView.showsUserLocation = YES;
     [self initMapKit];
+    [self drawAnnotations];
 }
 
 - (void) reloadAll
@@ -1623,30 +1638,6 @@
     
 }
 
-#pragma mark mapkit
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
-{
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 1000, 1000);
-    [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
-}
-
-- (void) initMapKit
-{
-    if(appDelegate.locationManager.location != nil) {
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(appDelegate.locationManager.location.coordinate, 1000, 1000);
-        [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
-        
-        for (Site* site in allSites)
-        {
-            MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
-            
-            point.coordinate = CLLocationCoordinate2DMake(site.Latitude.doubleValue, site.Longitude.doubleValue);
-            point.title = site.Name;
-             [self.mapView addAnnotation:point];
-        }
-    }
-}
-
 #pragma mark- Photo Actions
 
 -(void)useImage:(UIImage*)image andDidMakeGuide:(BOOL)isMakeGuide andDirection:(NSString*)aDirection andNote:(NSString*)note
@@ -2281,5 +2272,76 @@
         }
     }];
 }
+
+#pragma mark mapkit
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+{
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 1000, 1000);
+    [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+}
+
+- (void) initMapKit
+{
+    if(appDelegate.locationManager.location != nil) {
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(appDelegate.locationManager.location.coordinate, 1000, 1000);
+        [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
+    }
+}
+
+- (void) drawAnnotations
+{
+    for (Site* site in allSites)
+    {
+        SitePinAnnotation *point = [[SitePinAnnotation alloc] init];
+        
+        point.coordinate = CLLocationCoordinate2DMake(site.Latitude.doubleValue, site.Longitude.doubleValue);
+        point.title = site.Name;
+        point.site = site;
+        [self.mapView addAnnotation:point];
+    }
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    if (![annotation isKindOfClass:[SitePinAnnotation class]])
+    {
+        return nil;
+    }
+
+    MKPinAnnotationView* view = (MKPinAnnotationView*)[self.mapView dequeueReusableAnnotationViewWithIdentifier:@"pin"];
+    if (!view)
+    {
+        view = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"pin"];
+    }
+
+    UIImageView* imageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"images/icon-gallery.png"]];
+    imageView.frame = CGRectMake(0, 0, 70, 70);
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    view.canShowCallout = YES;
+    view.leftCalloutAccessoryView = imageView;
+    UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 12, 21)];
+    [button setImage:[UIImage imageNamed:@"images/next_btn.png"] forState:UIControlStateNormal];
+    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    view.rightCalloutAccessoryView = button;
+    return view;
+}
+
+-(void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+   
+
+}
+
+- (void)mapView:(MKMapView *)map annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{
+    if (![view.annotation isKindOfClass:[SitePinAnnotation class]])
+    {
+        return;
+    }
+    
+    MainViewController *mainViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    [self.navigationController pushViewController:mainViewController animated:YES];
+}
+
 
 @end
