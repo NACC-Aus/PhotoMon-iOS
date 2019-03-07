@@ -356,7 +356,7 @@
         
         
 //        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonSystemItemAction target:self action:@selector(onDidTouchItemSetting:)];
-        prjPick = [[ProjectPickObserver alloc] init];
+        //prjPick = [[ProjectPickObserver alloc] init];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNotifProjectsDidRefresh:) name:NotifProjectsDidRefresh object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSites:) name:NotifSiteDidRefresh object:nil];
@@ -700,21 +700,21 @@
     
     [self.view endEditing:YES];
     
-    [prjPick setIsDisabledPicker:NO];
+    //[prjPick setIsDisabledPicker:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
-    [prjPick setIsDisabledPicker:YES];
+    //[prjPick setIsDisabledPicker:YES];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [prjPick configNavViewController:self.navigationController];
+    //[prjPick configNavViewController:self.navigationController];
     
     imgPathPhotos = [[NSMutableDictionary alloc] init];
     scheduledReuploads = [[NSMutableArray alloc] init];
@@ -999,7 +999,10 @@
         vwNotes.frame = CGRectMake(0, -300, 320, 244);
     }
     
-    if ([APIController shared].currentProject)
+    if (self.currentSite != nil && [self.currentSite.Name length] > 0) {
+        self.title = self.currentSite.Name;
+    }
+    else if ([APIController shared].currentProject)
     {
         self.title = [[APIController shared].currentProject objectForKey:@"name"];
     }
@@ -2811,7 +2814,13 @@
 
     if ([APIController shared].currentProject)
     {
-        self.title = [[APIController shared].currentProject objectForKey:@"name"];
+        if (self.currentSite != nil && [self.currentSite.Name length] > 0) {
+            self.title = self.currentSite.Name;
+        }
+        else if ([APIController shared].currentProject)
+        {
+            self.title = [[APIController shared].currentProject objectForKey:@"name"];
+        }
         
         if (allSites.count > 0)
         {
@@ -2821,7 +2830,7 @@
             NSMutableArray* filteredSiteIDs = [NSMutableArray array];
             for (Site* site in allSites)
             {
-                if ([site.ProjectID isEqualToString:prjID])
+                if ([site.ProjectID isEqualToString:prjID] && ((self.currentSite != nil && [self.currentSite.ID isEqualToString:site.ID]) || self.currentSite == nil))
                 {
                     [filteredSiteIDs addObject:site.ID];
                 }

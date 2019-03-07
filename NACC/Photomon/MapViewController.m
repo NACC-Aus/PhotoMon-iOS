@@ -721,6 +721,7 @@
         }
         
         [self refreshView];
+        [self drawAnnotations];
     }];
     
 }
@@ -2290,6 +2291,7 @@
 
 - (void) drawAnnotations
 {
+    [self.mapView removeAnnotations:self.mapView.annotations];
     for (Site* site in allSites)
     {
         SitePinAnnotation *point = [[SitePinAnnotation alloc] init];
@@ -2339,7 +2341,9 @@
         return;
     }
     
+    SitePinAnnotation* siteAnnotation = view.annotation;
     MainViewController *mainViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    mainViewController.currentSite = siteAnnotation.site;
     [self.navigationController pushViewController:mainViewController animated:YES];
 }
 

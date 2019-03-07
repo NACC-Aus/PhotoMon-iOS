@@ -111,7 +111,7 @@
     NSTimer* tmrRefreshView;
 
     //project pick
-    ProjectPickObserver* prjPick;
+    //ProjectPickObserver* prjPick;
     
     UIImage* guideImage;
     
@@ -122,6 +122,7 @@
 @property(nonatomic, strong) NSMutableArray *uploading;
 @property(nonatomic, strong) NSString *direction;
 @property (nonatomic,copy) void(^onAskDirectionDone)(id);
+@property (nonatomic, strong) Site* currentSite;
 
 @property (nonatomic,weak) ViewSavedPhotosViewController* controllerSavedPhotos;
 
