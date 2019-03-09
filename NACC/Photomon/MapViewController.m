@@ -724,7 +724,6 @@
         [self refreshView];
         [self drawAnnotations];
     }];
-    
 }
 
 -(void) reloadSourceData {

@@ -274,7 +274,7 @@ static APIController* shared_ = nil;
     
     [request setFailedBlock:^{
         
-//        retBlock(nil);
+        retBlock(nil);
     }];
     
     [request startAsynchronous];
