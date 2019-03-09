@@ -2059,6 +2059,11 @@
         return nil;
     }
 
+    if (self.currentSite != nil)
+    {
+        return self.currentSite;
+    }
+    
     Site *site = [self distanceToClosetOffice];
     return site;
 }

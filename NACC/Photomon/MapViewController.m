@@ -2303,12 +2303,6 @@
 }
 
 #pragma mark mapkit
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
-{
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 1000, 1000);
-    [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
-}
-
 - (void) initMapKit
 {
     if(appDelegate.locationManager.location != nil) {
@@ -2320,18 +2314,51 @@
 - (void) drawAnnotations
 {
     [self.mapView removeAnnotations:self.mapView.annotations];
+    NSArray* guidePhotos = [[NSUserDefaults standardUserDefaults] objectForKey:@"GuidePhotos"];
+    
     for (Site* site in allSites)
     {
         SitePinAnnotation *point = [[SitePinAnnotation alloc] init];
         point.coordinate = CLLocationCoordinate2DMake(site.Latitude.doubleValue, site.Longitude.doubleValue);
         point.title = site.Name;
         point.site = site;
-        for (Photo *p in self->source)
+        BOOL hasGuide = NO;
+        if (guidePhotos)
         {
-            if([p.siteID isEqualToString:site.ID])
+            for (id obj in guidePhotos)
             {
-                point.photo = p;
-                break;
+                NSString* guideSiteId = [obj objectForKey:@"SiteId"];
+                if ([site.ID isEqualToString:guideSiteId])
+                {
+                    Photo* p = [[Photo alloc] init];
+                    p.sID = site.ID;
+                    p.siteID = site.Name;
+                    NSString* imgPath = [Downloader storagePathForURL:[obj objectForKey:@"ImagePath"]];
+                    p.imgPath = imgPath;
+                    p.img = [appDelegate loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
+                    
+                    NSString* relativeThumbPath = [obj objectForKey:@"ThumbPath"];
+                    
+                    NSString* fullThumbPath = [Downloader storagePathForURL:relativeThumbPath];
+                    
+                    p.imgThumbnail = [appDelegate loadImageOfFile:fullThumbPath]; //  [UIImage imageWithContentsOfFile:fullThumbPath];
+                    p.thumbPath = fullThumbPath;
+                    point.photo = p;
+                    hasGuide = YES;
+                    break;
+                }
+            }
+        }
+        
+        if (!hasGuide)
+        {
+            for (Photo *p in self->source)
+            {
+                if([p.sID isEqualToString:site.ID])
+                {
+                    point.photo = p;
+                    break;
+                }
             }
         }
         
@@ -2355,9 +2382,19 @@
     SitePinAnnotation* siteAnnotation = annotation;
     
     UIImageView* imageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"images/phototomon-logo.png"]];
-    if(siteAnnotation.photo && siteAnnotation.photo.imageData)
+    if(siteAnnotation.photo)
     {
-        imageView.image = [UIImage imageWithData:siteAnnotation.photo.imageData];
+        if (siteAnnotation.photo.imgThumbnail)
+        {
+            imageView.image = siteAnnotation.photo.imgThumbnail;
+        }
+        else if (siteAnnotation.photo.imageData)
+        {
+            imageView.image = [UIImage imageWithData:siteAnnotation.photo.imageData];
+        } else if (siteAnnotation.photo.imgPath)
+        {
+            imageView.image = [UIImage imageWithContentsOfFile:siteAnnotation.photo.imgPath];
+        }
     }
     
     imageView.frame = CGRectMake(0, 0, 50, 50);
