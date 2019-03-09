@@ -51,7 +51,7 @@
 #pragma mark action
 -(void) touchCancel {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    [_mainController dismissViewControllerAnimated:YES completion:nil];
+    [self.mapController dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void) touchDone {
@@ -132,13 +132,13 @@
         [def synchronize];
     }
     
-    [_mainController reloadTable];
+    [self.mapController reloadTable];
     // then go back to the previous screen
-    [_mainController dismissViewControllerAnimated:YES completion:nil];
+    [self.mapController dismissViewControllerAnimated:YES completion:nil];
     
     // at the end - force donwload
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_mainController reloadOldDataFromServer:arrSiteId];
+        [self.mapController reloadOldDataFromServer:arrSiteId andProjectId:[[APIController shared].currentProject objectForKey:@"uid"]];
     });
 }
 
@@ -180,7 +180,7 @@
             NSError *error = nil;
             NSArray *arrPhotoData = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingAllowFragments error:&error];
             
-            //NSLog(@"=> %@",arrPhotoData);
+            NSLog(@"=> %@",arrPhotoData);
             if (arrPreloadSites) {
                 [arrPreloadSites removeAllObjects];
             }
@@ -189,17 +189,26 @@
             
             
             //
-            for (Site *site in _arrList) {
-                //DLog(@"cehck site %@",site);
-                for (NSDictionary *dict in arrPhotoData) {
-                    
-                    if ([site.ID isEqualToString:[dict objectForKey:@"SiteId"]]) {
-                        [arrPreloadSites addObject:site];
-                        DLog(@"add site %@",site);
-                        // break;
-                        break;
+            if ([arrPhotoData count] > 0)
+            {
+                for (Site *site in _arrList)
+                {
+                    DLog(@"cehck site %@",site);
+                    for (NSDictionary *dict in arrPhotoData)
+                    {
+                        
+                        if ([site.ID isEqualToString:[dict objectForKey:@"SiteId"]]) {
+                            [arrPreloadSites addObject:site];
+                            DLog(@"add site %@",site);
+                            // break;
+                            break;
+                        }
                     }
                 }
+            }
+            else
+            {
+                [arrPreloadSites addObjectsFromArray:_arrList];
             }
             
 

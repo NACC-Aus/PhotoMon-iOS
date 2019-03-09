@@ -1007,7 +1007,7 @@
         self.title = [[APIController shared].currentProject objectForKey:@"name"];
     }
     
-    [[APIController shared] downloadAllSites:^(NSMutableArray *sites) {
+    [[APIController shared] downloadAllSites:[[APIController shared].currentProject objectForKey:@"uid"] withBlock: ^(NSMutableArray *sites) {
         NSLog(@"Site: %@", sites);
         
         if (sites)
@@ -1970,7 +1970,7 @@
     isAddForDirection = NO;
     
     APIController *api = [APIController shared];
-    [api downloadAllSites:^(NSMutableArray *sites) {
+    [api downloadAllSites:[[APIController shared].currentProject objectForKey:@"uid"] withBlock: ^(NSMutableArray *sites) {
         //NSLog(@"Site: %@", sites);
         
         if (sites)
@@ -1991,15 +1991,15 @@
 
 -(IBAction) showDownloadGuides {
     
-    DownloadViewController  *downloadController = [[DownloadViewController alloc] initWithNibName:@"DownloadViewController" bundle:[NSBundle mainBundle]];
-    downloadController.arrList = [[NSMutableArray alloc] initWithArray:allSites];
-    downloadController.mainController = self;
-    downloadController.photos = lstObjsForTbPhotos;
-    UINavigationController  *nav = [[NavViewController alloc] initWithRootViewController:downloadController];
-    
-    NLog(@"Present controller 7");
-
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+//    DownloadViewController  *downloadController = [[DownloadViewController alloc] initWithNibName:@"DownloadViewController" bundle:[NSBundle mainBundle]];
+//    downloadController.arrList = [[NSMutableArray alloc] initWithArray:allSites];
+//    downloadController.mainController = self;
+//    downloadController.photos = lstObjsForTbPhotos;
+//    UINavigationController  *nav = [[NavViewController alloc] initWithRootViewController:downloadController];
+//
+//    NLog(@"Present controller 7");
+//
+//    [self.navigationController presentViewController:nav animated:YES completion:nil];
     
 }
 
@@ -2110,7 +2110,7 @@
     {
         [UIAlertView alertViewTitle:@"Error" andMsg:@"No site retrieved , server unavailable" onOK:^{}];
         
-        [api downloadAllSites:^(NSMutableArray *sites)
+        [api downloadAllSites:[[APIController shared].currentProject objectForKey:@"uid"] withBlock: ^(NSMutableArray *sites)
          {
              if (sites)
              {
@@ -2126,7 +2126,7 @@
     
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 //        APIController *api = [APIController shared];
-        [api downloadAllSites:^(NSMutableArray *sites) {
+    [api downloadAllSites:[[APIController shared].currentProject objectForKey:@"uid"] withBlock: ^(NSMutableArray *sites) {
             //NSLog(@"Site: %@", sites);
             if (sites)
             {
@@ -3203,7 +3203,7 @@
 - (void) reloadSites: (NSNotification*)notif
 {
     APIController *api = [APIController shared];
-    [api downloadAllSites:^(NSMutableArray *sites) {
+    [api downloadAllSites:[[APIController shared].currentProject objectForKey:@"uid"] withBlock: ^(NSMutableArray *sites) {
         //NSLog(@"Site: %@", sites);
         
         if (sites)

@@ -413,6 +413,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    hasDownloadedGuides = NO;
     [prjPick configNavViewController:self.navigationController];
     
     imgPathPhotos = [[NSMutableDictionary alloc] init];
@@ -610,14 +611,13 @@
     self.mapView.showsUserLocation = YES;
     [self initMapKit];
     [self drawAnnotations];
+    [self downloadAllGuidePhotos];
 }
 
 - (void) reloadAll
 {
     // get source
     [self reloadSourceData];
-    
-    
     
     self.direction = [self getDirection: @"N"];
     AppDelegate *del = appDelegate;
@@ -685,7 +685,7 @@
         self.title = [[APIController shared].currentProject objectForKey:@"name"];
     }
     
-    [[APIController shared] downloadAllSites:^(NSMutableArray *sites) {
+    [[APIController shared] downloadAllSites:[[APIController shared].currentProject objectForKey:@"uid"] withBlock: ^(NSMutableArray *sites) {
         NSLog(@"Site: %@", sites);
         
         if (sites)
@@ -952,6 +952,32 @@
 #pragma mark guideline transparency
 
 #pragma mark reload data from server
+- (void) downloadAllGuidePhotos {
+    if ([[APIController shared].projects count] == 0 || hasDownloadedGuides)
+    {
+        return;
+    }
+    
+    hasDownloadedGuides = YES;
+    for (id project in [APIController shared].projects)
+    {
+        NSString* uid = [project objectForKey:@"uid"];
+        DLog("get site for project %@", uid);
+        [[APIController shared] downloadAllSites:uid withBlock:^(NSMutableArray *sites)
+        {
+            if ( [sites count] > 0)
+            {
+                NSMutableArray* ids = [[NSMutableArray alloc] init];
+                for (Site* site in sites) {
+                    [ids addObject:site.ID];
+                }
+                
+                 [[NSUserDefaults standardUserDefaults] setObject:ids forKey:[NSString stringWithFormat:@"ListOfGuideSites_%@_%@",uid, [APIController shared].server]];
+                [self reloadOldDataFromServer:ids andProjectId:uid];
+            }
+        }];
+    }
+}
 - (void) uploadNoteForGuidePhotos {
     __block NSUserDefaults  *userDefault = [NSUserDefaults standardUserDefaults];
     NSArray *arr = [userDefault objectForKey:@"NoteUpload"];
@@ -1096,7 +1122,7 @@
     [request startAsynchronous];
 }
 
-- (void) reloadOldDataFromServer:(NSArray*) arrAllowedSiteId {
+- (void) reloadOldDataFromServer:(NSArray*) arrAllowedSiteId andProjectId: (NSString*) projectId {
     
     NLog(@"reload data from server");
     __block NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
@@ -1113,7 +1139,7 @@
     
     // check for first restored
     
-    NSString    *urlStr = [NSString stringWithFormat:@"%@/photos.json?access_token=%@&project_id=%@",[APIController shared].server,[userDefault objectForKey:@"AccessToken"],[[APIController shared].currentProject objectForKey:@"uid"]];
+    NSString    *urlStr = [NSString stringWithFormat:@"%@/photos.json?access_token=%@&project_id=%@",[APIController shared].server,[userDefault objectForKey:@"AccessToken"], projectId];
     __block ASIHTTPRequest  *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     
     [request setRequestMethod:@"GET"];
@@ -1122,7 +1148,7 @@
             // process data here
             NSError *error = nil;
             NSArray *arrPhotoData = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingAllowFragments error:&error];
-            NSLog(@"=> %@",arrPhotoData);
+            NSLog(@"get guide photos => %@",arrPhotoData);
             
             for (NSDictionary *dict in arrPhotoData) {
                 // check for site id
@@ -1459,7 +1485,7 @@
     
     DownloadViewController  *downloadController = [[DownloadViewController alloc] initWithNibName:@"DownloadViewController" bundle:[NSBundle mainBundle]];
     downloadController.arrList = [[NSMutableArray alloc] initWithArray:allSites];
-    downloadController.mainController = self;
+    downloadController.mapController = self;
     downloadController.photos = lstObjsForTbPhotos;
     UINavigationController  *nav = [[NavViewController alloc] initWithRootViewController:downloadController];
     
@@ -1575,7 +1601,7 @@
     {
         [UIAlertView alertViewTitle:@"Error" andMsg:@"No site retrieved , server unavailable" onOK:^{}];
         
-        [api downloadAllSites:^(NSMutableArray *sites)
+        [api downloadAllSites:[[APIController shared].currentProject objectForKey:@"uid"] withBlock: ^(NSMutableArray *sites)
          {
              if (sites)
              {
@@ -1591,7 +1617,7 @@
     
     //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     //        APIController *api = [APIController shared];
-    [api downloadAllSites:^(NSMutableArray *sites) {
+    [api downloadAllSites:[[APIController shared].currentProject objectForKey:@"uid"] withBlock: ^(NSMutableArray *sites) {
         //NSLog(@"Site: %@", sites);
         if (sites)
         {
@@ -1915,7 +1941,7 @@
     if (isShouldRedownload)
     {
         NSArray* sites = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"ListOfGuideSites_%@_%@",[[APIController shared].currentProject objectForKey:@"uid"],[APIController shared].server]];
-        [self reloadOldDataFromServer:sites];
+        [self reloadOldDataFromServer:sites andProjectId:[[APIController shared].currentProject objectForKey:@"uid"]];
     }
 }
 
@@ -2230,7 +2256,7 @@
         else if ([cmd isEqualToString:@"RefreshGuides"])
         {
             NSArray* sites = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"ListOfGuideSites_%@_%@",[[APIController shared].currentProject objectForKey:@"uid"],[APIController shared].server]];
-            [self reloadOldDataFromServer:sites];
+            [self reloadOldDataFromServer:sites andProjectId:[[APIController shared].currentProject objectForKey:@"uid"]];
             
             weakControllerSetting.onDidTouchNavItemDone(nil);
         }
@@ -2238,7 +2264,7 @@
         {
             DownloadViewController  *downloadController = [[DownloadViewController alloc] initWithNibName:@"DownloadViewController" bundle:[NSBundle mainBundle]];
             downloadController.arrList = [[NSMutableArray alloc] initWithArray:allSites];
-            downloadController.mainController = self;
+            downloadController.mapController = self;
             downloadController.photos = lstObjsForTbPhotos;
             [weakControllerSetting.navigationController pushViewController:downloadController animated:YES];
         }
@@ -2256,6 +2282,7 @@
     }
     
     [self reloadAll];
+    [self downloadAllGuidePhotos];
 }
 
 -(void) reloadTable
@@ -2265,7 +2292,7 @@
 - (void) reloadSites: (NSNotification*)notif
 {
     APIController *api = [APIController shared];
-    [api downloadAllSites:^(NSMutableArray *sites) {
+    [api downloadAllSites:[[APIController shared].currentProject objectForKey:@"uid"] withBlock: ^(NSMutableArray *sites) {
         //NSLog(@"Site: %@", sites);
         
         if (sites)

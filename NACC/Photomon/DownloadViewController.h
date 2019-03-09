@@ -12,5 +12,5 @@
 
 @property (nonatomic, strong) NSMutableArray    *arrList;
 @property (nonatomic, strong) NSArray* photos;
-@property  (nonatomic, weak) MapViewController  *mainController;
+@property  (nonatomic, weak) MapViewController  *mapController;
 @end

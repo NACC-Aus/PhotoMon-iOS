@@ -73,6 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
     UIImage* guideImage;
     
     CustomIOSAlertView *directionAlertView;
+    BOOL hasDownloadedGuides;
 }
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -98,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) refresh;
 
 - (void) alertForDirectionWithOnDone:(void(^)(id))onDone;
-- (void) reloadOldDataFromServer:(NSArray*) arrAllowedSiteId;
+- (void) reloadOldDataFromServer:(NSArray*) arrAllowedSiteId andProjectId: (NSString*) projectId;
 
 - (void) redownloadImages;
 

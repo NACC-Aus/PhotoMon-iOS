@@ -200,7 +200,7 @@ static APIController* shared_ = nil;
 
 
 #pragma mark- Get All Site
--(void)downloadAllSites:(FinishedBlockWithArray)retBlock
+-(void)downloadAllSites:(NSString*) projectId withBlock: (FinishedBlockWithArray)retBlock;
 {
     if ([[APIController shared] checkIfDemo])
     {
@@ -209,7 +209,7 @@ static APIController* shared_ = nil;
     }
     
     //user-server specific site
-    NSString* name = [NSString stringWithFormat:@"%@_sites.json?project_id=%@",self.server,[self.currentProject objectForKey:@"uid"]];
+    NSString* name = [NSString stringWithFormat:@"%@_sites.json?project_id=%@",self.server,projectId];
     NSData* data = [name dataUsingEncoding:NSUTF8StringEncoding];
     name = [[data base64EncodedString] stringByReplacingOccurrencesOfString:@"/" withString:@"S"];
     name = [name stringByReplacingOccurrencesOfString:@"=" withString:@"E"];
@@ -239,7 +239,7 @@ static APIController* shared_ = nil;
     
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
     NSString* accToken = [def objectForKey:@"AccessToken"];
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?project_id=%@&access_token=%@", self.server, @"/sites.json",[self.currentProject objectForKey:@"uid"], accToken]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@?project_id=%@&access_token=%@", self.server, @"/sites.json",projectId, accToken]];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
     [request setTimeOutSeconds:TIME_OUT];
     [request setNumberOfTimesToRetryOnTimeout: 5];

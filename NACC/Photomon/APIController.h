@@ -57,7 +57,7 @@ typedef void (^FinishedBlockWithArray)(NSMutableArray*);
 
 -(void)login:(NSString*)email andPassword:(NSString*)password andFinishedBlock:(FinishedBlockWithBOOL)retBlock;
 
--(void)downloadAllSites:(FinishedBlockWithArray)retBlock;
+-(void)downloadAllSites:(NSString*) projectId withBlock: (FinishedBlockWithArray)retBlock;
 
 - (void) cacheProjectsOfUser;
 - (void) loadProjects:(BOOL)isNotify;
