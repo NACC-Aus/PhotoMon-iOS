@@ -2,7 +2,6 @@
 //  MapViewController.h
 //  Photomon
 //
-//  Created by ductran on 3/5/19.
 //  Copyright © 2019 Appiphany. All rights reserved.
 //
 
@@ -24,7 +23,6 @@
 #import "ProjectPickObserver.h"
 #import "WDatePicker.h"
 #import "CustomIOSAlertView.h"
-
 #define RadiansToDegrees(radians)(radians * 180.0/M_PI)
 #define DegreesToRadians(degrees)(degrees * M_PI / 180.0)
 NS_ASSUME_NONNULL_BEGIN

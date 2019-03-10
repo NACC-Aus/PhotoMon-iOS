@@ -24,6 +24,9 @@
 		52B95315208316AB002AAD56 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B95314208316AB002AAD56 /* libc++.tbd */; };
 		52C011E9222E30D10059354C /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C011E7222E30D10059354C /* MapViewController.m */; };
 		52C011EA222E30D10059354C /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52C011E8222E30D10059354C /* MapViewController.xib */; };
+		52E3B5E8223559FA0006870F /* CalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E3B5E7223559FA0006870F /* CalloutView.swift */; };
+		52E3B5EA22355A590006870F /* PhotoCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E3B5E922355A590006870F /* PhotoCalloutView.swift */; };
+		52E3B5EC22355AD80006870F /* PhotoAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E3B5EB22355AD80006870F /* PhotoAnnotationView.swift */; };
 		5A15F804184DC8E20014AD44 /* NavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A15F803184DC8E20014AD44 /* NavViewController.m */; };
 		5A228F03183B446D00FD9F51 /* AdhocSitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A228F01183B446D00FD9F51 /* AdhocSitesViewController.m */; };
 		5A228F04183B446D00FD9F51 /* AdhocSitesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A228F02183B446D00FD9F51 /* AdhocSitesViewController.xib */; };
@@ -145,6 +148,10 @@
 		52C011E6222E30D10059354C /* MapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		52C011E7222E30D10059354C /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		52C011E8222E30D10059354C /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
+		52E3B5E6223559F90006870F /* Photomon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Photomon-Bridging-Header.h"; sourceTree = "<group>"; };
+		52E3B5E7223559FA0006870F /* CalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalloutView.swift; sourceTree = "<group>"; };
+		52E3B5E922355A590006870F /* PhotoCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCalloutView.swift; sourceTree = "<group>"; };
+		52E3B5EB22355AD80006870F /* PhotoAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAnnotationView.swift; sourceTree = "<group>"; };
 		5A15F802184DC8E20014AD44 /* NavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavViewController.h; sourceTree = "<group>"; };
 		5A15F803184DC8E20014AD44 /* NavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavViewController.m; sourceTree = "<group>"; };
 		5A228F00183B446D00FD9F51 /* AdhocSitesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdhocSitesViewController.h; sourceTree = "<group>"; };
@@ -458,6 +465,17 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		52E3B5E5223559CC0006870F /* Callout */ = {
+			isa = PBXGroup;
+			children = (
+				52E3B5E7223559FA0006870F /* CalloutView.swift */,
+				52E3B5E6223559F90006870F /* Photomon-Bridging-Header.h */,
+				52E3B5E922355A590006870F /* PhotoCalloutView.swift */,
+				52E3B5EB22355AD80006870F /* PhotoAnnotationView.swift */,
+			);
+			path = Callout;
+			sourceTree = "<group>";
+		};
 		5A9AF9141A3AA7C700AC1071 /* NetworkManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -589,6 +607,7 @@
 		B299EE5F169BD1ED00B8655D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				52E3B5E5223559CC0006870F /* Callout */,
 				B299EE84169C2DC600B8655D /* Model */,
 				17ED82BD16AADF6700C1BDC4 /* Views */,
 				17ED82BB16AADF5400C1BDC4 /* Controllers */,
@@ -689,6 +708,7 @@
 				TargetAttributes = {
 					17100DEC169BCF0E00352821 = {
 						DevelopmentTeam = M665F4MD2M;
+						LastSwiftMigration = 1010;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -795,6 +815,7 @@
 				B299EE3C169BD05C00B8655D /* ASIInputStream.m in Sources */,
 				B299EE3D169BD05C00B8655D /* ASINetworkQueue.m in Sources */,
 				B299EE4C169BD0A600B8655D /* NSString+FontSize.m in Sources */,
+				52E3B5EA22355A590006870F /* PhotoCalloutView.swift in Sources */,
 				B299EE4D169BD0A600B8655D /* UILabelAutoAdjustHeight.m in Sources */,
 				B299EE4E169BD0A600B8655D /* UIViewExtension.m in Sources */,
 				5A228F03183B446D00FD9F51 /* AdhocSitesViewController.m in Sources */,
@@ -826,7 +847,9 @@
 				FB1B614618B4A845006B1860 /* DownloadViewController.m in Sources */,
 				5A23D3C016F976E200BCF7C1 /* TimerWithBlock.m in Sources */,
 				525879B01DFD821B00FD40D0 /* CustomIOSAlertView.m in Sources */,
+				52E3B5E8223559FA0006870F /* CalloutView.swift in Sources */,
 				5A15F804184DC8E20014AD44 /* NavViewController.m in Sources */,
+				52E3B5EC22355AD80006870F /* PhotoAnnotationView.swift in Sources */,
 				5A6243B9174DF9DE00016B1D /* InfoViewController.m in Sources */,
 				5A6243BD174E13BF00016B1D /* UIImage+Resize.m in Sources */,
 				5A6243C0174E1BA600016B1D /* Service.m in Sources */,
@@ -910,6 +933,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = M665F4MD2M;
@@ -922,6 +946,7 @@
 				GCC_PREFIX_HEADER = "Photomon/Photomon-Prefix.pch";
 				INFOPLIST_FILE = "Photomon/Photomon-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -932,6 +957,9 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "bf233a17-3e4d-4be2-8719-fd2d05d9214e";
 				PROVISIONING_PROFILE_SPECIFIER = nacc_dev_2;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Photomon/Callout/Photomon-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -941,6 +969,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Northern Agricultural Catchments Council Inc. (M665F4MD2M)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Northern Agricultural Catchments Council Inc. (M665F4MD2M)";
 				DEVELOPMENT_TEAM = M665F4MD2M;
@@ -953,6 +982,7 @@
 				GCC_PREFIX_HEADER = "Photomon/Photomon-Prefix.pch";
 				INFOPLIST_FILE = "Photomon/Photomon-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -963,6 +993,8 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "260691c1-fe5e-4046-9f6a-3bd0c8801f7c";
 				PROVISIONING_PROFILE_SPECIFIER = nacc_store;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Photomon/Callout/Photomon-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

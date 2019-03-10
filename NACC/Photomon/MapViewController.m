@@ -2,7 +2,6 @@
 //  MapViewController.m
 //  Photomon
 //
-//  Created by ductran on 3/5/19.
 //  Copyright © 2019 Appiphany. All rights reserved.
 //
 
@@ -22,6 +21,7 @@
 #import "NSURLConnection+Wrapper.h"
 #import "CacheManager.h"
 #import "MainViewController.h"
+#import "Photomon-Swift.h"
 
 #pragma mark Map custom annotation
 
@@ -38,7 +38,7 @@
 @synthesize coordinate;
 @end
 
-@interface MapViewController ()
+@interface MapViewController () <CalloutViewDelegate>
 - (void) reuploadFailedPhoto:(Photo*)p;
 @end
 
@@ -49,7 +49,6 @@
 -(void)showDirection:(BOOL)isShow
 {
     NSAssert([NSThread isMainThread], @"MAIN THREAD ERROR");
-    
     isShow = !isShow;
 }
 
@@ -2305,7 +2304,7 @@
 - (void) initMapKit
 {
     if(appDelegate.locationManager.location != nil) {
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(appDelegate.locationManager.location.coordinate, 1000, 1000);
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(appDelegate.locationManager.location.coordinate, 400000, 400000);
         [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
     }
 }
@@ -2365,63 +2364,77 @@
     }
 }
 
+
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
     if (![annotation isKindOfClass:[SitePinAnnotation class]])
     {
         return nil;
     }
-
-    MKPinAnnotationView* view = (MKPinAnnotationView*)[self.mapView dequeueReusableAnnotationViewWithIdentifier:@"pin"];
-    if (!view)
-    {
-        view = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"pin"];
-    }
-
-    SitePinAnnotation* siteAnnotation = annotation;
     
-    UIImageView* imageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed:@"images/phototomon-logo.png"]];
+    SitePinAnnotation* siteAnnotation = annotation;
+    NSString* customAnnotationViewIdentifier = @"annotation";
+    PhotoAnnotationView* view = (PhotoAnnotationView*) [self.mapView dequeueReusableAnnotationViewWithIdentifier:customAnnotationViewIdentifier];
+    if (view == nil)
+    {
+        view = [[PhotoAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:customAnnotationViewIdentifier];
+    }
+    else
+    {
+        view.annotation = annotation;
+    }
+    
     if(siteAnnotation.photo)
     {
         if (siteAnnotation.photo.imgThumbnail)
         {
-            imageView.image = siteAnnotation.photo.imgThumbnail;
+            view.imageData = siteAnnotation.photo.imgThumbnail;
         }
         else if (siteAnnotation.photo.imageData)
         {
-            imageView.image = [UIImage imageWithData:siteAnnotation.photo.imageData];
+            view.imageData = [UIImage imageWithData:siteAnnotation.photo.imageData];
         } else if (siteAnnotation.photo.imgPath)
         {
-            imageView.image = [UIImage imageWithContentsOfFile:siteAnnotation.photo.imgPath];
+            view.imageData = [UIImage imageWithContentsOfFile:siteAnnotation.photo.imgPath];
         }
     }
     
-    imageView.frame = CGRectMake(0, 0, 50, 50);
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
-    imageView.clipsToBounds = YES;
-    view.canShowCallout = YES;
-    view.leftCalloutAccessoryView = imageView;
-    UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 12, 21)];
-    [button setImage:[UIImage imageNamed:@"images/next_btn.png"] forState:UIControlStateNormal];
-    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    view.rightCalloutAccessoryView = button;
     return view;
 }
 
--(void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+- (void) mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-   
-
-}
-
-- (void)mapView:(MKMapView *)map annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
-{
-    if (![view.annotation isKindOfClass:[SitePinAnnotation class]])
+    if (![view.annotation isKindOfClass:[SitePinAnnotation class]] || ![view isKindOfClass:[PhotoAnnotationView class]])
     {
         return;
     }
     
     SitePinAnnotation* siteAnnotation = view.annotation;
+    PhotoAnnotationView* annotationView = (PhotoAnnotationView*)view;
+    if(siteAnnotation.photo)
+    {
+        if (siteAnnotation.photo.imgThumbnail)
+        {
+            annotationView.imageData = siteAnnotation.photo.imgThumbnail;
+        }
+        else if (siteAnnotation.photo.imageData)
+        {
+            annotationView.imageData = [UIImage imageWithData:siteAnnotation.photo.imageData];
+        } else if (siteAnnotation.photo.imgPath)
+        {
+            annotationView.imageData = [UIImage imageWithContentsOfFile:siteAnnotation.photo.imgPath];
+        }
+    }
+}
+
+- (void) mapView:(MKMapView *)mapView didTap:(UIView *)view for:(id<MKAnnotation>)annotation
+{
+    if (![annotation isKindOfClass:[SitePinAnnotation class]])
+    {
+        return;
+    }
+    
+    SitePinAnnotation* siteAnnotation = annotation;
     MainViewController *mainViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     mainViewController.currentSite = siteAnnotation.site;
     [self.navigationController pushViewController:mainViewController animated:YES];
