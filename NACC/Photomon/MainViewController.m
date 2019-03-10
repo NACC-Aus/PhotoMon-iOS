@@ -2731,6 +2731,31 @@
     [directionAlertView show];
 }
 
+- (void) showPointDistanceIfNeeded {
+    if (!self.currentSite || !appDelegate.newestUserLocation)
+    {
+        return;
+    }
+    
+    CLLocation *sitePoint = [[CLLocation alloc] initWithLatitude:[self.currentSite.Latitude doubleValue] longitude:[self.currentSite.Longitude doubleValue]];
+     CLLocation  *currentPoint = [[CLLocation alloc] initWithLatitude:appDelegate.newestUserLocation.coordinate.latitude longitude:appDelegate.newestUserLocation.coordinate.longitude];
+    CLLocationDistance distance = [currentPoint distanceFromLocation:sitePoint];
+    if ( distance < 100.0)
+    {
+        return;
+    }
+    
+    NSString* message = [NSString stringWithFormat:@"You are %0.0lfm from the photo point, are you sure this is the correct point?", distance];
+    
+    [UIAlertView alertViewWithTitle:nil andMsg:message onYes:^{
+        
+    } onNo:^{
+        [self dismissViewControllerAnimated:NO completion:^{
+            self->picker = nil;
+        }];
+    }];
+}
+
 -(void)chooseDirection:(id) sender
 {
     NSArray* arr = @[btN,btS,btE,btW,btP];
@@ -2738,6 +2763,11 @@
     [self selectDirection:[arr objectAtIndex:buttonIndex - 1]];
     if (self.onAskDirectionDone) self.onAskDirectionDone(nil);
     [directionAlertView close];
+    
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self showPointDistanceIfNeeded];
+    });
 }
 
 - (void)customIOS7dialogButtonTouchUpInside: (CustomIOSAlertView *)alertView clickedButtonAtIndex: (NSInteger)buttonIndex
