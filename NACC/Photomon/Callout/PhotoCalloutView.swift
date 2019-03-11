@@ -92,7 +92,7 @@ class PhotoCalloutView: CalloutView {
             "V:|[imageView][imageView(==80)][titleLabel][subtitleLabel]|",
             "H:|[imageView(==80)]|",
             "H:|[titleLabel]|",
-            "H:|[subtitleLabel]|",            
+            "H:|[subtitleLabel]|",
         ]
         
         for vfl in vflStrings {

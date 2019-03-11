@@ -103,6 +103,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void) refreshView;
 -(void) reloadTable;
+- (void) reloadAll;
 @end
 
 NS_ASSUME_NONNULL_END

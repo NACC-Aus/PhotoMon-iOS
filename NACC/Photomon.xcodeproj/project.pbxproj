@@ -27,6 +27,7 @@
 		52E3B5E8223559FA0006870F /* CalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E3B5E7223559FA0006870F /* CalloutView.swift */; };
 		52E3B5EA22355A590006870F /* PhotoCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E3B5E922355A590006870F /* PhotoCalloutView.swift */; };
 		52E3B5EC22355AD80006870F /* PhotoAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E3B5EB22355AD80006870F /* PhotoAnnotationView.swift */; };
+		52E3B5F32236C8290006870F /* NSObject+Wrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 52E3B5F12236C8290006870F /* NSObject+Wrapper.m */; };
 		5A15F804184DC8E20014AD44 /* NavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A15F803184DC8E20014AD44 /* NavViewController.m */; };
 		5A228F03183B446D00FD9F51 /* AdhocSitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A228F01183B446D00FD9F51 /* AdhocSitesViewController.m */; };
 		5A228F04183B446D00FD9F51 /* AdhocSitesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A228F02183B446D00FD9F51 /* AdhocSitesViewController.xib */; };
@@ -152,6 +153,8 @@
 		52E3B5E7223559FA0006870F /* CalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalloutView.swift; sourceTree = "<group>"; };
 		52E3B5E922355A590006870F /* PhotoCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCalloutView.swift; sourceTree = "<group>"; };
 		52E3B5EB22355AD80006870F /* PhotoAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAnnotationView.swift; sourceTree = "<group>"; };
+		52E3B5F12236C8290006870F /* NSObject+Wrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Wrapper.m"; sourceTree = "<group>"; };
+		52E3B5F22236C8290006870F /* NSObject+Wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Wrapper.h"; sourceTree = "<group>"; };
 		5A15F802184DC8E20014AD44 /* NavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavViewController.h; sourceTree = "<group>"; };
 		5A15F803184DC8E20014AD44 /* NavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavViewController.m; sourceTree = "<group>"; };
 		5A228F00183B446D00FD9F51 /* AdhocSitesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdhocSitesViewController.h; sourceTree = "<group>"; };
@@ -654,6 +657,8 @@
 		CBB61A1E1B05D60E00C84787 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				52E3B5F22236C8290006870F /* NSObject+Wrapper.h */,
+				52E3B5F12236C8290006870F /* NSObject+Wrapper.m */,
 				CBB61A1F1B05D60E00C84787 /* ExifContainer.h */,
 				CBB61A201B05D60E00C84787 /* ExifContainer.m */,
 				CBB61A211B05D60E00C84787 /* UIImage+Exif.h */,
@@ -808,6 +813,7 @@
 				5A4E5A4A1A3EA321009C3333 /* NSData+Wrapper.m in Sources */,
 				52C011E9222E30D10059354C /* MapViewController.m in Sources */,
 				B299EE38169BD05C00B8655D /* ASIDataDecompressor.m in Sources */,
+				52E3B5F32236C8290006870F /* NSObject+Wrapper.m in Sources */,
 				FB59B1A8183CBB4700D8C38E /* MD5.m in Sources */,
 				B299EE39169BD05C00B8655D /* ASIDownloadCache.m in Sources */,
 				B299EE3A169BD05C00B8655D /* ASIFormDataRequest.m in Sources */,

@@ -123,6 +123,7 @@
 @property(nonatomic, strong) NSString *direction;
 @property (nonatomic,copy) void(^onAskDirectionDone)(id);
 @property (nonatomic, strong) Site* currentSite;
+@property (nonatomic, strong) MapViewController* mapViewController;
 
 @property (nonatomic,weak) ViewSavedPhotosViewController* controllerSavedPhotos;
 

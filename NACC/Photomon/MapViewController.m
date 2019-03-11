@@ -22,6 +22,8 @@
 #import "CacheManager.h"
 #import "MainViewController.h"
 #import "Photomon-Swift.h"
+#import "ASINetworkQueue.h"
+#import "NSObject+Wrapper.h"
 
 #pragma mark Map custom annotation
 
@@ -38,7 +40,9 @@
 @synthesize coordinate;
 @end
 
-@interface MapViewController () <CalloutViewDelegate>
+@interface MapViewController () <CalloutViewDelegate> {
+    ASINetworkQueue *networkQueue;
+}
 - (void) reuploadFailedPhoto:(Photo*)p;
 @end
 
@@ -420,6 +424,12 @@
     
     self.lstPhotoBeingDownloaded = [[NSMutableArray alloc] init];
     self.lstPhotoNeedDownload = [[NSMutableArray alloc] init];
+    
+    networkQueue = [ASINetworkQueue queue];
+    networkQueue.maxConcurrentOperationCount = 1;
+    networkQueue.delegate = self;
+    [networkQueue setRequestDidFinishSelector:@selector(requestFinished:)];
+    [networkQueue setRequestDidFailSelector:@selector(requestFailed:)];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNotifyAppDidActive:) name:NotifyAppDidActive object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStartCapture:) name:AVCaptureSessionDidStartRunningNotification object:nil];
@@ -1012,60 +1022,61 @@
     /*
      -
      -*/
-    NSUserDefaults  *userDefault = [NSUserDefaults standardUserDefaults];
-    //    Site    *site = [self selectSite];
-    //    DLog(@"current site id = %@ site name = %@",site.ID,site.Name);
-    
-    NSArray *guidePhotos = [userDefault objectForKey:@"GuidePhotos"];
-    NSMutableArray* arrObjs = [NSMutableArray array];
-    
-    if (guidePhotos) {
-        for (NSMutableDictionary    *dict in guidePhotos) {
-            
-            if (![self checkSiteExistWithId:[dict objectForKey:@"SiteId"]]) {
-                //                DLog(@"Found a site id not in list %@",[dict objectForKey:@"SiteId"]);
-                continue;
-            }
-            
-            //            if (![site.ID isEqualToString:[dict objectForKey:@"SiteId"]]) {
-            //                DLog(@"site nt match :%@ - %@",[dict objectForKey:@"SiteId"],[dict objectForKey:@"SiteName"]);
-            //                continue;
-            //            }
-            //            DLog(@"have a site:%@ - %@",[dict objectForKey:@"SiteId"],[dict objectForKey:@"SiteName"]);
-            Photo *p = [[APIController shared] getPhotoInstanceForID:[dict objectForKey:@"ID"]];
-            
-            p.date = [dict objectForKey:@"CreatedAt"];
-            p.direction = [dict objectForKey:@"Direction"];
-            
-            NSString* imgPath = [Downloader storagePathForURL:[dict objectForKey:@"ImagePath"]];
-            p.imgPath = imgPath;
-            p.img = [appDelegate loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
-            
-            NSString* relativeThumbPath = [dict objectForKey:@"ThumbPath"];
-            
-            NSString* fullThumbPath = [Downloader storagePathForURL:relativeThumbPath];
-            
-            p.imgThumbnail = [appDelegate loadImageOfFile:fullThumbPath]; //  [UIImage imageWithContentsOfFile:fullThumbPath];
-            p.thumbPath = fullThumbPath;
-            
-            p.sID = [dict objectForKey:@"SiteId"];
-            p.siteID = [dict objectForKey:@"SiteName"];
-            p.photoID = [dict objectForKey:@"ID"];
-            p.isFinished = YES;
-            
-            p.isGuide = [[dict objectForKey:@"IsGuide"] boolValue];
-            
-            p.note = [dict objectForKey:@"Note"];
-            
-            [arrObjs addObject:p];
-        }
-    }
-    
-    // deleete
-    [userDefault removeObjectForKey:@"GuideRestore"];
-    [userDefault synchronize];
-    
     RUN_ON_MAIN_QUEUE(^{
+        NSUserDefaults  *userDefault = [NSUserDefaults standardUserDefaults];
+        //    Site    *site = [self selectSite];
+        //    DLog(@"current site id = %@ site name = %@",site.ID,site.Name);
+        
+        NSArray *guidePhotos = [userDefault objectForKey:@"GuidePhotos"];
+        NSMutableArray* arrObjs = [NSMutableArray array];
+        
+        if (guidePhotos) {
+            for (NSMutableDictionary    *dict in guidePhotos) {
+                
+                if (![self checkSiteExistWithId:[dict objectForKey:@"SiteId"]]) {
+                    //                DLog(@"Found a site id not in list %@",[dict objectForKey:@"SiteId"]);
+                    continue;
+                }
+                
+                //            if (![site.ID isEqualToString:[dict objectForKey:@"SiteId"]]) {
+                //                DLog(@"site nt match :%@ - %@",[dict objectForKey:@"SiteId"],[dict objectForKey:@"SiteName"]);
+                //                continue;
+                //            }
+                //            DLog(@"have a site:%@ - %@",[dict objectForKey:@"SiteId"],[dict objectForKey:@"SiteName"]);
+                Photo *p = [[APIController shared] getPhotoInstanceForID:[dict objectForKey:@"ID"]];
+                
+                p.date = [dict objectForKey:@"CreatedAt"];
+                p.direction = [dict objectForKey:@"Direction"];
+                
+                NSString* imgPath = [Downloader storagePathForURL:[dict objectForKey:@"ImagePath"]];
+                p.imgPath = imgPath;
+                p.img = [appDelegate loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
+                
+                NSString* relativeThumbPath = [dict objectForKey:@"ThumbPath"];
+                
+                NSString* fullThumbPath = [Downloader storagePathForURL:relativeThumbPath];
+                
+                p.imgThumbnail = [appDelegate loadImageOfFile:fullThumbPath]; //  [UIImage imageWithContentsOfFile:fullThumbPath];
+                p.thumbPath = fullThumbPath;
+                
+                p.sID = [dict objectForKey:@"SiteId"];
+                p.siteID = [dict objectForKey:@"SiteName"];
+                p.photoID = [dict objectForKey:@"ID"];
+                p.isFinished = YES;
+                
+                p.isGuide = [[dict objectForKey:@"IsGuide"] boolValue];
+                
+                p.note = [dict objectForKey:@"Note"];
+                
+                [arrObjs addObject:p];
+            }
+        }
+        
+        // deleete
+        [userDefault removeObjectForKey:@"GuideRestore"];
+        [userDefault synchronize];
+        
+        
         // add to source
         if (source) {
             for (id obj in arrObjs)
@@ -1121,13 +1132,262 @@
 }
 
 - (void) reloadOldDataFromServer:(NSArray*) arrAllowedSiteId andProjectId: (NSString*) projectId {
-    
-    NLog(@"reload data from server");
+   
     __block NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     
     //create ref so, we can use older one
     NSArray* loadedGuidePhotos = [userDefault objectForKey:@"GuidePhotos"];
-    NSMutableDictionary* loadedRefGuidePhotos = [[NSMutableDictionary alloc] init];
+    __block NSMutableDictionary* loadedRefGuidePhotos = [[NSMutableDictionary alloc] init];
+    for (id d in loadedGuidePhotos)
+    {
+        [loadedRefGuidePhotos setObject:d forKey:[d objectForKey:@"ID"]];
+    }
+    
+    __block NSMutableArray  *arrPhoto = [NSMutableArray arrayWithArray:loadedGuidePhotos];
+    // check for first restored
+
+
+    NSString    *urlStr = [NSString stringWithFormat:@"%@/photos.json?access_token=%@&project_id=%@",[APIController shared].server,[userDefault objectForKey:@"AccessToken"], projectId];
+    DLog(@"reload data from server with url %@", urlStr);
+    __block ASIHTTPRequest  *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request setDetail:arrAllowedSiteId forKey:@"SiteIds"];
+    [request setRequestMethod:@"GET"];
+    [networkQueue addOperation:request];
+    [networkQueue go];
+//        [request setCompletionBlock:^{
+//            RUN_ON_BACKGROUND_QUEUE(^{
+//                // process data here
+//                NSError *error = nil;
+//                NSArray *arrPhotoData = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingAllowFragments error:&error];
+//                NSLog(@"get guide photos => %@",arrPhotoData);
+//
+//                for (NSDictionary *dict in arrPhotoData) {
+//
+//                    // check if site is allow or not
+//                    if (arrAllowedSiteId != nil) {
+//                        BOOL   isAllowed = NO;
+//                        for (NSString *str in arrAllowedSiteId) {
+//                            if ([str isEqualToString:[dict objectForKey:@"SiteId"]]) {
+//                                // break now
+//                                isAllowed = YES;
+//                                break;
+//                            }
+//                        }
+//
+//
+//                        if (!isAllowed) {
+//                            // not to download it!
+//                            continue;
+//                        }
+//                    }
+//
+//
+//                    NSMutableDictionary *photoDict = [NSMutableDictionary new];
+//                    for (NSString *key in [dict allKeys]) {
+//                        [photoDict setObject:[[dict objectForKey:key] description] forKey:key];
+//                    }
+//                    // get photo here
+//                    //                NSURL *photoUrl = [NSURL URLWithString:[dict objectForKey:@"ImageUrl"]];
+//
+//                    NSString* relativeFilePath = [dict objectForKey:@"ImageUrl"];
+//
+//                    __block NSString *filePath = [Downloader storagePathForURL:relativeFilePath];
+//
+//                    BOOL isFileExist = NO;
+//                    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+//                        isFileExist = YES;
+//                    }
+//
+//                    //if (!isFileExist) {
+//                    //RUN_ON_MAIN_QUEUE(^{
+//                    // force download again
+//
+//                    BOOL isShouldDownload = NO;
+//                    NSDictionary* refOlder = [loadedRefGuidePhotos objectForKey:[dict objectForKey:@"ID"]];
+//                    if (refOlder)
+//                    {
+//                        if (![[refOlder objectForKey:@"ImageUrl"] isEqualToString:[dict objectForKey:@"ImageUrl"]])
+//                        {
+//                            isShouldDownload = YES;
+//                        }
+//                    }
+//                    else
+//                    {
+//                        isShouldDownload = YES;
+//                    }
+//                    //});
+//
+//                    //}
+//
+//                    if (!isShouldDownload)
+//                    {
+//                        //recheck for failed image
+//                        if ([self.lstPhotoNeedDownload containsObject:[filePath lastPathComponent]])
+//                        {
+//                            if (![self.lstPhotoBeingDownloaded containsObject:[filePath lastPathComponent]])
+//                            {
+//                                isShouldDownload = YES;
+//                            }
+//                        }
+//                    }
+//
+//                    if (isShouldDownload)
+//                    {
+//                        [self downloadPhoto:photoDict];
+//                    }
+//
+//                    if (!refOlder) //only add if new
+//                    {
+//                        UIImage *img = nil;
+//                        if (!isFileExist) {
+//                            // save
+//                            //[photoRequest.responseData writeToFile:filePath atomically:YES];
+//                            //img = [UIImage imageWithData:photoRequest.responseData];
+//                        }
+//                        else
+//                            img = [appDelegate loadImageOfFile:filePath];// [UIImage imageWithContentsOfFile:filePath];
+//
+//                        NSString* relativeThumbPath = [[dict objectForKey:@"ImageUrl"] stringByAppendingString:@"_thumb"];
+//
+//                        NSString    *thumbPath = [Downloader storagePathForURL:relativeThumbPath];
+//
+//                        if (img)
+//                        {
+//                            // crop
+//                            img = [img imageByScalingAndCroppingForSize:CGSizeMake(240, 240)];
+//                            // rewrite dict
+//
+//                            // save the image
+//                            NSData *compressedImageData = UIImageJPEGRepresentation(img, 0.5);
+//                            if (compressedImageData) {
+//                                [compressedImageData writeToFile:thumbPath atomically:YES];
+//                            }
+//                            else {
+//                                UIGraphicsBeginImageContext(img.size);
+//                                [img drawInRect:CGRectMake(0, 0, img.size.width, img.size.height)];
+//                                UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+//                                UIGraphicsEndImageContext();
+//
+//                                compressedImageData = UIImageJPEGRepresentation(newImage, 0.5);
+//                                [compressedImageData writeToFile:thumbPath atomically:NO];
+//                            }
+//                        }
+//
+//                        [photoDict setObject:relativeFilePath forKey:@"ImagePath"];
+//                        [photoDict setObject:relativeThumbPath forKey:@"ThumbPath"];
+//                        [photoDict setObject:[NSNumber numberWithBool:YES] forKey:@"IsGuide"];
+//                        // check photo dict
+//                        for (Site *site in allSites) {
+//                            if ([site.ID isEqualToString:[photoDict objectForKey:@"SiteId"]]) {
+//                                [photoDict setObject:site.Name forKey:@"SiteName"];
+//                                break;
+//                            }
+//                        }
+//
+//                        NSString* comm = [[[photoDict objectForKey:@"SiteName"] stringByAppendingString:@"_"] stringByAppendingString:[photoDict objectForKey:@"Direction"]];
+//                        if ([[Service shared].refSiteToGuides objectForKey:comm])
+//                        {
+//                            [photoDict setObject:[NSNumber numberWithBool:NO] forKey:@"IsGuide"];
+//                        }
+//
+//                        //add
+//                        [arrPhoto addObject:photoDict];
+//                    }
+//                    else
+//                    {
+//                        NLog(@"IGNORE");
+//                    }
+//
+//
+//                }
+//
+//                // write down
+//                //            DLog(@"==> arrPhtos %@",arrPhoto);
+//                [userDefault setObject:arrPhoto forKey:@"GuidePhotos"];
+//
+//                // megre data
+//                //            NSMutableArray *arrPhotoMerge = [NSMutableArray new];
+//                //            NSArray *arrGuidePhotos = [userDefault objectForKey:@"GuidePhotos"];
+//                //            if (!arrGuidePhotos) {
+//                //                arrGuidePhotos = [NSArray new];
+//                //            }
+//                //            // add
+//                //            [arrPhotoMerge addObjectsFromArray:arrGuidePhotos];
+//                //
+//                //            NSMutableArray  *arrTemp = [NSMutableArray array];
+//                //            // megere
+//                //            for (NSDictionary *pDict in arrPhoto) {
+//                //                BOOL isExistPhoto = NO;
+//                //                for (NSDictionary *oDict in arrPhotoMerge) {
+//                //                    NSString    *s1 = [pDict objectForKey:@"ID"];
+//                //                    NSString    *s2 = [oDict objectForKey:@"ID"];
+//                //                    if ([s1 isEqualToString:s2]) {
+//                //                        isExistPhoto = YES;
+//                //                        break;
+//                //                    }
+//                //                }
+//                //                if (!isExistPhoto) {
+//                //                    [arrTemp addObject:pDict];
+//                //                }
+//                //            }
+//                //
+//                //            //merge again
+//                //            [arrPhotoMerge addObjectsFromArray:arrTemp];
+//                //
+//                //            // sort
+//                //            NSArray *arr = [arrPhotoMerge sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(NSDictionary *dict1, NSDictionary *dict2) {
+//                //                return [[dict1 objectForKey:@"SiteName"] compare:[dict2 objectForKey:@"SiteName"] options:NSCaseInsensitiveSearch];
+//                //            }];
+//                //
+//                //            [userDefault setObject:arr forKey:@"GuidePhotos"];
+//                [userDefault setObject:[NSDate date] forKey:@"timestamp"];
+//                [userDefault synchronize];
+//
+//                // reload now
+//                //            if (source) {
+//                //                [source removeAllObjects];
+//                //            }
+//
+//                [self reloadSourceData];
+//                //            [self setSourceProperty];
+//
+//                 RUN_ON_MAIN_QUEUE(^{
+//                     [self loadGuidePhotosFromUserPref];
+//                     [self drawAnnotations];
+//                 });
+//            });
+//
+//        }];
+//
+//        [request setFailedBlock:^{
+//            //        dispatch_async(dispatch_get_main_queue(), ^{
+//            //                        [[[UIAlertView alloc] initWithTitle:nil message:@"Can not download guide photos at the moment. Try again later" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil] show];
+//            //        });
+//            RUN_ON_MAIN_QUEUE(^{
+//                [self loadGuidePhotosFromUserPref];
+//                [self drawAnnotations];
+//            });
+//        }];
+//        [request startAsynchronous];
+    
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    RUN_ON_MAIN_QUEUE(^{
+        [self loadGuidePhotosFromUserPref];
+        [self drawAnnotations];
+    });
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSArray* arrAllowedSiteId = [request getDetailOfKey:@"SiteIds"];
+    __block NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    
+    //create ref so, we can use older one
+    NSArray* loadedGuidePhotos = [userDefault objectForKey:@"GuidePhotos"];
+    __block NSMutableDictionary* loadedRefGuidePhotos = [[NSMutableDictionary alloc] init];
     for (id d in loadedGuidePhotos)
     {
         [loadedRefGuidePhotos setObject:d forKey:[d objectForKey:@"ID"]];
@@ -1135,226 +1395,208 @@
     
     __block NSMutableArray  *arrPhoto = [NSMutableArray arrayWithArray:loadedGuidePhotos];
     
-    // check for first restored
-    
-    NSString    *urlStr = [NSString stringWithFormat:@"%@/photos.json?access_token=%@&project_id=%@",[APIController shared].server,[userDefault objectForKey:@"AccessToken"], projectId];
-    __block ASIHTTPRequest  *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
-    
-    [request setRequestMethod:@"GET"];
-    [request setCompletionBlock:^{
-        RUN_ON_BACKGROUND_QUEUE(^{
-            // process data here
-            NSError *error = nil;
-            NSArray *arrPhotoData = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingAllowFragments error:&error];
-            NSLog(@"get guide photos => %@",arrPhotoData);
+    NSLog(@"Request finished");
+    RUN_ON_BACKGROUND_QUEUE(^{
+        // process data here
+        NSError *error = nil;
+        NSArray *arrPhotoData = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingAllowFragments error:&error];
+        NSLog(@"get guide photos => %@",arrPhotoData);
+        
+        for (NSDictionary *dict in arrPhotoData) {
             
-            for (NSDictionary *dict in arrPhotoData) {
-                // check for site id
-                if (![self checkSiteExistWithId:[dict objectForKey:@"SiteId"]]) {
-                    DLog(@"Found a site id not in list %@",[dict objectForKey:@"SiteId"]);
+            // check if site is allow or not
+            if (arrAllowedSiteId != nil) {
+                BOOL   isAllowed = NO;
+                for (NSString *str in arrAllowedSiteId) {
+                    if ([str isEqualToString:[dict objectForKey:@"SiteId"]]) {
+                        // break now
+                        isAllowed = YES;
+                        break;
+                    }
+                }
+                
+                
+                if (!isAllowed) {
+                    // not to download it!
                     continue;
                 }
-                
-                // check if site is allow or not
-                if (arrAllowedSiteId != nil) {
-                    BOOL   isAllowed = NO;
-                    for (NSString *str in arrAllowedSiteId) {
-                        if ([str isEqualToString:[dict objectForKey:@"SiteId"]]) {
-                            // break now
-                            isAllowed = YES;
-                            break;
-                        }
-                    }
-                    
-                    
-                    if (!isAllowed) {
-                        // not to download it!
-                        continue;
-                    }
-                }
-                
-                
-                NSMutableDictionary *photoDict = [NSMutableDictionary new];
-                for (NSString *key in [dict allKeys]) {
-                    [photoDict setObject:[[dict objectForKey:key] description] forKey:key];
-                }
-                // get photo here
-                //                NSURL *photoUrl = [NSURL URLWithString:[dict objectForKey:@"ImageUrl"]];
-                
-                NSString* relativeFilePath = [dict objectForKey:@"ImageUrl"];
-                
-                __block NSString *filePath = [Downloader storagePathForURL:relativeFilePath];
-                
-                BOOL isFileExist = NO;
-                if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-                    isFileExist = YES;
-                }
-                
-                //if (!isFileExist) {
-                //RUN_ON_MAIN_QUEUE(^{
-                // force download again
-                
-                BOOL isShouldDownload = NO;
-                NSDictionary* refOlder = [loadedRefGuidePhotos objectForKey:[dict objectForKey:@"ID"]];
-                if (refOlder)
+            }
+            
+            
+            NSMutableDictionary *photoDict = [NSMutableDictionary new];
+            for (NSString *key in [dict allKeys]) {
+                [photoDict setObject:[[dict objectForKey:key] description] forKey:key];
+            }
+            // get photo here
+            //                NSURL *photoUrl = [NSURL URLWithString:[dict objectForKey:@"ImageUrl"]];
+            
+            NSString* relativeFilePath = [dict objectForKey:@"ImageUrl"];
+            
+            __block NSString *filePath = [Downloader storagePathForURL:relativeFilePath];
+            
+            BOOL isFileExist = NO;
+            if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+                isFileExist = YES;
+            }
+            
+            //if (!isFileExist) {
+            //RUN_ON_MAIN_QUEUE(^{
+            // force download again
+            
+            BOOL isShouldDownload = NO;
+            NSDictionary* refOlder = [loadedRefGuidePhotos objectForKey:[dict objectForKey:@"ID"]];
+            if (refOlder)
+            {
+                if (![[refOlder objectForKey:@"ImageUrl"] isEqualToString:[dict objectForKey:@"ImageUrl"]])
                 {
-                    if (![[refOlder objectForKey:@"ImageUrl"] isEqualToString:[dict objectForKey:@"ImageUrl"]])
+                    isShouldDownload = YES;
+                }
+            }
+            else
+            {
+                isShouldDownload = YES;
+            }
+            //});
+            
+            //}
+            
+            if (!isShouldDownload)
+            {
+                //recheck for failed image
+                if ([self.lstPhotoNeedDownload containsObject:[filePath lastPathComponent]])
+                {
+                    if (![self.lstPhotoBeingDownloaded containsObject:[filePath lastPathComponent]])
                     {
                         isShouldDownload = YES;
                     }
                 }
-                else
-                {
-                    isShouldDownload = YES;
-                }
-                //});
-                
-                //}
-                
-                if (!isShouldDownload)
-                {
-                    //recheck for failed image
-                    if ([self.lstPhotoNeedDownload containsObject:[filePath lastPathComponent]])
-                    {
-                        if (![self.lstPhotoBeingDownloaded containsObject:[filePath lastPathComponent]])
-                        {
-                            isShouldDownload = YES;
-                        }
-                    }
-                }
-                
-                if (isShouldDownload)
-                {
-                    [self downloadPhoto:photoDict];
-                }
-                
-                if (!refOlder) //only add if new
-                {
-                    UIImage *img = nil;
-                    if (!isFileExist) {
-                        // save
-                        //[photoRequest.responseData writeToFile:filePath atomically:YES];
-                        //img = [UIImage imageWithData:photoRequest.responseData];
-                    }
-                    else
-                        img = [appDelegate loadImageOfFile:filePath];// [UIImage imageWithContentsOfFile:filePath];
-                    
-                    NSString* relativeThumbPath = [[dict objectForKey:@"ImageUrl"] stringByAppendingString:@"_thumb"];
-                    
-                    NSString    *thumbPath = [Downloader storagePathForURL:relativeThumbPath];
-                    
-                    if (img)
-                    {
-                        // crop
-                        img = [img imageByScalingAndCroppingForSize:CGSizeMake(240, 240)];
-                        // rewrite dict
-                        
-                        // save the image
-                        NSData *compressedImageData = UIImageJPEGRepresentation(img, 0.5);
-                        if (compressedImageData) {
-                            [compressedImageData writeToFile:thumbPath atomically:YES];
-                        }
-                        else {
-                            UIGraphicsBeginImageContext(img.size);
-                            [img drawInRect:CGRectMake(0, 0, img.size.width, img.size.height)];
-                            UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-                            UIGraphicsEndImageContext();
-                            
-                            compressedImageData = UIImageJPEGRepresentation(newImage, 0.5);
-                            [compressedImageData writeToFile:thumbPath atomically:NO];
-                        }
-                    }
-                    
-                    [photoDict setObject:relativeFilePath forKey:@"ImagePath"];
-                    [photoDict setObject:relativeThumbPath forKey:@"ThumbPath"];
-                    [photoDict setObject:[NSNumber numberWithBool:YES] forKey:@"IsGuide"];
-                    // check photo dict
-                    for (Site *site in allSites) {
-                        if ([site.ID isEqualToString:[photoDict objectForKey:@"SiteId"]]) {
-                            [photoDict setObject:site.Name forKey:@"SiteName"];
-                            break;
-                        }
-                    }
-                    
-                    NSString* comm = [[[photoDict objectForKey:@"SiteName"] stringByAppendingString:@"_"] stringByAppendingString:[photoDict objectForKey:@"Direction"]];
-                    if ([[Service shared].refSiteToGuides objectForKey:comm])
-                    {
-                        [photoDict setObject:[NSNumber numberWithBool:NO] forKey:@"IsGuide"];
-                    }
-                    
-                    //add
-                    [arrPhoto addObject:photoDict];
-                }
-                else
-                {
-                    NLog(@"IGNORE");
-                }
-                
-                
             }
             
-            // write down
-            //            DLog(@"==> arrPhtos %@",arrPhoto);
-            [userDefault setObject:arrPhoto forKey:@"GuidePhotos"];
+            if (isShouldDownload)
+            {
+                [self downloadPhoto:photoDict];
+            }
             
-            // megre data
-            //            NSMutableArray *arrPhotoMerge = [NSMutableArray new];
-            //            NSArray *arrGuidePhotos = [userDefault objectForKey:@"GuidePhotos"];
-            //            if (!arrGuidePhotos) {
-            //                arrGuidePhotos = [NSArray new];
-            //            }
-            //            // add
-            //            [arrPhotoMerge addObjectsFromArray:arrGuidePhotos];
-            //
-            //            NSMutableArray  *arrTemp = [NSMutableArray array];
-            //            // megere
-            //            for (NSDictionary *pDict in arrPhoto) {
-            //                BOOL isExistPhoto = NO;
-            //                for (NSDictionary *oDict in arrPhotoMerge) {
-            //                    NSString    *s1 = [pDict objectForKey:@"ID"];
-            //                    NSString    *s2 = [oDict objectForKey:@"ID"];
-            //                    if ([s1 isEqualToString:s2]) {
-            //                        isExistPhoto = YES;
-            //                        break;
-            //                    }
-            //                }
-            //                if (!isExistPhoto) {
-            //                    [arrTemp addObject:pDict];
-            //                }
-            //            }
-            //
-            //            //merge again
-            //            [arrPhotoMerge addObjectsFromArray:arrTemp];
-            //
-            //            // sort
-            //            NSArray *arr = [arrPhotoMerge sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(NSDictionary *dict1, NSDictionary *dict2) {
-            //                return [[dict1 objectForKey:@"SiteName"] compare:[dict2 objectForKey:@"SiteName"] options:NSCaseInsensitiveSearch];
-            //            }];
-            //
-            //            [userDefault setObject:arr forKey:@"GuidePhotos"];
-            [userDefault setObject:[NSDate date] forKey:@"timestamp"];
-            [userDefault synchronize];
+            if (!refOlder) //only add if new
+            {
+                UIImage *img = nil;
+                if (!isFileExist) {
+                    // save
+                    //[photoRequest.responseData writeToFile:filePath atomically:YES];
+                    //img = [UIImage imageWithData:photoRequest.responseData];
+                }
+                else
+                    img = [appDelegate loadImageOfFile:filePath];// [UIImage imageWithContentsOfFile:filePath];
+                
+                NSString* relativeThumbPath = [[dict objectForKey:@"ImageUrl"] stringByAppendingString:@"_thumb"];
+                
+                NSString    *thumbPath = [Downloader storagePathForURL:relativeThumbPath];
+                
+                if (img)
+                {
+                    // crop
+                    img = [img imageByScalingAndCroppingForSize:CGSizeMake(240, 240)];
+                    // rewrite dict
+                    
+                    // save the image
+                    NSData *compressedImageData = UIImageJPEGRepresentation(img, 0.5);
+                    if (compressedImageData) {
+                        [compressedImageData writeToFile:thumbPath atomically:YES];
+                    }
+                    else {
+                        UIGraphicsBeginImageContext(img.size);
+                        [img drawInRect:CGRectMake(0, 0, img.size.width, img.size.height)];
+                        UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+                        UIGraphicsEndImageContext();
+                        
+                        compressedImageData = UIImageJPEGRepresentation(newImage, 0.5);
+                        [compressedImageData writeToFile:thumbPath atomically:NO];
+                    }
+                }
+                
+                [photoDict setObject:relativeFilePath forKey:@"ImagePath"];
+                [photoDict setObject:relativeThumbPath forKey:@"ThumbPath"];
+                [photoDict setObject:[NSNumber numberWithBool:YES] forKey:@"IsGuide"];
+                // check photo dict
+                for (Site *site in allSites) {
+                    if ([site.ID isEqualToString:[photoDict objectForKey:@"SiteId"]]) {
+                        [photoDict setObject:site.Name forKey:@"SiteName"];
+                        break;
+                    }
+                }
+                
+                NSString* comm = [[[photoDict objectForKey:@"SiteName"] stringByAppendingString:@"_"] stringByAppendingString:[photoDict objectForKey:@"Direction"]];
+                if ([[Service shared].refSiteToGuides objectForKey:comm])
+                {
+                    [photoDict setObject:[NSNumber numberWithBool:NO] forKey:@"IsGuide"];
+                }
+                
+                //add
+                [arrPhoto addObject:photoDict];
+            }
+            else
+            {
+                NLog(@"IGNORE");
+            }
             
-            // reload now
-            //            if (source) {
-            //                [source removeAllObjects];
-            //            }
             
-            [self reloadSourceData];
-            //            [self setSourceProperty];
-            [self loadGuidePhotosFromUserPref];
-        });
+        }
         
-    }];
-    
-    [request setFailedBlock:^{
-        //        dispatch_async(dispatch_get_main_queue(), ^{
-        //                        [[[UIAlertView alloc] initWithTitle:nil message:@"Can not download guide photos at the moment. Try again later" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil] show];
-        //        });
-        [self loadGuidePhotosFromUserPref];
-    }];
-    [request startAsynchronous];
-    
+        // write down
+        //            DLog(@"==> arrPhtos %@",arrPhoto);
+        [userDefault setObject:arrPhoto forKey:@"GuidePhotos"];
+        
+        // megre data
+        //            NSMutableArray *arrPhotoMerge = [NSMutableArray new];
+        //            NSArray *arrGuidePhotos = [userDefault objectForKey:@"GuidePhotos"];
+        //            if (!arrGuidePhotos) {
+        //                arrGuidePhotos = [NSArray new];
+        //            }
+        //            // add
+        //            [arrPhotoMerge addObjectsFromArray:arrGuidePhotos];
+        //
+        //            NSMutableArray  *arrTemp = [NSMutableArray array];
+        //            // megere
+        //            for (NSDictionary *pDict in arrPhoto) {
+        //                BOOL isExistPhoto = NO;
+        //                for (NSDictionary *oDict in arrPhotoMerge) {
+        //                    NSString    *s1 = [pDict objectForKey:@"ID"];
+        //                    NSString    *s2 = [oDict objectForKey:@"ID"];
+        //                    if ([s1 isEqualToString:s2]) {
+        //                        isExistPhoto = YES;
+        //                        break;
+        //                    }
+        //                }
+        //                if (!isExistPhoto) {
+        //                    [arrTemp addObject:pDict];
+        //                }
+        //            }
+        //
+        //            //merge again
+        //            [arrPhotoMerge addObjectsFromArray:arrTemp];
+        //
+        //            // sort
+        //            NSArray *arr = [arrPhotoMerge sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(NSDictionary *dict1, NSDictionary *dict2) {
+        //                return [[dict1 objectForKey:@"SiteName"] compare:[dict2 objectForKey:@"SiteName"] options:NSCaseInsensitiveSearch];
+        //            }];
+        //
+        //            [userDefault setObject:arr forKey:@"GuidePhotos"];
+        [userDefault setObject:[NSDate date] forKey:@"timestamp"];
+        [userDefault synchronize];
+        
+        // reload now
+        //            if (source) {
+        //                [source removeAllObjects];
+        //            }
+        
+        [self reloadSourceData];
+        //            [self setSourceProperty];
+        
+        RUN_ON_MAIN_QUEUE(^{
+            [self loadGuidePhotosFromUserPref];
+            [self drawAnnotations];
+        });
+    });
 }
 
 -(void) downloadPhoto:(NSDictionary*) _photoDict {
@@ -1476,6 +1718,7 @@
 -(void)goToMainList:(id)sender
 {
     MainViewController *mainViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    mainViewController.mapViewController = self;
     [self.navigationController pushViewController:mainViewController animated:YES];
 }
 
@@ -2304,7 +2547,7 @@
 - (void) initMapKit
 {
     if(appDelegate.locationManager.location != nil) {
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(appDelegate.locationManager.location.coordinate, 400000, 400000);
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(appDelegate.locationManager.location.coordinate, 1000, 1000);
         [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
     }
 }
@@ -2328,20 +2571,33 @@
                 NSString* guideSiteId = [obj objectForKey:@"SiteId"];
                 if ([site.ID isEqualToString:guideSiteId])
                 {
-                    Photo* p = [[Photo alloc] init];
-                    p.sID = site.ID;
-                    p.siteID = site.Name;
-                    NSString* imgPath = [Downloader storagePathForURL:[obj objectForKey:@"ImagePath"]];
-                    p.imgPath = imgPath;
-                    p.img = [appDelegate loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
+                    BOOL hasFound = NO;
+                    for (Photo* p in self->source) {
+                        if ([p.sID isEqualToString:guideSiteId])
+                        {
+                            point.photo = p;
+                            hasFound = YES;
+                            break;
+                        }
+                    }
                     
-                    NSString* relativeThumbPath = [obj objectForKey:@"ThumbPath"];
+                    if (!hasFound) {
+                        Photo* p = [[Photo alloc] init];
+                        p.sID = site.ID;
+                        p.siteID = site.Name;
+                        NSString* imgPath = [Downloader storagePathForURL:[obj objectForKey:@"ImagePath"]];
+                        p.imgPath = imgPath;
+                        p.img = [appDelegate loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
+                        
+                        NSString* relativeThumbPath = [obj objectForKey:@"ThumbPath"];
+                        
+                        NSString* fullThumbPath = [Downloader storagePathForURL:relativeThumbPath];
+                        
+                        p.imgThumbnail = [appDelegate loadImageOfFile:fullThumbPath]; //  [UIImage imageWithContentsOfFile:fullThumbPath];
+                        p.thumbPath = fullThumbPath;
+                        point.photo = p;
+                    }
                     
-                    NSString* fullThumbPath = [Downloader storagePathForURL:relativeThumbPath];
-                    
-                    p.imgThumbnail = [appDelegate loadImageOfFile:fullThumbPath]; //  [UIImage imageWithContentsOfFile:fullThumbPath];
-                    p.thumbPath = fullThumbPath;
-                    point.photo = p;
                     hasGuide = YES;
                     break;
                 }
@@ -2395,8 +2651,11 @@
             view.imageData = [UIImage imageWithData:siteAnnotation.photo.imageData];
         } else if (siteAnnotation.photo.imgPath)
         {
-            view.imageData = [UIImage imageWithContentsOfFile:siteAnnotation.photo.imgPath];
+            NSData *imageData = [NSData dataWithContentsOfFile:siteAnnotation.photo.imgPath];
+            view.imageData = [UIImage imageWithData:imageData];
         }
+    } else {
+        view.imageData = nil;
     }
     
     return view;
@@ -2422,8 +2681,11 @@
             annotationView.imageData = [UIImage imageWithData:siteAnnotation.photo.imageData];
         } else if (siteAnnotation.photo.imgPath)
         {
-            annotationView.imageData = [UIImage imageWithContentsOfFile:siteAnnotation.photo.imgPath];
+            NSData *imageData = [NSData dataWithContentsOfFile:siteAnnotation.photo.imgPath];
+            annotationView.imageData = [UIImage imageWithData:imageData];
         }
+    } else {
+        annotationView.imageData = nil;
     }
 }
 
@@ -2437,6 +2699,7 @@
     SitePinAnnotation* siteAnnotation = annotation;
     MainViewController *mainViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     mainViewController.currentSite = siteAnnotation.site;
+    mainViewController.mapViewController = self;
     [self.navigationController pushViewController:mainViewController animated:YES];
 }
 

@@ -706,7 +706,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    
     //[prjPick setIsDisabledPicker:YES];
 }
 
@@ -2393,6 +2392,11 @@
              
              api.photo.isFinished = YES;
              [tbPhotos reloadData];
+             
+             if (self.mapViewController)
+             {
+                 [self.mapViewController reloadAll];
+             }
          }
             if (progress < 0)
             {
@@ -2958,6 +2962,10 @@
                          p.imageData = nil;
                          api.photo.isFinished = YES;
                          [tbPhotos reloadData];
+                         if (self.mapViewController)
+                         {
+                             [self.mapViewController reloadAll];
+                         }
                      }
                     
                     if (progress < 0)
