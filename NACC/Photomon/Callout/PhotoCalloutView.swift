@@ -75,24 +75,24 @@ class PhotoCalloutView: CalloutView {
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         
+        contentView.addSubview(imageView)
         contentView.addSubview(titleLabel)
         contentView.addSubview(subtitleLabel)
-        contentView.addSubview(imageView)
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageTapped)))
         titleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(titleTapped)))
         subtitleLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(subTitleTapped)))
         
         let views: [String: UIView] = [
+            "imageView": imageView,
             "titleLabel": titleLabel,
-            "subtitleLabel": subtitleLabel,
-            "imageView": imageView
+            "subtitleLabel": subtitleLabel
         ]
         
         let vflStrings = [
-            "V:|[titleLabel][subtitleLabel][imageView][imageView(==80)]|",
+            "V:|[imageView][imageView(==80)][titleLabel][subtitleLabel]|",
+            "H:|[imageView(==80)]|",
             "H:|[titleLabel]|",
-            "H:|[subtitleLabel]|",
-            "H:|[imageView(==80)]|"
+            "H:|[subtitleLabel]|",            
         ]
         
         for vfl in vflStrings {
