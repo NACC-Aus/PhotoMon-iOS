@@ -1472,8 +1472,10 @@
                 }
             }
             
+            isShouldDownload = !isFileExist;
             if (isShouldDownload)
             {
+                DLog("download photo")
                 [self downloadPhoto:photoDict];
             }
             
@@ -1589,10 +1591,11 @@
         //                [source removeAllObjects];
         //            }
         
-        [self reloadSourceData];
+        
         //            [self setSourceProperty];
         
         RUN_ON_MAIN_QUEUE(^{
+            [self reloadSourceData];
             [self loadGuidePhotosFromUserPref];
             [self drawAnnotations];
         });
@@ -2585,7 +2588,7 @@
                         Photo* p = [[Photo alloc] init];
                         p.sID = site.ID;
                         p.siteID = site.Name;
-                        NSString* imgPath = [Downloader storagePathForURL:[obj objectForKey:@"ImagePath"]];
+                        NSString* imgPath = [Downloader storagePathForURL:[obj objectForKey:@"ImagePath"]];                            
                         p.imgPath = imgPath;
                         p.img = [appDelegate loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
                         

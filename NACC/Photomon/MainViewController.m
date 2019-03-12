@@ -974,6 +974,11 @@
                         
                         api.photo.isFinished = YES;
                         [tbPhotos reloadData];
+                        [def synchronize];
+                        if (self.mapViewController)
+                        {
+                            [self.mapViewController reloadAll];
+                        }
                     }
                     
                     if (progress < 0)
@@ -1319,6 +1324,7 @@
     /*
      -
      -*/
+    RUN_ON_MAIN_QUEUE(^{
     NSUserDefaults  *userDefault = [NSUserDefaults standardUserDefaults];
 //    Site    *site = [self selectSite];
 //    DLog(@"current site id = %@ site name = %@",site.ID,site.Name);
@@ -1372,7 +1378,7 @@
     [userDefault removeObjectForKey:@"GuideRestore"];
     [userDefault synchronize];
     
-    RUN_ON_MAIN_QUEUE(^{
+    
         // add to source
         if (source) {
             for (id obj in arrObjs)
@@ -2392,6 +2398,7 @@
              
              api.photo.isFinished = YES;
              [tbPhotos reloadData];
+             [def synchronize];
              
              if (self.mapViewController)
              {
@@ -2961,6 +2968,7 @@
                          
                          p.imageData = nil;
                          api.photo.isFinished = YES;
+                         [def synchronize];
                          [tbPhotos reloadData];
                          if (self.mapViewController)
                          {
