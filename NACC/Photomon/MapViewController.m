@@ -619,7 +619,6 @@
     self.mapView.delegate = self;
     self.mapView.showsUserLocation = YES;
     [self initMapKit];
-    [self drawAnnotations];
     [self downloadAllGuidePhotos];
 }
 
@@ -2420,7 +2419,7 @@
 - (void) onNotifAppDidUpdateNewLocation:(NSNotification*)notif
 {
     //only work when picker controller presenting and user selectec direction
-    
+    [self drawAnnotations];
 }
 
 - (void) onNotifAppDidRefreshGuidePhotos:(NSNotification*) notif
@@ -2588,7 +2587,7 @@
                         Photo* p = [[Photo alloc] init];
                         p.sID = site.ID;
                         p.siteID = site.Name;
-                        NSString* imgPath = [Downloader storagePathForURL:[obj objectForKey:@"ImagePath"]];                            
+                        NSString* imgPath = [Downloader storagePathForURL:[obj objectForKey:@"ImagePath"]];
                         p.imgPath = imgPath;
                         p.img = [appDelegate loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
                         
@@ -2643,6 +2642,7 @@
         view.annotation = annotation;
     }
     
+    view.animatesDrop = NO;
     if(siteAnnotation.photo)
     {
         if (siteAnnotation.photo.imgThumbnail)
