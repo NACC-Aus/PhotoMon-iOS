@@ -2419,7 +2419,6 @@
 - (void) onNotifAppDidUpdateNewLocation:(NSNotification*)notif
 {
     //only work when picker controller presenting and user selectec direction
-    [self drawAnnotations];
 }
 
 - (void) onNotifAppDidRefreshGuidePhotos:(NSNotification*) notif
