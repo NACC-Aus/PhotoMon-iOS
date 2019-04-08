@@ -2889,6 +2889,18 @@
             {
                 if ([filteredSiteIDs containsObject:p.sID] && ![filteredPhotoIDs containsObject:p.photoID])
                 {
+                    if ([p.siteID length] == 0)
+                    {
+                        for (Site* site in allSites)
+                        {
+                            if ([site.ID isEqualToString:p.sID])
+                            {
+                                p.siteID = site.Name;
+                                break;
+                            }
+                        }
+                    }
+                    
                     [filteredPhotos addObject:p];
                     if(p.photoID)
                     {
