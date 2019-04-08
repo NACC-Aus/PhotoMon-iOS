@@ -714,7 +714,7 @@
 					17100DEC169BCF0E00352821 = {
 						DevelopmentTeam = M665F4MD2M;
 						LastSwiftMigration = 1010;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -723,6 +723,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 17100DE2169BCF0E00352821;
@@ -886,9 +887,10 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Adrian DeWitts (552Y25ZDPC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Adrian DeWitts (552Y25ZDPC)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = M665F4MD2M;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -903,8 +905,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "fe43d577-9d12-4977-a4f1-db504ed210ea";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "fe43d577-9d12-4977-a4f1-db504ed210ea";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -918,9 +920,10 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Northern Agricultural Catchments Council Inc. (M665F4MD2M)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Northern Agricultural Catchments Council Inc. (M665F4MD2M)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = M665F4MD2M;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -928,8 +931,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "260691c1-fe5e-4046-9f6a-3bd0c8801f7c";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "260691c1-fe5e-4046-9f6a-3bd0c8801f7c";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -942,7 +945,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = M665F4MD2M;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Photomon/ZooZSDK.embeddedframework\"",
@@ -959,9 +963,9 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = Photomon;
-				PROVISIONING_PROFILE = "bf233a17-3e4d-4be2-8719-fd2d05d9214e";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "bf233a17-3e4d-4be2-8719-fd2d05d9214e";
-				PROVISIONING_PROFILE_SPECIFIER = nacc_dev_2;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Photomon/Callout/Photomon-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -976,9 +980,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Northern Agricultural Catchments Council Inc. (M665F4MD2M)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Northern Agricultural Catchments Council Inc. (M665F4MD2M)";
-				DEVELOPMENT_TEAM = M665F4MD2M;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Photomon/ZooZSDK.embeddedframework\"",
@@ -995,9 +1000,9 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = Photomon;
-				PROVISIONING_PROFILE = "260691c1-fe5e-4046-9f6a-3bd0c8801f7c";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "260691c1-fe5e-4046-9f6a-3bd0c8801f7c";
-				PROVISIONING_PROFILE_SPECIFIER = nacc_store;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Photomon/Callout/Photomon-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;

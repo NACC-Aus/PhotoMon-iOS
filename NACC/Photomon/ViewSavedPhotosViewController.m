@@ -105,7 +105,12 @@
 	horizontalView.cellBackgroundColor			= [UIColor darkGrayColor];
 	horizontalView.autoresizingMask				= UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
 	[self.view addSubview:horizontalView];
-    [horizontalView selectCellAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0] animated:NO];
+   
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+         [horizontalView selectCellAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0] animated:NO];
+    });
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Note" style:UIBarButtonItemStyleBordered target:self action:@selector(onNote:)];
     
