@@ -222,6 +222,7 @@
         AdhocSiteTextField* txt = (AdhocSiteTextField*)[cell viewWithTag:777];
         [[Service shared] updateAdhocSite:txt.data withNewName:nil];
         
+        [datasource removeObjectAtIndex:indexPath.row];
         [tbView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         [tbView reloadData];
 
@@ -379,6 +380,7 @@
                 [self sortData];
                 [tbView reloadData];
                 [[CacheManager share] removeCache:cacheKey];
+                 [[NSNotificationCenter defaultCenter] postNotificationName:NotifProjectsDidRefresh object:nil];
             }
         } andOnError:^(id err) {
             
