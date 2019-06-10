@@ -648,7 +648,7 @@
             [container addCreationDate:[NSDate date]];
             [container addLocation:appDelegate.locationManager.location];
             
-            NSData *data = UIImageJPEGRepresentation([appDelegate loadImageOfFile:p.imgPath], compression);
+            NSData *data = UIImageJPEGRepresentation([[Service shared] loadImageOfFile:p.imgPath], compression);
             UIImage* imgWithExif = [UIImage imageWithData:data];
             data = [imgWithExif addExif:container];
             
@@ -773,7 +773,7 @@
             [refPhotos setObject:p forKey:p.date];
             
             @autoreleasepool {
-                UIImage* imgOri = [appDelegate loadImageOfFile:fullPath];// [UIImage imageWithContentsOfFile:fullPath];
+                UIImage* imgOri = [[Service shared] loadImageOfFile:fullPath];// [UIImage imageWithContentsOfFile:fullPath];
                 if (imgOri.size.width < imgOri.size.height)
                     p.imgThumbnail = [imgOri imageByScalingAndCroppingForSize:CGSizeMake(240, 240)];
                 else
@@ -1049,13 +1049,13 @@
                 
                 NSString* imgPath = [Downloader storagePathForURL:[dict objectForKey:@"ImagePath"]];
                 p.imgPath = imgPath;
-                p.img = [appDelegate loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
+                p.img = [[Service shared] loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
                 
                 NSString* relativeThumbPath = [dict objectForKey:@"ThumbPath"];
                 
                 NSString* fullThumbPath = [Downloader storagePathForURL:relativeThumbPath];
                 
-                p.imgThumbnail = [appDelegate loadImageOfFile:fullThumbPath]; //  [UIImage imageWithContentsOfFile:fullThumbPath];
+                p.imgThumbnail = [[Service shared] loadImageOfFile:fullThumbPath]; //  [UIImage imageWithContentsOfFile:fullThumbPath];
                 p.thumbPath = fullThumbPath;
                 
                 p.sID = [dict objectForKey:@"SiteId"];
@@ -1487,7 +1487,7 @@
                     //img = [UIImage imageWithData:photoRequest.responseData];
                 }
                 else
-                    img = [appDelegate loadImageOfFile:filePath];// [UIImage imageWithContentsOfFile:filePath];
+                    img = [[Service shared] loadImageOfFile:filePath];// [UIImage imageWithContentsOfFile:filePath];
                 
                 NSString* relativeThumbPath = [[dict objectForKey:@"ImageUrl"] stringByAppendingString:@"_thumb"];
                 
@@ -1982,7 +1982,7 @@
         [container addCreationDate:[NSDate date]];
         [container addLocation:appDelegate.locationManager.location];
         
-        data = UIImageJPEGRepresentation([appDelegate loadImageOfFile:p.imgPath], compression);
+        data = UIImageJPEGRepresentation([[Service shared] loadImageOfFile:p.imgPath], compression);
         UIImage* imgWithExif = [UIImage imageWithData:data];
         data = [imgWithExif addExif:container];
         
@@ -2263,7 +2263,7 @@
                 [container addCreationDate:[NSDate date]];
                 [container addLocation:appDelegate.locationManager.location];
                 
-                NSData *data = UIImageJPEGRepresentation([appDelegate loadImageOfFile:p.imgPath], compression);
+                NSData *data = UIImageJPEGRepresentation([[Service shared] loadImageOfFile:p.imgPath], compression);
                 UIImage* imgWithExif = [UIImage imageWithData:data];
                 data = [imgWithExif addExif:container];
                 
@@ -2588,13 +2588,13 @@
                         p.siteID = site.Name;
                         NSString* imgPath = [Downloader storagePathForURL:[obj objectForKey:@"ImagePath"]];
                         p.imgPath = imgPath;
-                        p.img = [appDelegate loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
+                        p.img = [[Service shared] loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
                         
                         NSString* relativeThumbPath = [obj objectForKey:@"ThumbPath"];
                         
                         NSString* fullThumbPath = [Downloader storagePathForURL:relativeThumbPath];
                         
-                        p.imgThumbnail = [appDelegate loadImageOfFile:fullThumbPath]; //  [UIImage imageWithContentsOfFile:fullThumbPath];
+                        p.imgThumbnail = [[Service shared] loadImageOfFile:fullThumbPath]; //  [UIImage imageWithContentsOfFile:fullThumbPath];
                         p.thumbPath = fullThumbPath;
                         point.photo = p;
                     }

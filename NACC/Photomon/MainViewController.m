@@ -219,7 +219,7 @@
         NSString *documentsDirectory = [paths objectAtIndex:0];
         NSString *imgName = [NSString stringWithFormat:@"%@_%@.jpg", site.ID, del.direction];
         NSString *saveImagePath = [documentsDirectory stringByAppendingPathComponent:imgName];
-        img = [appDelegate loadImageOfFile:saveImagePath]; // [UIImage imageWithContentsOfFile:saveImagePath];
+        img = [[Service shared] loadImageOfFile:saveImagePath]; // [UIImage imageWithContentsOfFile:saveImagePath];
     }
     
     if (!img && ![[NSUserDefaults standardUserDefaults] objectForKey:@"Demo"])
@@ -236,7 +236,7 @@
                     }
 
                     NSString* imgPath = [Downloader storagePathForURL:[dict objectForKey:@"ImagePath"]];
-                    img = [appDelegate loadImageOfFile:imgPath];// [UIImage imageWithContentsOfFile:imgPath];
+                    img = [[Service shared] loadImageOfFile:imgPath];// [UIImage imageWithContentsOfFile:imgPath];
                     break;
                 }
             }
@@ -948,7 +948,7 @@
             [container addCreationDate:[NSDate date]];
             [container addLocation:appDelegate.locationManager.location];
             
-            NSData *data = UIImageJPEGRepresentation([appDelegate loadImageOfFile:p.imgPath], compression);
+            NSData *data = UIImageJPEGRepresentation([[Service shared] loadImageOfFile:p.imgPath], compression);
             UIImage* imgWithExif = [UIImage imageWithData:data];
             data = [imgWithExif addExif:container];
             
@@ -1091,7 +1091,7 @@
             [refPhotos setObject:p forKey:p.date];
             
             @autoreleasepool {
-                UIImage* imgOri = [appDelegate loadImageOfFile:fullPath];// [UIImage imageWithContentsOfFile:fullPath];
+                UIImage* imgOri = [[Service shared] loadImageOfFile:fullPath];// [UIImage imageWithContentsOfFile:fullPath];
                 if (imgOri.size.width < imgOri.size.height)
                     p.imgThumbnail = [imgOri imageByScalingAndCroppingForSize:CGSizeMake(240, 240)];
                 else
@@ -1352,13 +1352,13 @@
             
             NSString* imgPath = [Downloader storagePathForURL:[dict objectForKey:@"ImagePath"]];
             p.imgPath = imgPath;
-            p.img = [appDelegate loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
+            p.img = [[Service shared] loadImageOfFile:p.imgPath];// [UIImage imageWithContentsOfFile:p.imgPath];
             
             NSString* relativeThumbPath = [dict objectForKey:@"ThumbPath"];
             
             NSString* fullThumbPath = [Downloader storagePathForURL:relativeThumbPath];
             
-            p.imgThumbnail = [appDelegate loadImageOfFile:fullThumbPath]; //  [UIImage imageWithContentsOfFile:fullThumbPath];
+            p.imgThumbnail = [[Service shared] loadImageOfFile:fullThumbPath]; //  [UIImage imageWithContentsOfFile:fullThumbPath];
             p.thumbPath = fullThumbPath;
             
             p.sID = [dict objectForKey:@"SiteId"];
@@ -1550,7 +1550,7 @@
                         //img = [UIImage imageWithData:photoRequest.responseData];
                     }
                     else
-                        img = [appDelegate loadImageOfFile:filePath];// [UIImage imageWithContentsOfFile:filePath];
+                        img = [[Service shared] loadImageOfFile:filePath];// [UIImage imageWithContentsOfFile:filePath];
                     
                     NSString* relativeThumbPath = [[dict objectForKey:@"ImageUrl"] stringByAppendingString:@"_thumb"];
 
@@ -1847,7 +1847,7 @@
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", st.direction, st.date];
     if (!st.imgThumbnail) {
                 
-        st.imgThumbnail = [appDelegate loadImageOfFile:st.thumbPath];// [UIImage imageWithContentsOfFile:st.thumbPath];
+        st.imgThumbnail = [[Service shared] loadImageOfFile:st.thumbPath];// [UIImage imageWithContentsOfFile:st.thumbPath];
         
         if (!st.imgThumbnail) {
             // defaut here;
@@ -2360,7 +2360,7 @@
         [container addCreationDate:[NSDate date]];
         [container addLocation:appDelegate.locationManager.location];
         
-        data = UIImageJPEGRepresentation([appDelegate loadImageOfFile:p.imgPath], compression);
+        data = UIImageJPEGRepresentation([[Service shared] loadImageOfFile:p.imgPath], compression);
         UIImage* imgWithExif = [UIImage imageWithData:data];
         data = [imgWithExif addExif:container];
         
@@ -2933,7 +2933,7 @@
                 [container addCreationDate:[NSDate date]];
                 [container addLocation:appDelegate.locationManager.location];
                 
-                NSData *data = UIImageJPEGRepresentation([appDelegate loadImageOfFile:p.imgPath], compression);
+                NSData *data = UIImageJPEGRepresentation([[Service shared] loadImageOfFile:p.imgPath], compression);
                 UIImage* imgWithExif = [UIImage imageWithData:data];
                 data = [imgWithExif addExif:container];
                 

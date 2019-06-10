@@ -41,9 +41,6 @@
 - (NSURL *)applicationDocumentsDirectory;
 - (void) setForemostText:(NSString*)str;
 
-@property (nonatomic,strong) NSMutableDictionary* mapPathImage;
-- (UIImage*) loadImageOfFile:(NSString*)path;
-
 @property (nonatomic,strong) NSMutableDictionary* mapAccessTokenToMainController;
 - (UINavigationController*) loadMainControllerForAccessToken:(NSString*)token;
 

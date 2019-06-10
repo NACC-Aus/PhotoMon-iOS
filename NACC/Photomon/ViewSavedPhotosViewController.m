@@ -52,7 +52,7 @@
             if (![storeImgs objectForKey:path])
             {
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                    UIImage* img = [appDelegate loadImageOfFile:path];// [UIImage imageWithContentsOfFile:path];
+                    UIImage* img = [[Service shared] loadImageOfFile:path];// [UIImage imageWithContentsOfFile:path];
                     if (!img) {
                         img = self.imgThumbnail;
                     }
@@ -67,7 +67,7 @@
                 if (img_ == self.imgThumbnail)
                 {
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                        UIImage* img = [appDelegate loadImageOfFile:path];// [UIImage imageWithContentsOfFile:path];
+                        UIImage* img = [[Service shared] loadImageOfFile:path];// [UIImage imageWithContentsOfFile:path];
                         if (img)
                         {
                             dispatch_async(dispatch_get_main_queue(), ^{
@@ -202,7 +202,7 @@
 //    UIImageWriteToSavedPhotosAlbum([UIImage imageWithContentsOfFile:pt.imgPath], self,
 //                                   @selector(image:didFinishSavingWithError:contextInfo:), nil);
     
-    UIImageWriteToSavedPhotosAlbum([appDelegate loadImageOfFile:pt.imgPath], self,
+    UIImageWriteToSavedPhotosAlbum([[Service shared] loadImageOfFile:pt.imgPath], self,
                                    @selector(image:didFinishSavingWithError:contextInfo:), nil);
 
 }
@@ -679,7 +679,7 @@
     
     if (![storeImgs objectForKey:pt.imgPath])
     {
-        UIImage *img = [appDelegate loadImageOfFile:pt.imgPath];// [UIImage imageWithContentsOfFile:pt.imgPath];
+        UIImage *img = [[Service shared] loadImageOfFile:pt.imgPath];// [UIImage imageWithContentsOfFile:pt.imgPath];
         if (!img) {
             img = self.imgThumbnail;
         }
@@ -689,7 +689,7 @@
     img_ = [storeImgs objectForKey:pt.imgPath];
     if (img_ == self.imgThumbnail)
     {
-        UIImage* img = [appDelegate loadImageOfFile:pt.imgPath];// [UIImage imageWithContentsOfFile:pt.imgPath];
+        UIImage* img = [[Service shared] loadImageOfFile:pt.imgPath];// [UIImage imageWithContentsOfFile:pt.imgPath];
         if (img)
         {
             img_ = img;

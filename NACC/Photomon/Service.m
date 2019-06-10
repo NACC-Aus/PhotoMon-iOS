@@ -219,4 +219,25 @@ static Service* shared_ = nil;
     NSString* s2 = (__bridge NSString*)s ;
     return [s2 stringByReplacingOccurrencesOfString:@"-" withString:@""];
 }
+
+- (UIImage*) loadImageOfFile:(NSString*)path
+{
+    if (!self.mapPathImage) {
+        self.mapPathImage = [[NSMutableDictionary alloc] init];
+    }
+    
+    UIImage* img = [self.mapPathImage objectForKey:path];
+    if (!img)
+    {
+        img = [UIImage imageWithContentsOfFile:path];
+        if (img)
+        {
+            RUN_ON_MAIN_QUEUE(^{
+                [self.mapPathImage setObject:img forKey:path];
+            });
+        }
+    }
+    return img;
+}
+
 @end

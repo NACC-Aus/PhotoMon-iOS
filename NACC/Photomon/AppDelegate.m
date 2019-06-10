@@ -73,7 +73,8 @@
     [self migrateDataWithOnDone:^(id b) {
         
         //for storing image in memory
-        self.mapPathImage = [[NSMutableDictionary alloc] init];
+        [Service shared].mapPathImage = [[NSMutableDictionary alloc] init];
+        
         self.mapAccessTokenToMainController = [[NSMutableDictionary alloc] init];
         
         [[APIController shared] setupInit];
@@ -236,7 +237,7 @@
                         p.photoID = [obj objectForKey:@"photoID"];
                     }
                     
-                    p.img =  [appDelegate loadImageOfFile:fullPath]; //[UIImage imageWithContentsOfFile:fullPath];
+                    p.img =  [[Service shared] loadImageOfFile:fullPath]; //[UIImage imageWithContentsOfFile:fullPath];
                     
                     p.imgPath = fullPath;
                     p.note = [obj objectForKey:@"note"];
@@ -485,22 +486,6 @@
         lb.hidden = YES;
     }
     
-}
-
-- (UIImage*) loadImageOfFile:(NSString*)path
-{
-    UIImage* img = [self.mapPathImage objectForKey:path];
-    if (!img)
-    {
-        img = [UIImage imageWithContentsOfFile:path];
-        if (img)
-        {
-            RUN_ON_MAIN_QUEUE(^{
-                [self.mapPathImage setObject:img forKey:path];            
-            });
-        }
-    }
-    return img;
 }
 
 - (UINavigationController*) loadMainControllerForAccessToken:(NSString*)token

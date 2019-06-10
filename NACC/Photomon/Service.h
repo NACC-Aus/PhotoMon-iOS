@@ -14,7 +14,7 @@
 #pragma mark MAIN
 @property (nonatomic,strong) NSMutableArray* adHocSites;
 @property (nonatomic) double minAdHocDistance;
-
+@property (nonatomic,strong) NSMutableDictionary* mapPathImage;
 @property (nonatomic,strong) NSMutableDictionary* refSiteToGuides;
 
 - (void) setupInit;
@@ -30,5 +30,5 @@
 - (NSMutableArray*) getAllSiteModels;
 
 - (NSString*) getNonce;
-
+- (UIImage*) loadImageOfFile:(NSString*)path;
 @end
