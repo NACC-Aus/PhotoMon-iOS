@@ -71,7 +71,7 @@
 {
     if (navigationType == UIWebViewNavigationTypeLinkClicked)
     {
-        [[UIApplication sharedApplication] openURL:request.URL];
+        [[UIApplication sharedApplication] openURL:request.URL options:@{} completionHandler:nil];
         return NO;
     }
     return YES;

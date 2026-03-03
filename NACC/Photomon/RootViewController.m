@@ -247,7 +247,7 @@ static RootViewController* shared_ = nil;
 //    DonateViewController* controller = [DonateViewController shared];
 //    [self.navigationController pushViewController:controller animated:YES];
     
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://photomon.nacc.com.au/mobile/index.html"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://photomon.nacc.com.au/mobile/index.html"] options:@{} completionHandler:nil];
 }
 
 #pragma mark- UITextFieldDelegate
