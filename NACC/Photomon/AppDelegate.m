@@ -9,8 +9,8 @@
 #import "ExifContainer.h"
 #import "UIImage+Exif.h"
 #import "CacheManager.h"
-#import <Fabric/Fabric.h>
-#import <Crashlytics/Crashlytics.h>
+@import FirebaseCore;
+@import FirebaseCrashlytics;
 
 @implementation AppDelegate
 
@@ -24,7 +24,7 @@
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [Fabric with:@[[Crashlytics class]]];
+    [FIRApp configure];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

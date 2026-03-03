@@ -1,0 +1,7 @@
+platform :ios, '11.0'
+
+target 'Photomon' do
+  use_frameworks!
+
+  pod 'Firebase/Crashlytics'
+end

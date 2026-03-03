@@ -117,3 +117,11 @@ xcuserdata
 # ...none. Everything is now explained.
 Releases
 Photomon.xccheckout
+
+####
+# CocoaPods
+Pods/
+
+####
+# Firebase
+GoogleService-Info.plist
