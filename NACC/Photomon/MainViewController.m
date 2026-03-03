@@ -593,6 +593,7 @@
             NavViewController *navi = [[NavViewController alloc] initWithRootViewController: controll];
             
             NLog(@"Present controller 4");
+            navi.modalPresentationStyle = UIModalPresentationFullScreen;
 
             [self.navigationController presentViewController:navi animated:NO completion:^{
                 
@@ -646,6 +647,7 @@
     pickerLibrary.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
     
     NLog(@"Present controller 5");
+    pickerLibrary.modalPresentationStyle = UIModalPresentationFullScreen;
 
     [self presentViewController:pickerLibrary animated:NO completion:^() {
         
@@ -2206,12 +2208,13 @@
         return;
     }
     
-	picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-	picker.view.backgroundColor = [UIColor  blackColor];
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.view.backgroundColor = [UIColor  blackColor];
     
     NLog(@"Present controller 8");
+    picker.modalPresentationStyle = UIModalPresentationFullScreen;
 
-	[self presentViewController:picker animated:NO completion:^{
+    [self presentViewController:picker animated:NO completion:^{
         
     }];
 }
@@ -2468,10 +2471,11 @@
 
 	picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     picker.allowsEditing = YES;
-	picker.view.backgroundColor = [UIColor  blackColor];
+    picker.view.backgroundColor = [UIColor  blackColor];
     
     NLog(@"Present controller 1");
-	[self presentViewController:picker animated:YES completion:^{
+    picker.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:picker animated:YES completion:^{
         
     }];
 }
@@ -2530,6 +2534,7 @@
 
         [self dismissViewControllerAnimated:NO completion:^{
             NLog(@"Present controller 2");
+            picker.modalPresentationStyle = UIModalPresentationFullScreen;
 
             [self presentViewController:picker animated:NO completion:^{
 //                picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
@@ -2538,11 +2543,12 @@
     }];
     
     //go show
-	picker.view.backgroundColor = [UIColor blackColor];
+    picker.view.backgroundColor = [UIColor blackColor];
     
     NLog(@"Present controller 3");
+    picker.modalPresentationStyle = UIModalPresentationFullScreen;
 
-	[self presentViewController:picker animated:YES completion:^{
+    [self presentViewController:picker animated:YES completion:^{
         picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
         [self updateFlashMode];
     }];
