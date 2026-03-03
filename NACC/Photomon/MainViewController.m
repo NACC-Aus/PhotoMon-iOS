@@ -136,32 +136,38 @@
     return @"Unknown";
 }
 
--(void)setSelectedDirection:(UIButton*)bt
+-(void)setSelectedDirection:(id)bt
 {
-    NSAssert([NSThread isMainThread], @"MAIN THREAD ERROR");
+    if (![NSThread isMainThread]) return;
 
-    NSArray *arr = @[btS, btS4, btN, btN4, btE, btE4, btW, btW4];
-    for (UIButton *it in arr) {
-        [it setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    // Reset all direction buttons to white (nil-safe: messaging nil is a no-op)
+    [btS setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btS4 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btN setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btN4 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btE setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btE4 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btW setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btW4 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
+    // Determine direction string from button or string input
+    NSString *dirStr = nil;
+    if ([bt isKindOfClass:[NSString class]]) {
+        dirStr = (NSString *)bt;
+    } else if ([bt isKindOfClass:[UIButton class]]) {
+        dirStr = [(UIButton *)bt titleForState:UIControlStateNormal];
     }
-    
-    if (bt == btN || bt == btN4) {
+
+    if ([dirStr isEqualToString:@"N"]) {
         [btN setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [btN4 setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    }
-    
-    if (bt == btE || bt == btE4) {
+    } else if ([dirStr isEqualToString:@"E"]) {
         [btE setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [btE4 setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    }
-    
-    if (bt == btS || bt == btS4) {
+    } else if ([dirStr isEqualToString:@"S"]) {
         [btS setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [btS4 setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    }
-
-    
-    if (bt == btW || bt == btW4) {
+    } else if ([dirStr isEqualToString:@"W"]) {
         [btW setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [btW4 setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     }
@@ -1987,8 +1993,8 @@
 #if TARGET_IPHONE_SIMULATOR
     [self gotoAlbum];
 #else
-    [self gotoTakePhoto];
     [self alertForDirectionWithOnDone:^(id back){
+        [self gotoTakePhoto];
     }];
 #endif
     
@@ -2680,6 +2686,7 @@
     if (guidePhotos && site) {
         for (NSString *imgName in guidePhotos) {
              NSArray *com = [imgName componentsSeparatedByString:@"_"];
+            if (com.count < 3) continue;
             NSString* siteId = [com objectAtIndex:0];
             NSString* photoDirection = [com objectAtIndex:2];
             if ([userDefault boolForKey:[NSString stringWithFormat:@"guide:%@",imgName]] && [site.ID isEqualToString:siteId])
@@ -2704,7 +2711,7 @@
     UIView* contentView = [[[NSBundle mainBundle] loadNibNamed:@"DirectionAlertView" owner:self options:nil] objectAtIndex:0];
     contentView.layer.cornerRadius = 7;
     contentView.layer.masksToBounds = YES;
-//    self.onAskDirectionDone = onDone;
+    self.onAskDirectionDone = onDone;
 //    alertAskDirection = [[UIAlertView alloc] initWithTitle:@"" message:@"Please select a direction" delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 //    alertAskDirection.tag = 989;
 //    [alertAskDirection setValue:contentView forKey:@"accessoryView"];
@@ -2769,9 +2776,11 @@
 
 -(void)chooseDirection:(id) sender
 {
-    NSArray* arr = @[btN,btS,btE,btW,btP];
+    NSArray* directions = @[@"N", @"S", @"E", @"W", @"P"];
     NSInteger buttonIndex = ((UIButton*) sender).tag;
-    [self selectDirection:[arr objectAtIndex:buttonIndex - 1]];
+    if (buttonIndex < 1 || buttonIndex > (NSInteger)directions.count) return;
+    NSString *dir = directions[buttonIndex - 1];
+    [self selectDirection:dir];
     if (self.onAskDirectionDone) self.onAskDirectionDone(nil);
     [directionAlertView close];
     
@@ -3008,8 +3017,9 @@
 
     if (alertView != alertAskDirection) return;
     
-    NSArray* arr = @[btN,btS,btE,btW,btP];
-    [self selectDirection:[arr objectAtIndex:buttonIndex]];
+    NSArray* directions = @[@"N", @"S", @"E", @"W", @"P"];
+    if (buttonIndex < 0 || buttonIndex >= (NSInteger)directions.count) return;
+    [self selectDirection:directions[buttonIndex]];
     if (self.onAskDirectionDone) self.onAskDirectionDone(nil);
 }
 
