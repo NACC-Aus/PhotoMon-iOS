@@ -305,6 +305,7 @@
             NavViewController *navi = [[NavViewController alloc] initWithRootViewController: controll];
             
             NLog(@"Present controller 4");
+            navi.modalPresentationStyle = UIModalPresentationFullScreen;
             
             [self.navigationController presentViewController:navi animated:NO completion:^{
                 
@@ -343,6 +344,7 @@
     pickerLibrary.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
     
     NLog(@"Present controller 5");
+    pickerLibrary.modalPresentationStyle = UIModalPresentationFullScreen;
     
     [self presentViewController:pickerLibrary animated:NO completion:^() {
         
@@ -1733,6 +1735,7 @@
     UINavigationController  *nav = [[NavViewController alloc] initWithRootViewController:downloadController];
     
     NLog(@"Present controller 7");
+    nav.modalPresentationStyle = UIModalPresentationFullScreen;
     
     [self.navigationController presentViewController:nav animated:YES completion:nil];
     
@@ -2513,6 +2516,7 @@
     };
     
     UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:controllerSetting];
+    nav.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 

@@ -593,6 +593,7 @@
             NavViewController *navi = [[NavViewController alloc] initWithRootViewController: controll];
             
             NLog(@"Present controller 4");
+            navi.modalPresentationStyle = UIModalPresentationFullScreen;
 
             [self.navigationController presentViewController:navi animated:NO completion:^{
                 
@@ -646,6 +647,7 @@
     pickerLibrary.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
     
     NLog(@"Present controller 5");
+    pickerLibrary.modalPresentationStyle = UIModalPresentationFullScreen;
 
     [self presentViewController:pickerLibrary animated:NO completion:^() {
         
@@ -2206,12 +2208,13 @@
         return;
     }
     
-	picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-	picker.view.backgroundColor = [UIColor  blackColor];
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.view.backgroundColor = [UIColor  blackColor];
     
     NLog(@"Present controller 8");
+    picker.modalPresentationStyle = UIModalPresentationFullScreen;
 
-	[self presentViewController:picker animated:NO completion:^{
+    [self presentViewController:picker animated:NO completion:^{
         
     }];
 }
@@ -2468,10 +2471,11 @@
 
 	picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     picker.allowsEditing = YES;
-	picker.view.backgroundColor = [UIColor  blackColor];
+    picker.view.backgroundColor = [UIColor  blackColor];
     
     NLog(@"Present controller 1");
-	[self presentViewController:picker animated:YES completion:^{
+    picker.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:picker animated:YES completion:^{
         
     }];
 }
@@ -2479,6 +2483,39 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     //NSLog(@"\nStart rotation\n");
+}
+
+- (UIView *)cameraOverlayViewForPicker:(UIImagePickerController *)imagePicker
+{
+    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+    BOOL isThreePointFiveInchLayout = (screenHeight <= 480.0f);
+    UIView *overlay = isThreePointFiveInchLayout ? customCameraOverlayView3_5 : customCameraOverlayView4;
+    CGSize targetSize = imagePicker.view.bounds.size;
+    if (targetSize.width <= 0.0f || targetSize.height <= 0.0f) {
+        targetSize = [UIScreen mainScreen].bounds.size;
+    }
+    
+    // Legacy camera controls were designed on a 320pt-wide canvas.
+    CGFloat designWidth = 320.0f;
+    CGFloat designHeight = isThreePointFiveInchLayout ? 480.0f : 568.0f;
+    
+    overlay.transform = CGAffineTransformIdentity;
+    overlay.bounds = CGRectMake(0.0f, 0.0f, designWidth, designHeight);
+    
+    if (designWidth > 0.0f && designHeight > 0.0f) {
+        CGFloat scaleX = targetSize.width / designWidth;
+        CGFloat scaleY = targetSize.height / designHeight;
+        // Fit inside the picker viewport to avoid horizontal overflow.
+        CGFloat scale = MIN(scaleX, scaleY);
+        CGPoint center = CGPointMake(targetSize.width * 0.5f, targetSize.height * 0.5f);
+        overlay.center = center;
+        overlay.transform = CGAffineTransformMakeScale(scale, scale);
+        overlay.center = center;
+    } else {
+        overlay.frame = CGRectMake(0.0f, 0.0f, targetSize.width, targetSize.height);
+    }
+    
+    return overlay;
 }
 
 -(void)gotoTakePhoto
@@ -2504,14 +2541,7 @@
     picker.edgesForExtendedLayout = YES;
     picker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
     
-    if ([UIScreen mainScreen].bounds.size.height == 568)
-    {
-        picker.cameraOverlayView = customCameraOverlayView4;
-        
-    }else
-    {
-        picker.cameraOverlayView = customCameraOverlayView3_5;
-    }
+    picker.cameraOverlayView = [self cameraOverlayViewForPicker:picker];
     
     self.direction = nil;
     sliderGuide3_5.hidden = sliderGuide4.hidden = YES;
@@ -2530,6 +2560,7 @@
 
         [self dismissViewControllerAnimated:NO completion:^{
             NLog(@"Present controller 2");
+            picker.modalPresentationStyle = UIModalPresentationFullScreen;
 
             [self presentViewController:picker animated:NO completion:^{
 //                picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
@@ -2538,11 +2569,13 @@
     }];
     
     //go show
-	picker.view.backgroundColor = [UIColor blackColor];
+    picker.view.backgroundColor = [UIColor blackColor];
     
     NLog(@"Present controller 3");
+    picker.modalPresentationStyle = UIModalPresentationFullScreen;
 
-	[self presentViewController:picker animated:YES completion:^{
+    [self presentViewController:picker animated:YES completion:^{
+        picker.cameraOverlayView = [self cameraOverlayViewForPicker:picker];
         picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
         [self updateFlashMode];
     }];

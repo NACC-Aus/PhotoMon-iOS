@@ -20,6 +20,7 @@
 		525879B21DFD87E900FD40D0 /* DirectionAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */; };
 		527800962069456D00D4948B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 527800952069456D00D4948B /* Images.xcassets */; };
 		52B95315208316AB002AAD56 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B95314208316AB002AAD56 /* libc++.tbd */; };
+		52BD00AB2F569E0C00D4EE2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52BD00AA2F569E0C00D4EE2F /* LaunchScreen.storyboard */; };
 		52C011E9222E30D10059354C /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C011E7222E30D10059354C /* MapViewController.m */; };
 		52C011EA222E30D10059354C /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52C011E8222E30D10059354C /* MapViewController.xib */; };
 		52E3B5E8223559FA0006870F /* CalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E3B5E7223559FA0006870F /* CalloutView.swift */; };
@@ -146,6 +147,7 @@
 		525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectionAlertView.xib; sourceTree = "<group>"; };
 		527800952069456D00D4948B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		52B95314208316AB002AAD56 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		52BD00AA2F569E0C00D4EE2F /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		52C011E6222E30D10059354C /* MapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		52C011E7222E30D10059354C /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		52C011E8222E30D10059354C /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 				17100DFC169BCF0E00352821 /* InfoPlist.strings */,
 				17100DFF169BCF0E00352821 /* main.m */,
 				17100E01169BCF0E00352821 /* Photomon-Prefix.pch */,
+				52BD00AA2F569E0C00D4EE2F /* LaunchScreen.storyboard */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -787,6 +790,7 @@
 				5AEFBDC0176B27510088A9D7 /* DonateViewController.xib in Resources */,
 				5AEFBDC2176B295E0088A9D7 /* DonateCell.xib in Resources */,
 				5AF6894F1962716E006DCC21 /* Icon-60.png in Resources */,
+				52BD00AB2F569E0C00D4EE2F /* LaunchScreen.storyboard in Resources */,
 				5AF689501962716E006DCC21 /* Icon-60@2x.png in Resources */,
 				5A228F04183B446D00FD9F51 /* AdhocSitesViewController.xib in Resources */,
 				FB1B614818B4A86A006B1860 /* DownloadViewController.xib in Resources */,
