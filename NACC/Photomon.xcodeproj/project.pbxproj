@@ -19,10 +19,9 @@
 		525879B01DFD821B00FD40D0 /* CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 525879AF1DFD821B00FD40D0 /* CustomIOSAlertView.m */; };
 		525879B21DFD87E900FD40D0 /* DirectionAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */; };
 		527800962069456D00D4948B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 527800952069456D00D4948B /* Images.xcassets */; };
-		52B953122083166E002AAD56 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B953102083166D002AAD56 /* Crashlytics.framework */; };
-		52B953132083166E002AAD56 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B953112083166D002AAD56 /* Fabric.framework */; };
 		52B95315208316AB002AAD56 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B95314208316AB002AAD56 /* libc++.tbd */; };
 		52BD00AB2F569E0C00D4EE2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52BD00AA2F569E0C00D4EE2F /* LaunchScreen.storyboard */; };
+		52FBC00120260301002AAD56 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52FBC00020260301002AAD56 /* GoogleService-Info.plist */; };
 		52C011E9222E30D10059354C /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C011E7222E30D10059354C /* MapViewController.m */; };
 		52C011EA222E30D10059354C /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52C011E8222E30D10059354C /* MapViewController.xib */; };
 		52E3B5E8223559FA0006870F /* CalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E3B5E7223559FA0006870F /* CalloutView.swift */; };
@@ -57,6 +56,7 @@
 		5AEFBE82176B2F190088A9D7 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AEFBE81176B2F190088A9D7 /* libxml2.dylib */; };
 		5AF6894F1962716E006DCC21 /* Icon-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AF6894D1962716E006DCC21 /* Icon-60.png */; };
 		5AF689501962716E006DCC21 /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AF6894E1962716E006DCC21 /* Icon-60@2x.png */; };
+		6A09E79A6490E127C4248D53 /* Pods_Photomon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDFED2697B34700DA697592 /* Pods_Photomon.framework */; };
 		B2061F9916E8A6A70028D784 /* thumnail.png in Resources */ = {isa = PBXBuildFile; fileRef = B2061F9816E8A6A70028D784 /* thumnail.png */; };
 		B2188D1B16BF72CA000FF0E2 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2188D1A16BF72CA000FF0E2 /* CoreMotion.framework */; };
 		B249AE4316B669FD001C4DC4 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B249AE4216B669FD001C4DC4 /* MediaPlayer.framework */; };
@@ -138,15 +138,15 @@
 		17100E02169BCF0E00352821 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		17100E03169BCF0E00352821 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		17100E0C169BCF0E00352821 /* Photomon.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Photomon.xcdatamodel; sourceTree = "<group>"; };
+		315EBA2371C71E1F9F36C13B /* Pods-Photomon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photomon.release.xcconfig"; path = "Target Support Files/Pods-Photomon/Pods-Photomon.release.xcconfig"; sourceTree = "<group>"; };
 		523625352079FF0F0027D045 /* CacheManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CacheManager.h; sourceTree = "<group>"; };
 		523625362079FF0F0027D045 /* CacheManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CacheManager.m; sourceTree = "<group>"; };
 		525879AE1DFD821B00FD40D0 /* CustomIOSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomIOSAlertView.h; sourceTree = "<group>"; };
 		525879AF1DFD821B00FD40D0 /* CustomIOSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOSAlertView.m; sourceTree = "<group>"; };
 		525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectionAlertView.xib; sourceTree = "<group>"; };
 		527800952069456D00D4948B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		52B953102083166D002AAD56 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
-		52B953112083166D002AAD56 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		52B95314208316AB002AAD56 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		52FBC00020260301002AAD56 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		52BD00AA2F569E0C00D4EE2F /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		52C011E6222E30D10059354C /* MapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		52C011E7222E30D10059354C /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
@@ -202,6 +202,8 @@
 		5AEFBE81176B2F190088A9D7 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		5AF6894D1962716E006DCC21 /* Icon-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60.png"; sourceTree = "<group>"; };
 		5AF6894E1962716E006DCC21 /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@2x.png"; sourceTree = "<group>"; };
+		66D26C1371864058BAF3F4D4 /* Pods-Photomon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Photomon.debug.xcconfig"; path = "Target Support Files/Pods-Photomon/Pods-Photomon.debug.xcconfig"; sourceTree = "<group>"; };
+		AFDFED2697B34700DA697592 /* Pods_Photomon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Photomon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2061F9816E8A6A70028D784 /* thumnail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumnail.png; sourceTree = "<group>"; };
 		B2188D1A16BF72CA000FF0E2 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		B249AE4216B669FD001C4DC4 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -315,7 +317,6 @@
 				52B95315208316AB002AAD56 /* libc++.tbd in Frameworks */,
 				CBB61A281B05D80000C84787 /* ImageIO.framework in Frameworks */,
 				CBB61A261B05D7DA00C84787 /* CoreImage.framework in Frameworks */,
-				52B953122083166E002AAD56 /* Crashlytics.framework in Frameworks */,
 				5AEFBE82176B2F190088A9D7 /* libxml2.dylib in Frameworks */,
 				5AEFBE80176B2F050088A9D7 /* QuartzCore.framework in Frameworks */,
 				B2188D1B16BF72CA000FF0E2 /* CoreMotion.framework in Frameworks */,
@@ -323,7 +324,6 @@
 				B26CED5316A6C50B00BE7D39 /* MapKit.framework in Frameworks */,
 				B26CED5016A6B40800BE7D39 /* AVFoundation.framework in Frameworks */,
 				B297A4F5169D5DF900C57214 /* CoreLocation.framework in Frameworks */,
-				52B953132083166E002AAD56 /* Fabric.framework in Frameworks */,
 				B299EE58169BD0FF00B8655D /* CFNetwork.framework in Frameworks */,
 				B299EE56169BD0E100B8655D /* MobileCoreServices.framework in Frameworks */,
 				B299EE54169BD0D300B8655D /* SystemConfiguration.framework in Frameworks */,
@@ -332,6 +332,7 @@
 				17100DF4169BCF0E00352821 /* Foundation.framework in Frameworks */,
 				17100DF6169BCF0E00352821 /* CoreGraphics.framework in Frameworks */,
 				17100DF8169BCF0E00352821 /* CoreData.framework in Frameworks */,
+				6A09E79A6490E127C4248D53 /* Pods_Photomon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,8 +342,6 @@
 		17100DE2169BCF0E00352821 = {
 			isa = PBXGroup;
 			children = (
-				52B953102083166D002AAD56 /* Crashlytics.framework */,
-				52B953112083166D002AAD56 /* Fabric.framework */,
 				527800952069456D00D4948B /* Images.xcassets */,
 				CBB61A1E1B05D60E00C84787 /* Externals */,
 				5A6243B2174DF5A800016B1D /* Default-568h@2x.png */,
@@ -350,6 +349,7 @@
 				17100DF9169BCF0E00352821 /* Photomon */,
 				17100DF0169BCF0E00352821 /* Frameworks */,
 				17100DEE169BCF0E00352821 /* Products */,
+				24D96D3E5E5A6A3A4928C98B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -383,6 +383,7 @@
 				17100DF3169BCF0E00352821 /* Foundation.framework */,
 				17100DF5169BCF0E00352821 /* CoreGraphics.framework */,
 				17100DF7169BCF0E00352821 /* CoreData.framework */,
+				AFDFED2697B34700DA697592 /* Pods_Photomon.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -404,6 +405,7 @@
 			isa = PBXGroup;
 			children = (
 				17100DFB169BCF0E00352821 /* Photomon-Info.plist */,
+				52FBC00020260301002AAD56 /* GoogleService-Info.plist */,
 				17100DFC169BCF0E00352821 /* InfoPlist.strings */,
 				17100DFF169BCF0E00352821 /* main.m */,
 				17100E01169BCF0E00352821 /* Photomon-Prefix.pch */,
@@ -469,6 +471,16 @@
 				525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		24D96D3E5E5A6A3A4928C98B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				66D26C1371864058BAF3F4D4 /* Pods-Photomon.debug.xcconfig */,
+				315EBA2371C71E1F9F36C13B /* Pods-Photomon.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		52E3B5E5223559CC0006870F /* Callout */ = {
@@ -691,10 +703,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 17100E10169BCF0E00352821 /* Build configuration list for PBXNativeTarget "Photomon" */;
 			buildPhases = (
+				9FD94BCFA1A40550BCDB1E89 /* [CP] Check Pods Manifest.lock */,
 				17100DE9169BCF0E00352821 /* Sources */,
 				17100DEA169BCF0E00352821 /* Frameworks */,
 				17100DEB169BCF0E00352821 /* Resources */,
 				52B9530F20831655002AAD56 /* ShellScript */,
+				DFE6F2F8C67B8867E64F75CD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -783,6 +797,7 @@
 				FB1B614818B4A86A006B1860 /* DownloadViewController.xib in Resources */,
 				FBF10DD0185AF180003DB81D /* preload.png in Resources */,
 				FBF10DD1185AF180003DB81D /* preload@2x.png in Resources */,
+				52FBC00120260301002AAD56 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -795,12 +810,75 @@
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Fabric.framework/run 5032e75eb6f7beedff552d5f3ec1f33cc0f1d507 7a0397fde2df5dc6317123a1f66e4a6cfea0cec0d2a257e557868c1993d352ce\n";
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
+		9FD94BCFA1A40550BCDB1E89 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Photomon-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DFE6F2F8C67B8867E64F75CD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Photomon/Pods-Photomon-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCoreExtension/FirebaseCoreExtension.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCrashlytics/FirebaseCrashlytics.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseInstallations/FirebaseInstallations.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseRemoteConfigInterop/FirebaseRemoteConfigInterop.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseSessions/FirebaseSessions.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
+				"${BUILT_PRODUCTS_DIR}/PromisesSwift/Promises.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreExtension.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreInternal.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCrashlytics.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseInstallations.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseRemoteConfigInterop.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseSessions.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleDataTransport.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Promises.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Photomon/Pods-Photomon-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -944,6 +1022,7 @@
 		};
 		17100E11169BCF0E00352821 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66D26C1371864058BAF3F4D4 /* Pods-Photomon.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -963,6 +1042,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
+					"$(inherited)",
 					"-all_load",
 					"-ObjC",
 				);
@@ -981,6 +1061,7 @@
 		};
 		17100E12169BCF0E00352821 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 315EBA2371C71E1F9F36C13B /* Pods-Photomon.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1000,6 +1081,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
+					"$(inherited)",
 					"-all_load",
 					"-ObjC",
 				);
