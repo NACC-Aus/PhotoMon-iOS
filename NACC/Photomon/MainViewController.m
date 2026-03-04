@@ -884,19 +884,23 @@
             UILabel* lb = (UILabel*) [rootView viewWithTag:887];
             if (!lb)
             {
-                vw = [[UIView alloc] initWithFrame:CGRectMake(134, 7+0 , 50, 30)];
+                CGFloat vwWidth = 50;
+                CGFloat vwX = (rootView.bounds.size.width - vwWidth) / 2;
+                vw = [[UIView alloc] initWithFrame:CGRectMake(vwX, 7, vwWidth, 30)];
                 vw.backgroundColor = [UIColor blackColor];
                 vw.alpha = 0.5;
                 vw.tag  = 886;
                 vw.layer.cornerRadius = 10.0;
+                vw.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
                 [rootView addSubview:vw];
-                
-                lb = [[UILabel alloc] initWithFrame:CGRectMake(134+5, 7+5+0, 40, 20)];
+
+                lb = [[UILabel alloc] initWithFrame:CGRectMake(vwX + 5, 12, 40, 20)];
                 lb.textColor = [UIColor whiteColor];
                 lb.font = [UIFont boldSystemFontOfSize:10];
                 lb.textAlignment = NSTextAlignmentCenter;
                 lb.backgroundColor = [UIColor clearColor];
                 lb.tag = 887;
+                lb.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
                 [rootView addSubview:lb];
             }
             vw.hidden = NO;
