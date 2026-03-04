@@ -15,5 +15,6 @@
 
 @property (nonatomic) BOOL isDisabledPicker;
 - (void) configNavViewController:(UINavigationController*)nav;
+- (void) closePicker;
 
 @end

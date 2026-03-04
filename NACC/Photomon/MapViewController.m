@@ -410,9 +410,10 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewDidDisappear:animated];
+    [super viewWillDisappear:animated];
     
     [prjPick setIsDisabledPicker:YES];
+    [prjPick closePicker];
 }
 
 - (void)viewDidLoad

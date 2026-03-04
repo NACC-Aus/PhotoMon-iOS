@@ -23,7 +23,9 @@ int height;
     
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     
-    UIToolbar *toolBar= [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 36)];
+    static const CGFloat kToolbarBottomMargin = -18.0f;
+    CGFloat toolBarOffsetY = -kToolbarBottomMargin;
+    UIToolbar *toolBar= [[UIToolbar alloc] initWithFrame:CGRectMake(0, toolBarOffsetY, screenWidth, 48)];
     [toolBar setBarStyle:UIBarStyleDefault];
     toolBar.clipsToBounds = YES;
     toolBar.translucent = YES;
@@ -51,6 +53,11 @@ int height;
 - (void)doneClicked:(id)sender {
     id prj = [[APIController shared].projects objectAtIndex:selectedRow];
     [[APIController shared] updateCurrentProject:prj];
+    [self dismiss];
+}
+
+- (void)closePicker
+{
     [self dismiss];
 }
 
