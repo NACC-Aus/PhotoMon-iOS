@@ -20,6 +20,14 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+
+    if (@available(iOS 15.0, *)) {
+        UINavigationBarAppearance *appearance = [[UINavigationBarAppearance alloc] init];
+        [appearance configureWithOpaqueBackground];
+        appearance.backgroundColor = [UIColor whiteColor];
+        self.navigationBar.standardAppearance = appearance;
+        self.navigationBar.scrollEdgeAppearance = appearance;
+    }
 }
 
 - (void)didReceiveMemoryWarning
