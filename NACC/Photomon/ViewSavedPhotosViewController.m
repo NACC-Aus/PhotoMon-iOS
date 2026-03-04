@@ -88,54 +88,59 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Do any additional setup after loading the view from its nib.
+
     self.view.backgroundColor = [UIColor darkGrayColor];
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
-    CGFloat topInset = 0;
-    if (self.navigationController) {
-        CGRect navBarFrame = self.navigationController.navigationBar.frame;
-        topInset = navBarFrame.origin.y + navBarFrame.size.height;
-    }
-    CGRect frameRect = CGRectMake(0, 0, screenWidth, screenHeight - topInset);
-    self.view.frame = frameRect;
-	horizontalView	= [[EasyTableView alloc] initWithFrame:frameRect numberOfColumns:self.photos.count ofWidth:screenWidth];
-	horizontalView.delegate						= self;
-	horizontalView.tableView.backgroundColor	= [UIColor whiteColor];
-	horizontalView.tableView.allowsSelection	= YES;
-	horizontalView.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    horizontalView.tableView.pagingEnabled = YES;
-    horizontalView.tableView.contentInset = UIEdgeInsetsZero;
-    if (@available(iOS 11.0, *)) {
-        horizontalView.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    }
-    if (@available(iOS 15.0, *)) {
-        horizontalView.tableView.sectionHeaderTopPadding = 0;
-    }
-	horizontalView.cellBackgroundColor			= [UIColor darkGrayColor];
-	[self.view addSubview:horizontalView];
-   
-    double delayInSeconds = 0.1;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-         [horizontalView selectCellAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0] animated:NO];
-    });
-    
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Note" style:UIBarButtonItemStyleBordered target:self action:@selector(onNote:)];
-    
+
     toolBarNotes = [[UIToolbar alloc] init];
     toolBarNotes.barStyle = UIBarStyleBlackTranslucent;
-    
+
     UIBarButtonItem* btCancel2 = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(onNoteCancel:)];
     UIBarButtonItem* bt = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem* btDone = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(onNoteDone:)];
     [toolBarNotes setItems:@[btCancel2, bt,btDone]];
     [toolBarNotes sizeToFit];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    if (!horizontalView) {
+        CGFloat screenWidth = self.view.bounds.size.width;
+        CGRect frameRect = self.view.bounds;
+        NSLog(@"DEBUG viewDidLayoutSubviews: bounds=%@, photosCount=%lu, currentIndex=%d, screenWidth=%.1f",
+              NSStringFromCGRect(frameRect), (unsigned long)self.photos.count, currentIndex, screenWidth);
+        horizontalView = [[EasyTableView alloc] initWithFrame:frameRect numberOfColumns:self.photos.count ofWidth:screenWidth];
+        horizontalView.delegate = self;
+        horizontalView.tableView.backgroundColor = [UIColor whiteColor];
+        horizontalView.tableView.allowsSelection = YES;
+        horizontalView.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        horizontalView.tableView.pagingEnabled = YES;
+        horizontalView.tableView.estimatedRowHeight = 0;
+        horizontalView.tableView.estimatedSectionHeaderHeight = 0;
+        horizontalView.tableView.estimatedSectionFooterHeight = 0;
+        horizontalView.tableView.contentInset = UIEdgeInsetsZero;
+        if (@available(iOS 11.0, *)) {
+            horizontalView.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        }
+        if (@available(iOS 15.0, *)) {
+            horizontalView.tableView.sectionHeaderTopPadding = 0;
+        }
+        horizontalView.cellBackgroundColor = [UIColor darkGrayColor];
+        [self.view addSubview:horizontalView];
+        [horizontalView.tableView reloadData];
+        [horizontalView.tableView layoutIfNeeded];
+        NSLog(@"DEBUG before select: contentOffset=%@, contentSize=%@",
+              NSStringFromCGPoint(horizontalView.tableView.contentOffset),
+              NSStringFromCGSize(horizontalView.tableView.contentSize));
+        [horizontalView selectCellAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0] animated:NO];
+        NSLog(@"DEBUG after select: contentOffset=%@",
+              NSStringFromCGPoint(horizontalView.tableView.contentOffset));
+    }
 }
 
 - (void)dealloc
@@ -666,7 +671,7 @@
 }
 
 - (void)easyTableView:(EasyTableView *)easyTableView setDataForView:(UIView *)view forIndexPath:(NSIndexPath *)indexPath {
-    
+    NSLog(@"DEBUG setDataForView: indexPath.row=%ld, view.frame=%@", (long)indexPath.row, NSStringFromCGRect(view.frame));
 //	__block UIImageView *img	= (UIImageView *)view;
     
     __block UILabel *text = (UILabel*)[view viewWithTag:2];
