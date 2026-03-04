@@ -112,8 +112,6 @@
     if (!horizontalView) {
         CGFloat screenWidth = self.view.bounds.size.width;
         CGRect frameRect = self.view.bounds;
-        NSLog(@"DEBUG viewDidLayoutSubviews: bounds=%@, photosCount=%lu, currentIndex=%d, screenWidth=%.1f",
-              NSStringFromCGRect(frameRect), (unsigned long)self.photos.count, currentIndex, screenWidth);
         horizontalView = [[EasyTableView alloc] initWithFrame:frameRect numberOfColumns:self.photos.count ofWidth:screenWidth];
         horizontalView.delegate = self;
         horizontalView.tableView.backgroundColor = [UIColor whiteColor];
@@ -134,12 +132,7 @@
         [self.view addSubview:horizontalView];
         [horizontalView.tableView reloadData];
         [horizontalView.tableView layoutIfNeeded];
-        NSLog(@"DEBUG before select: contentOffset=%@, contentSize=%@",
-              NSStringFromCGPoint(horizontalView.tableView.contentOffset),
-              NSStringFromCGSize(horizontalView.tableView.contentSize));
         [horizontalView selectCellAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0] animated:NO];
-        NSLog(@"DEBUG after select: contentOffset=%@",
-              NSStringFromCGPoint(horizontalView.tableView.contentOffset));
     }
 }
 
@@ -671,7 +664,6 @@
 }
 
 - (void)easyTableView:(EasyTableView *)easyTableView setDataForView:(UIView *)view forIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"DEBUG setDataForView: indexPath.row=%ld, view.frame=%@", (long)indexPath.row, NSStringFromCGRect(view.frame));
 //	__block UIImageView *img	= (UIImageView *)view;
     
     __block UILabel *text = (UILabel*)[view viewWithTag:2];

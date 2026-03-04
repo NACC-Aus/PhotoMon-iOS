@@ -117,21 +117,27 @@ static ReminderViewController* shared_ = nil;
     //pickerDate
     if (![self.navigationController.view viewWithTag:1111])
     {
-        UIView* vwFade = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 650)];
+        CGFloat navWidth = self.navigationController.view.bounds.size.width;
+        CGFloat navHeight = self.navigationController.view.bounds.size.height;
+
+        UIView* vwFade = [[UIView alloc] initWithFrame:CGRectMake(0, 0, navWidth, navHeight)];
         vwFade.alpha = 0.0;
         vwFade.tag = 1111;
-        pickerDate = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 650, 320, 162)];
+        vwFade.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        pickerDate = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, navHeight, navWidth, 162)];
         pickerDate.backgroundColor = [UIColor whiteColor];
-        
+        pickerDate.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+
         UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapFade:)];
         [vwFade addGestureRecognizer:tap];
-        
+
         [self.navigationController.view addSubview:vwFade];
         [self.navigationController.view addSubview:pickerDate];
-        
+
         //wpickerDate
-        wpickerDate = [[WDatePicker alloc] initWithFrame:CGRectMake(0, 650, 320, 162)];
+        wpickerDate = [[WDatePicker alloc] initWithFrame:CGRectMake(0, navHeight, navWidth, 162)];
         wpickerDate.backgroundColor = [UIColor whiteColor];
+        wpickerDate.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         [self.navigationController.view addSubview:wpickerDate];
     }
 }
@@ -188,10 +194,13 @@ enum {
     UIView * vwFade = [self.navigationController.view viewWithTag:1111];
     vwFade.backgroundColor = [UIColor blackColor];
     
+    CGFloat navWidth = self.navigationController.view.bounds.size.width;
+    CGFloat navHeight = self.navigationController.view.bounds.size.height;
+
     [appDelegate.window setUserInteractionEnabled:NO];
     [UIView animateWithDuration:0.3 animations:^(void){
         vwFade.alpha = 0.3;
-        pickerDate.frame = CGRectMake(0, self.view.frame.size.height-162+64, 320, 162);
+        pickerDate.frame = CGRectMake(0, navHeight - 162, navWidth, 162);
     } completion:^(BOOL finished) {
         [appDelegate.window setUserInteractionEnabled:YES];
     }];
@@ -200,32 +209,38 @@ enum {
 - (void) showDatePicker2:(NSDate*)currentDate andOnDone:(void(^)(id))onDone
 {
     if (onDone) onWPickerDateDone = [onDone copy];
-    
+
     [wpickerDate setCurrentDate:currentDate];
-    
+
     UIView * vwFade = [self.navigationController.view viewWithTag:1111];
     vwFade.backgroundColor = [UIColor blackColor];
-    
+
+    CGFloat navWidth = self.navigationController.view.bounds.size.width;
+    CGFloat navHeight = self.navigationController.view.bounds.size.height;
+
     [UIView animateWithDuration:0.3 animations:^(void){
         vwFade.alpha = 0.3;
-        wpickerDate.frame = CGRectMake(0, self.view.frame.size.height-162+64, 320, 162);
+        wpickerDate.frame = CGRectMake(0, navHeight - 162, navWidth, 162);
     }];
 }
 
 - (void) showTimePicker:(NSDate*)currentTime andOnDone:(void(^)(id))onDone
 {
     if (onDone) onPickerDateDone = [onDone copy];
-    
+
     pickerDate.datePickerMode = UIDatePickerModeTime;
     [pickerDate setDate:currentTime animated:NO] ;
-    
+
     UIView * vwFade = [self.navigationController.view viewWithTag:1111];
     vwFade.backgroundColor = [UIColor blackColor];
-    
+
+    CGFloat navWidth = self.navigationController.view.bounds.size.width;
+    CGFloat navHeight = self.navigationController.view.bounds.size.height;
+
     [appDelegate.window setUserInteractionEnabled:NO];
     [UIView animateWithDuration:0.3 animations:^(void){
         vwFade.alpha = 0.3;
-        pickerDate.frame = CGRectMake(0, self.view.frame.size.height-162+64, 320, 162);
+        pickerDate.frame = CGRectMake(0, navHeight - 162, navWidth, 162);
     } completion:^(BOOL finished) {
         [appDelegate.window setUserInteractionEnabled:YES];
     }];
@@ -449,8 +464,10 @@ enum {
                     
                     UISwitch* sw = [[UISwitch alloc] init];
                     sw.tag = 11;
-                    UIView* vw = [[UIView alloc] initWithFrame:CGRectMake(290 - sw.frame.size.width, 6, sw.frame.size.width, 30)];
+                    CGFloat cellWidth = cell.contentView.bounds.size.width;
+                    UIView* vw = [[UIView alloc] initWithFrame:CGRectMake(cellWidth - 30 - sw.frame.size.width, 6, sw.frame.size.width, 30)];
                     vw.tag = 1;
+                    vw.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
                     [vw addSubview:sw];
                     [cell.contentView addSubview:vw];
                     [sw addTarget:self action:@selector(onSwitchEnableReminder:) forControlEvents:UIControlEventValueChanged];
@@ -479,10 +496,12 @@ enum {
                     txtField.borderStyle = UITextBorderStyleNone;
                     txtField.tag = 11;
                     txtField.delegate = self;
-                    
-                    UIView* vw = [[UIView alloc] initWithFrame:CGRectMake(290 - txtField.frame.size.width, 5, txtField.frame.size.width, 34)];
+
+                    CGFloat cellWidth = cell.contentView.bounds.size.width;
+                    UIView* vw = [[UIView alloc] initWithFrame:CGRectMake(cellWidth - 30 - txtField.frame.size.width, 5, txtField.frame.size.width, 34)];
                     vw.tag = 1;
-                    
+                    vw.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+
                     [vw addSubview:txtField];
                     [cell.contentView addSubview:vw];
                     
@@ -737,20 +756,23 @@ enum {
         onPickerDateDone = nil;
     }
     
+    CGFloat navWidth = self.navigationController.view.bounds.size.width;
+    CGFloat navHeight = self.navigationController.view.bounds.size.height;
+
     [UIView animateWithDuration:0.3 animations:^(void){
         vwFade.alpha = 0.0;
-        pickerDate.frame = CGRectMake(0, 650, 320, 162);
+        pickerDate.frame = CGRectMake(0, navHeight, navWidth, 162);
     }];
-    
+
     if (onWPickerDateDone)
     {
         onWPickerDateDone(wpickerDate.currentDate);
         onWPickerDateDone = nil;
     }
-    
+
     [UIView animateWithDuration:0.3 animations:^(void){
         vwFade.alpha = 0.0;
-        wpickerDate.frame = CGRectMake(0, 650, 320, 162);
+        wpickerDate.frame = CGRectMake(0, navHeight, navWidth, 162);
     }];
 }
 
