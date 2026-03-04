@@ -38,13 +38,18 @@ static RootViewController* shared_ = nil;
     // Do any additional setup after loading the view from its nib.
     [btSubmit addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
     [self registerForNotifications];
-    float height = [UIScreen mainScreen].bounds.size.height;
-    if (height >= 480)
-    {
-        svContentView.top = 10;
+
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+
+    // Fix hardcoded text field width constraint (307 → dynamic)
+    for (NSLayoutConstraint *constraint in tfServerName.constraints) {
+        if (constraint.firstAttribute == NSLayoutAttributeWidth && constraint.constant == 307) {
+            constraint.constant = screenWidth - 14;
+            break;
+        }
     }
-    
-    svContentView.contentSize = CGSizeMake(320, 600);
+
+    svContentView.contentSize = CGSizeMake(screenWidth, 460);
     [svContentView scrollsToTop];
     
     svContentView.scrollEnabled = NO;
@@ -85,6 +90,22 @@ static RootViewController* shared_ = nil;
     [super viewWillAppear:animated];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+
+    // Center content vertically
+    CGFloat contentHeight = svContentView.contentSize.height;
+    CGFloat availableHeight = svContentView.bounds.size.height;
+    if (availableHeight > contentHeight) {
+        CGFloat topInset = (availableHeight - contentHeight) / 2;
+        svContentView.contentInset = UIEdgeInsetsMake(topInset, 0, svContentView.contentInset.bottom, 0);
+        if (CGRectEqualToRect(keyboardFrame, CGRectZero)) {
+            svContentView.contentOffset = CGPointMake(0, -topInset);
+        }
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -122,7 +143,7 @@ static RootViewController* shared_ = nil;
     [tfPassword resignFirstResponder];
     [tfServerName resignFirstResponder];
     [self adjustTableViewHeightForCoveringFrame:CGRectZero];
-    [svContentView scrollRectToVisible:CGRectMake(0, 1, 320, 1) animated:YES];
+    [svContentView scrollRectToVisible:CGRectMake(0, 1, svContentView.bounds.size.width, 1) animated:YES];
     //check valid field and start send to server
     NSUserDefaults *df = [NSUserDefaults standardUserDefaults];
     APIController *api = [APIController shared];
@@ -274,7 +295,7 @@ static RootViewController* shared_ = nil;
     {
         [textField resignFirstResponder];
         [self adjustTableViewHeightForCoveringFrame:CGRectZero];
-        [svContentView scrollRectToVisible:CGRectMake(0, 1, 320, 1) animated:YES];
+        [svContentView scrollRectToVisible:CGRectMake(0, 1, svContentView.bounds.size.width, 1) animated:YES];
         if (textField == tfServerName)
         {
             NSString *serveraddress = tfServerName.text;
@@ -332,10 +353,11 @@ static RootViewController* shared_ = nil;
 		CGRect normalisedTableViewFrame = [self rectForOrientationFrame:[svContentView.superview convertRect:svContentView.frame
                                                                                               toView:[[UIApplication sharedApplication] keyWindow]]];
 		CGFloat height = CGRectEqualToRect(coveringFrame, CGRectZero) ? 0 : coveringFrame.size.height - (normalisedWindowBounds.size.height - CGRectGetMaxY(normalisedTableViewFrame));
-		UIEdgeInsets contentInsets = UIEdgeInsetsMake(0, 0, height, 0);
+		CGFloat topInset = svContentView.contentInset.top;
+		UIEdgeInsets contentInsets = UIEdgeInsetsMake(topInset, 0, height, 0);
 		svContentView.contentInset = contentInsets;
-		svContentView.scrollIndicatorInsets = contentInsets;
-        [svContentView scrollRectToVisible:CGRectMake(0, btSubmit.top + 10, 320, btSubmit.height) animated:YES];
+		svContentView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, height, 0);
+        [svContentView scrollRectToVisible:CGRectMake(0, btSubmit.top + 10, svContentView.bounds.size.width, btSubmit.height) animated:YES];
 	}
 }
 

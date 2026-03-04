@@ -129,7 +129,7 @@
             <constraints>
                 <constraint firstItem="19" firstAttribute="width" secondItem="1" secondAttribute="width" id="0EF-pk-UBW"/>
                 <constraint firstAttribute="bottom" secondItem="19" secondAttribute="bottom" id="UKh-ua-Bgp"/>
-                <constraint firstItem="19" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="Vzl-ht-7JD"/>
+                <constraint firstItem="19" firstAttribute="top" secondItem="zlk-9H-r2e" secondAttribute="top" id="Vzl-ht-7JD"/>
                 <constraint firstItem="19" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="uhf-dy-ne2"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="zlk-9H-r2e"/>
