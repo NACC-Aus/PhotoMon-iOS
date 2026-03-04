@@ -713,7 +713,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewDidDisappear:animated];
+    [super viewWillDisappear:animated];
     //[prjPick setIsDisabledPicker:YES];
 }
 
@@ -1949,7 +1949,7 @@
     
     //...
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    ViewSavedPhotosViewController *control = [[ViewSavedPhotosViewController alloc] initWithNibName:@"ViewSavedPhotosViewController" bundle:nil andPhotos:lstObjsForTbPhotos andSelectedIndex: indexPath.row];
+    ViewSavedPhotosViewController *control = [[ViewSavedPhotosViewController alloc] initWithNibName:@"ViewSavedPhotosViewController" bundle:nil andPhotos:lstObjsForTbPhotos andSelectedIndex:(int)indexPath.row];
     control.controllerMain = self;
     self.controllerSavedPhotos = control;
     __weak ViewSavedPhotosViewController* weakControl = control;

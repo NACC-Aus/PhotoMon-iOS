@@ -90,20 +90,30 @@
     [super viewDidLoad];
     
     // Do any additional setup after loading the view from its nib.
-    CGRect frameRect = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64);
+    self.view.backgroundColor = [UIColor darkGrayColor];
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+    CGFloat topInset = 0;
+    if (self.navigationController) {
+        CGRect navBarFrame = self.navigationController.navigationBar.frame;
+        topInset = navBarFrame.origin.y + navBarFrame.size.height;
+    }
+    CGRect frameRect = CGRectMake(0, 0, screenWidth, screenHeight - topInset);
     self.view.frame = frameRect;
-    scrollView2 = [[UIScrollView alloc] initWithFrame: [UIScreen mainScreen].bounds];
-    [self.view addSubview: scrollView2];
-
-    //NSLog(@"\nframe: %@\n", NSStringFromCGRect(frameRect));
-	horizontalView	= [[EasyTableView alloc] initWithFrame:frameRect numberOfColumns:self.photos.count ofWidth: 320];
+	horizontalView	= [[EasyTableView alloc] initWithFrame:frameRect numberOfColumns:self.photos.count ofWidth:screenWidth];
 	horizontalView.delegate						= self;
 	horizontalView.tableView.backgroundColor	= [UIColor whiteColor];
 	horizontalView.tableView.allowsSelection	= YES;
 	horizontalView.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     horizontalView.tableView.pagingEnabled = YES;
+    horizontalView.tableView.contentInset = UIEdgeInsetsZero;
+    if (@available(iOS 11.0, *)) {
+        horizontalView.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
+    if (@available(iOS 15.0, *)) {
+        horizontalView.tableView.sectionHeaderTopPadding = 0;
+    }
 	horizontalView.cellBackgroundColor			= [UIColor darkGrayColor];
-	horizontalView.autoresizingMask				= UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
 	[self.view addSubview:horizontalView];
    
     double delayInSeconds = 0.1;
@@ -145,8 +155,7 @@
 
 -(void)onTap:(UITapGestureRecognizer*)tap
 {
-    [self.view sendSubviewToBack:scrollView2];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
     [self.navigationController setNavigationBarHidden:NO];
 }
 
@@ -546,11 +555,12 @@
     if (!isKeyboardShowing) return;
     
     int off = contentOffset.x;
-    if (off % 320 == 0)
+    int cellWidth = (int)[UIScreen mainScreen].bounds.size.width;
+    if (cellWidth > 0 && off % cellWidth == 0)
     {
         [currentTxtViewNote resignFirstResponder];
-        
-        int idx = off/320;
+
+        int idx = off/cellWidth;
         UIView* vw = [easyTableView viewAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]];
         UITextView* txtView = [[vw viewWithTag:1919].subviews objectAtIndex:1];
         [txtView becomeFirstResponder];
@@ -587,12 +597,6 @@
     label.lineBreakMode = NSLineBreakByWordWrapping;
     label.textColor = [UIColor whiteColor];
     label.tag = 2;
-    UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
-    bt.frame = rect;
-    bt.tag = 3;
-    [img addSubview: bt];
-    [bt addTarget:self action:@selector(viewImage:) forControlEvents:UIControlEventTouchUpInside];
-    
     UIButton *aButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [aButton setTitle:@"Make Guide" forState:UIControlStateNormal];
     aButton.width = 109;
@@ -628,11 +632,12 @@
     [aButton addTarget:self action:@selector(deletePhoto:) forControlEvents:UIControlEventTouchUpInside];
     
     //note view
-    UIView* vwAll = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-overView.frame.size.height)];
+    UIView* vwAll = [[UIView alloc] initWithFrame:CGRectMake(0, 0, rect.size.width, self.view.frame.size.height-overView.frame.size.height)];
     vwAll.tag = 1919;
+    vwAll.hidden = YES;
     [img addSubview:vwAll];
-    
-    UIView* vwBgNote = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-overView.frame.size.height)];
+
+    UIView* vwBgNote = [[UIView alloc] initWithFrame:CGRectMake(0, 0, rect.size.width, self.view.frame.size.height-overView.frame.size.height)];
     vwBgNote.backgroundColor = [UIColor blackColor];
     vwBgNote.alpha = 0.6;
     [vwAll addSubview:vwBgNote];
