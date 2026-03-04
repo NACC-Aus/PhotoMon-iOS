@@ -70,38 +70,51 @@
 {
     [super viewDidLoad];
     
-    CGRect frameRect = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64);
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+    CGFloat topInset = 0;
+    if (self.navigationController) {
+        CGRect navBarFrame = self.navigationController.navigationBar.frame;
+        topInset = navBarFrame.origin.y + navBarFrame.size.height;
+    }
+    CGFloat bottomInset = 0;
+    if (@available(iOS 11.0, *)) {
+        bottomInset = UIApplication.sharedApplication.keyWindow.safeAreaInsets.bottom;
+    }
+    CGRect frameRect = CGRectMake(0, 0, screenWidth, screenHeight - topInset - bottomInset);
     self.view.frame = frameRect;
-    
-    scrollView2 = [[UIScrollView alloc] initWithFrame: [UIScreen mainScreen].bounds];
-    
-    holder = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+
+    scrollView2 = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+
+    holder = [[UIView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:holder];
     holder.backgroundColor = [UIColor blackColor];
     [holder addSubview: scrollView2];
-    
+
     [self.view sendSubviewToBack:holder];
-    
+
     // Do any additional setup after loading the view from its nib.
     imgCapturedPhoto.image = self.photo.img;
-    float rate = 320.0/self.photo.img.size.width;
+    float rate = screenWidth/self.photo.img.size.width;
     imgCapturedPhoto.width = self.photo.img.size.width*rate;
     imgCapturedPhoto.height = self.photo.img.size.height*rate;
     imgCapturedPhoto.top = 0;
     imgCapturedPhoto.left = 0;
 //  imgCapturedPhoto.hidden = YES;
-    
+
     lbTimeDirection.text = [NSString stringWithFormat:@"%@\n%@", self.photo.direction, self.photo.date];
     lbTimeDirection.textColor = [UIColor whiteColor];
     imgBackgroundImage.backgroundColor = [UIColor blackColor];
     imgBackgroundImage.alpha = 0.5;
 //    [btMakeGuide addTarget:self action:@selector(makeGuide:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
     tap.delegate = self;
     [holder setGestureRecognizers:@[tap]];
-    
+
+    btViewPhoto.frame = CGRectMake(0, 0, screenWidth, frameRect.size.height - viewOverlay.height);
     [btViewPhoto addTarget:self action:@selector(onTap2:) forControlEvents:UIControlEventTouchUpInside];
+    viewOverlay.width = screenWidth;
     viewOverlay.backgroundColor = [UIColor blackColor];
     viewOverlay.top = self.view.height - viewOverlay.height;
     self.view.backgroundColor = [UIColor blackColor];
@@ -110,15 +123,8 @@
     {
         imgCapturedPhoto.centerY = self.view.height /2 - viewOverlay.height/2;
     }
-    
-    if ([UIScreen mainScreen].bounds.size.height == 480)
-    {
-        vwNotes.frame = CGRectMake(0, -300, 320, 244 - 88);
-    }
-    else
-    {
-        vwNotes.frame = CGRectMake(0, -300, 320, 244);
-    }
+
+    vwNotes.frame = CGRectMake(0, -300, screenWidth, 244);
     
     toolBarNotes = [[UIToolbar alloc] init];
     toolBarNotes.barStyle = UIBarStyleBlackTranslucent;
@@ -187,14 +193,15 @@
     [scrollView2 removeAllSubviews];
     [scrollView2 addSubview:scroll2ImageView];
     [scrollView2 setContentSize:CGSizeMake(scroll2ImageView.frame.size.width, scroll2ImageView.frame.size.height)];
-    scrollView2.minimumZoomScale = 320.0/imgCapturedPhoto.image.size.width;
+    CGFloat sw = [UIScreen mainScreen].bounds.size.width;
+    scrollView2.minimumZoomScale = sw/imgCapturedPhoto.image.size.width;
     scrollView2.maximumZoomScale = 3;
     scrollView2.delegate = self;
     [scrollView2 setScrollEnabled:YES];
     scrollView2.frame = [UIScreen mainScreen].bounds;
-    [scrollView2 setZoomScale:320.0/imgCapturedPhoto.image.size.width];
-    scrollView2.width = 320;
-    scrollView2.height = (320.0/imgCapturedPhoto.image.size.width)*imgCapturedPhoto.image.size.height;
+    [scrollView2 setZoomScale:sw/imgCapturedPhoto.image.size.width];
+    scrollView2.width = sw;
+    scrollView2.height = (sw/imgCapturedPhoto.image.size.width)*imgCapturedPhoto.image.size.height;
     scrollView2.centerY = [UIScreen mainScreen].bounds.size.height/2.0;
 }
 
@@ -268,7 +275,7 @@
     if (vwNotes.frame.origin.y < 0)
     {
         [UIView animateWithDuration:0.3 animations:^{
-            self->vwNotes.frame = CGRectMake(0, 0, 320, self->vwNotes.frame.size.height);
+            self->vwNotes.frame = CGRectMake(0, 0, self.view.width, self->vwNotes.frame.size.height);
         }];
         [txtViewNotes becomeFirstResponder];
     }
@@ -296,7 +303,7 @@
     if (!txtViewNotes.hidden)
     {
         [UIView animateWithDuration:0.3 animations:^{
-            self->vwNotes.frame = CGRectMake(0, -300, 320, self->vwNotes.frame.size.height);
+            self->vwNotes.frame = CGRectMake(0, -300, self.view.width, self->vwNotes.frame.size.height);
         }];
         [txtViewNotes endEditing:YES];
         self.photo.note = txtViewNotes.text;
@@ -317,7 +324,7 @@
             }
 
             [UIView animateWithDuration:0.3 animations:^{
-                self->vwNotes.frame = CGRectMake(0, -300, 320, self->vwNotes.frame.size.height);
+                self->vwNotes.frame = CGRectMake(0, -300, self.view.width, self->vwNotes.frame.size.height);
             }];
             [txtAdhocSite endEditing:YES];
             
