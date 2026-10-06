@@ -19,6 +19,8 @@
 		525879B01DFD821B00FD40D0 /* CustomIOSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 525879AF1DFD821B00FD40D0 /* CustomIOSAlertView.m */; };
 		525879B21DFD87E900FD40D0 /* DirectionAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */; };
 		527800962069456D00D4948B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 527800952069456D00D4948B /* Images.xcassets */; };
+		52B58E883074DC79006E3C1C /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52B58E873074DC79006E3C1C /* SceneDelegate.m */; };
+		52B58E8B3074FD0B006E3C1C /* PMAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52B58E8A3074FD0B006E3C1C /* PMAlertView.m */; };
 		52B95315208316AB002AAD56 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B95314208316AB002AAD56 /* libc++.tbd */; };
 		52BD00AB2F569E0C00D4EE2F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52BD00AA2F569E0C00D4EE2F /* LaunchScreen.storyboard */; };
 		52C011E9222E30D10059354C /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C011E7222E30D10059354C /* MapViewController.m */; };
@@ -146,6 +148,10 @@
 		525879AF1DFD821B00FD40D0 /* CustomIOSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomIOSAlertView.m; sourceTree = "<group>"; };
 		525879B11DFD87E900FD40D0 /* DirectionAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectionAlertView.xib; sourceTree = "<group>"; };
 		527800952069456D00D4948B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		52B58E863074DC79006E3C1C /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		52B58E873074DC79006E3C1C /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		52B58E893074FD0B006E3C1C /* PMAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMAlertView.h; sourceTree = "<group>"; };
+		52B58E8A3074FD0B006E3C1C /* PMAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PMAlertView.m; sourceTree = "<group>"; };
 		52B95314208316AB002AAD56 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		52BD00AA2F569E0C00D4EE2F /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		52C011E6222E30D10059354C /* MapViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
@@ -397,6 +403,8 @@
 				17100E03169BCF0E00352821 /* AppDelegate.m */,
 				17100E0B169BCF0E00352821 /* Photomon.xcdatamodeld */,
 				17100DFA169BCF0E00352821 /* Supporting Files */,
+				52B58E863074DC79006E3C1C /* SceneDelegate.h */,
+				52B58E873074DC79006E3C1C /* SceneDelegate.m */,
 			);
 			path = Photomon;
 			sourceTree = "<group>";
@@ -589,6 +597,8 @@
 				5AA0F7F116F867F300A59BD5 /* WDatePicker.m */,
 				5A6243BE174E1BA600016B1D /* Service.h */,
 				5A6243BF174E1BA600016B1D /* Service.m */,
+				52B58E893074FD0B006E3C1C /* PMAlertView.h */,
+				52B58E8A3074FD0B006E3C1C /* PMAlertView.m */,
 			);
 			name = Helpers;
 			path = Photomon;
@@ -912,6 +922,7 @@
 				CB4813E91B1F6597005D663D /* NSURLConnection+Wrapper.m in Sources */,
 				B299EE4F169BD0A600B8655D /* UIImage+Extend.m in Sources */,
 				B299EE5D169BD1E700B8655D /* RootViewController.m in Sources */,
+				52B58E8B3074FD0B006E3C1C /* PMAlertView.m in Sources */,
 				B299EE77169C0E1000B8655D /* APIController.m in Sources */,
 				B299EE7A169C169500B8655D /* JSONKit.m in Sources */,
 				B299EE7E169C18F400B8655D /* MainViewController.m in Sources */,
@@ -941,6 +952,7 @@
 				5A6243B9174DF9DE00016B1D /* InfoViewController.m in Sources */,
 				5A6243BD174E13BF00016B1D /* UIImage+Resize.m in Sources */,
 				5A6243C0174E1BA600016B1D /* Service.m in Sources */,
+				52B58E883074DC79006E3C1C /* SceneDelegate.m in Sources */,
 				5AEFBDBF176B27510088A9D7 /* DonateViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

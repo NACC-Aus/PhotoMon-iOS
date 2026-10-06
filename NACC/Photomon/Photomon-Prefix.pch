@@ -42,6 +42,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <CoreData/CoreData.h>
+    #import "PMAlertView.h"
+    #define UIAlertView PMAlertView
     #import "NavViewController.h"
     #import "BaseAppViewController.h"
     #import "ExtImagePickerController.h"

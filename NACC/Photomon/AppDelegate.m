@@ -1,5 +1,6 @@
 
 #import "AppDelegate.h"
+#import "SceneDelegate.h"
 #import "RootViewController.h"
 
 #import "ReminderViewController.h"
@@ -25,9 +26,8 @@
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [FIRApp configure];
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window = [[UIWindow alloc] initWithFrame:CGRectZero];
     self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
 
     //os version
     self.osVersion = [[[[UIDevice currentDevice].systemVersion componentsSeparatedByString:@"."] firstObject] intValue];
@@ -105,11 +105,36 @@
         
     } onError:^(id err) {
         
-        [[[UIAlertView alloc] initWithTitle:nil message:@"Migration failed, please contact developer for support" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil] show];
+        UIAlertController *alertController =
+            [UIAlertController alertControllerWithTitle:nil
+                                                message:@"Migration failed, please contact developer for support"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:nil]];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIViewController *presentingViewController = self.window.rootViewController;
+            while (presentingViewController.presentedViewController) {
+                presentingViewController = presentingViewController.presentedViewController;
+            }
+            [presentingViewController presentViewController:alertController animated:YES completion:nil];
+        });
         
     }];
 
     return YES;
+}
+
+- (UISceneConfiguration *)application:(UIApplication *)application
+        configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession
+                                       options:(UISceneConnectionOptions *)options
+{
+    UISceneConfiguration *configuration =
+        [[UISceneConfiguration alloc] initWithName:@"Default Configuration"
+                                       sessionRole:connectingSceneSession.role];
+    configuration.delegateClass = SceneDelegate.class;
+    return configuration;
 }
 
 -(BOOL)isMultitasking
