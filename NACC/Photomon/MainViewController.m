@@ -241,9 +241,19 @@
                         continue;
                     }
 
-                    NSString* imgPath = [Downloader storagePathForURL:[dict objectForKey:@"ImagePath"]];
-                    img = [[Service shared] loadImageOfFile:imgPath];// [UIImage imageWithContentsOfFile:imgPath];
-                    break;
+                    NSString *imagePath = [Downloader storagePathForURL:[dict objectForKey:@"ImagePath"]];
+                    img = [[Service shared] loadImageOfFile:imagePath];
+
+                    // The list can display a cached thumbnail even when the full-size
+                    // guide file has been evicted or a previous download failed.
+                    if (!img) {
+                        NSString *thumbnailPath = [Downloader storagePathForURL:[dict objectForKey:@"ThumbPath"]];
+                        img = [[Service shared] loadImageOfFile:thumbnailPath];
+                    }
+
+                    if (img) {
+                        break;
+                    }
                 }
             }
         }
@@ -1540,7 +1550,7 @@
                     //RUN_ON_MAIN_QUEUE(^{
                 // force download again
                 
-                BOOL isShouldDownload = NO;
+                BOOL isShouldDownload = !isFileExist;
                 NSDictionary* refOlder = [loadedRefGuidePhotos objectForKey:[dict objectForKey:@"ID"]];
                 if (refOlder)
                 {
@@ -2568,13 +2578,9 @@
     
     picker.cameraOverlayView = [self cameraOverlayViewForPicker:picker];
     
-    self.direction = nil;
-    sliderGuide3_5.hidden = sliderGuide4.hidden = YES;
-    guide3_5.image = guide4.image = nil;
-    guide3_5.hidden = guide4.hidden = YES;
-    lbGuide3_5.text = lbGuide4.text = @"No Guide";
-    btGuide3_5.userInteractionEnabled = btGuide4.userInteractionEnabled = NO;
-    
+    // Preserve the direction and guide state selected immediately before opening
+    // the camera. Clearing these views here made a successfully loaded guide show
+    // as "No Guide" in the camera overlay.
     
     //error tolerance
     isCapturedPhoto = NO;
