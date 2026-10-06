@@ -15,6 +15,10 @@
     UIWindowScene *windowScene = (UIWindowScene *)scene;
     self.window = applicationDelegate.window ?: [[UIWindow alloc] initWithWindowScene:windowScene];
     self.window.windowScene = windowScene;
+    // The legacy nibs use fixed light backgrounds and artwork. Keep UIKit's
+    // inherited label, placeholder, table, alert, and navigation colors in the
+    // matching light appearance so text remains readable in device Dark Mode.
+    self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
     applicationDelegate.window = self.window;
     [self.window makeKeyAndVisible];
 }
