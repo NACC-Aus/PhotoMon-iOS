@@ -71,6 +71,9 @@
     NSMutableArray *allSites;
     ExtImagePickerController* picker;
     Site *selectedSite;
+    Site *stableNearestSite;
+    CLLocation *stableNearestSiteLocation;
+    NSString *stableNearestSiteProjectID;
     float GeoAngle;
     NSString *direction;
     int orientation;

@@ -2057,8 +2057,10 @@
     
     CGFloat distance = -1;
     AppDelegate *del = appDelegate;
-    //MKMapPoint currentPoint = MKMapPointForCoordinate(del.newestUserLocation.coordinate);
-    CLLocation  *currentPoint = [[CLLocation alloc] initWithLatitude:del.newestUserLocation.coordinate.latitude longitude:del.newestUserLocation.coordinate.longitude];
+    CLLocation *latestLocation = del.newestUserLocation;
+    CLLocation *currentPoint = [[CLLocation alloc] initWithLatitude:latestLocation.coordinate.latitude longitude:latestLocation.coordinate.longitude];
+    NSString *projectID = [[APIController shared].currentProject objectForKey:@"uid"];
+
     
     NSArray* arr = allSites;
     Site* branch = [arr objectAtIndex:0];
@@ -2084,7 +2086,49 @@
     
     //distance = MKMetersBetweenMapPoints(currentPoint, MKMapPointForCoordinate(CLLocationCoordinate2DMake([branchCurrent.Latitude doubleValue], [branchCurrent.Longitude doubleValue])));
     distance = [currentPoint distanceFromLocation:[[CLLocation alloc] initWithLatitude:[branchCurrent.Latitude doubleValue] longitude:[branchCurrent.Longitude doubleValue]]];
+
+    CLLocationDistance nearestDistance = distance;
+
+    // Apply hysteresis only when the previous and current nearest sites are
+    // indistinguishable within GPS accuracy. Clearly separated sites always
+    // use the actual nearer result calculated above.
+    if (stableNearestSite && stableNearestSiteLocation && [stableNearestSiteProjectID isEqualToString:projectID]) {
+        Site *currentStableSite = nil;
+        for (Site *candidate in allSites) {
+            if ([candidate.ID isEqualToString:stableNearestSite.ID]) {
+                currentStableSite = candidate;
+                break;
+            }
+        }
+
+        if (currentStableSite) {
+            CLLocation *stableSiteLocation = [[CLLocation alloc] initWithLatitude:[currentStableSite.Latitude doubleValue]
+                                                                          longitude:[currentStableSite.Longitude doubleValue]];
+            CLLocationDistance stableSiteDistance = [latestLocation distanceFromLocation:stableSiteLocation];
+            CLLocationDistance movement = [latestLocation distanceFromLocation:stableNearestSiteLocation];
+            CLLocationAccuracy previousAccuracy = MAX(0.0, stableNearestSiteLocation.horizontalAccuracy);
+            CLLocationAccuracy currentAccuracy = MAX(0.0, latestLocation.horizontalAccuracy);
+            CLLocationDistance siteAccuracyMargin = MIN(50.0, MAX(5.0, currentAccuracy));
+            CLLocationDistance movementThreshold = MIN(50.0, MAX(10.0, previousAccuracy + currentAccuracy));
+            BOOL sitesAreIndistinguishable = stableSiteDistance <= distance + siteAccuracyMargin;
+            BOOL deviceIsStationary = movement <= movementThreshold;
+            BOOL hasMeaningfullyBetterFix = previousAccuracy > 0.0 && currentAccuracy > 0.0 && currentAccuracy < previousAccuracy * 0.5;
+
+            if (sitesAreIndistinguishable && deviceIsStationary && !hasMeaningfullyBetterFix) {
+                branchCurrent = currentStableSite;
+                distance = stableSiteDistance;
+                NLog(@"[SiteSelection] keeping site=%@ movement=%.2fm threshold=%.2fm nearestDelta=%.2fm accuracyMargin=%.2fm",
+                     branchCurrent.ID, movement, movementThreshold, stableSiteDistance - nearestDistance, siteAccuracyMargin);
+            }
+        }
+    }
+
     branchCurrent.distance = distance;
+    stableNearestSite = branchCurrent;
+    stableNearestSiteLocation = [latestLocation copy];
+    stableNearestSiteProjectID = [projectID copy];
+    NLog(@"[SiteSelection] selected nearest site=%@ distance=%.2fm accuracy=%.2fm",
+         branchCurrent.ID, distance, latestLocation.horizontalAccuracy);
     return branchCurrent;
 }
 
