@@ -319,10 +319,21 @@
                                  [def synchronize];
                                  //NSLog(@"\n=================================================FINISHED=================================================: %@\n", api.photo.imgPath);
                                  
+                                 if (![back isKindOfClass:[NSArray class]] || [back count] < 2) {
+                                     return;
+                                 }
+
                                  id response = [back objectAtIndex:1];
-                                 id obj2 = [[Service shared] getDataOfRecordPath:idImg];
-                                 [obj2 setObject:[response objectForKey:@"ID"] forKey:@"photoID"];
-                                 [[Service shared] updateRecordPath:idImg andData:obj2];
+                                 id photoID = [response isKindOfClass:[NSDictionary class]]
+                                     ? [response objectForKey:@"ID"]
+                                     : nil;
+                                 id storedRecord = [[Service shared] getDataOfRecordPath:idImg];
+                                 if (photoID && [storedRecord isKindOfClass:[NSDictionary class]]) {
+                                     NSMutableDictionary *updatedRecord =
+                                         [NSMutableDictionary dictionaryWithDictionary:storedRecord];
+                                     [updatedRecord setObject:photoID forKey:@"photoID"];
+                                     [[Service shared] updateRecordPath:idImg andData:updatedRecord];
+                                 }
                              }
                          });
                      } andBackground:YES];
@@ -424,8 +435,15 @@
     if (_managedObjectModel != nil) {
         return _managedObjectModel;
     }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NACC" withExtension:@"momd"];
-    _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Photomon" withExtension:@"momd"];
+    if (!modelURL) {
+        modelURL = [[NSBundle mainBundle] URLForResource:@"Photomon" withExtension:@"mom"];
+    }
+    if (modelURL) {
+        _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    } else {
+        _managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:@[[NSBundle mainBundle]]];
+    }
     return _managedObjectModel;
 }
 

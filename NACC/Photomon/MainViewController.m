@@ -1302,31 +1302,52 @@
 #pragma mark reload data from server 
 - (void) uploadNoteForGuidePhotos {
     __block NSUserDefaults  *userDefault = [NSUserDefaults standardUserDefaults];
-    NSArray *arr = [userDefault objectForKey:@"NoteUpload"];
-    if (arr && arr.count > 0) {
-        for (__block NSDictionary   *dict in arr) {
-            [[APIController shared] updateNote:[dict objectForKey:@"note"] ofPhotoID:[dict objectForKey:@"pID"] andOnDone:^(id back){
-                // remove
-                NSArray *_arr = [userDefault objectForKey:@"NoteUpload"];
-                if (_arr && _arr.count > 0) {
-                    NSMutableArray  *arrRec = [NSMutableArray arrayWithArray:_arr];
-                    for (NSDictionary   *_dict in arrRec) {
-                        if ([[dict objectForKey:@"pID"] isEqualToString:[dict objectForKey:@"pID"]]) {
-                            [arrRec removeObject:_dict];
-                            break;
-                        }
-                    }
-                    //save back
-                    [userDefault setObject:arrRec forKey:@"NoteUpload"];
-                    [userDefault synchronize];
-                }
-                DLog(@"Note update successfully!");
-            }andOnError:^(id err){
+    id storedNotes = [userDefault objectForKey:@"NoteUpload"];
+    if (![storedNotes isKindOfClass:[NSArray class]]) {
+        [userDefault removeObjectForKey:@"NoteUpload"];
+        return;
+    }
 
-            }];
+    NSArray *notes = (NSArray *)storedNotes;
+    for (id storedNote in notes) {
+        if (![storedNote isKindOfClass:[NSDictionary class]]) {
+            continue;
         }
 
+        NSDictionary *noteDictionary = (NSDictionary *)storedNote;
+        id note = noteDictionary[@"note"];
+        id photoID = noteDictionary[@"pID"];
+        if (![photoID isKindOfClass:[NSString class]] || [(NSString *)photoID length] == 0) {
+            continue;
+        }
+        if (note == [NSNull null]) {
+            note = nil;
+        }
 
+        [[APIController shared] updateNote:note ofPhotoID:photoID andOnDone:^(id back) {
+            id currentStoredNotes = [userDefault objectForKey:@"NoteUpload"];
+            if (![currentStoredNotes isKindOfClass:[NSArray class]]) {
+                return;
+            }
+
+            NSMutableArray *remainingNotes = [NSMutableArray arrayWithArray:currentStoredNotes];
+            for (id candidate in [remainingNotes copy]) {
+                if (![candidate isKindOfClass:[NSDictionary class]]) {
+                    [remainingNotes removeObject:candidate];
+                    continue;
+                }
+
+                id candidatePhotoID = [(NSDictionary *)candidate objectForKey:@"pID"];
+                if ([photoID isEqual:candidatePhotoID]) {
+                    [remainingNotes removeObject:candidate];
+                    break;
+                }
+            }
+            [userDefault setObject:remainingNotes forKey:@"NoteUpload"];
+            [userDefault synchronize];
+            DLog(@"Note update successfully!");
+        } andOnError:^(id err) {
+        }];
     }
 
 
