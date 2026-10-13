@@ -399,13 +399,13 @@
 - (void)saveContext
 {
     NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    // Do not create the Core Data stack while the app is terminating. The app
+    // does not currently use it, and its legacy model is not present in the
+    // bundle, so lazy initialization here raises an exception on termination.
+    NSManagedObjectContext *managedObjectContext = _managedObjectContext;
     if (managedObjectContext != nil) {
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-             // Replace this implementation with code to handle the error appropriately.
-             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-            //NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
+            NSLog(@"Unable to save Core Data context: %@, %@", error, [error userInfo]);
         } 
     }
 }
