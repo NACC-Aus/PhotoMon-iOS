@@ -62,7 +62,7 @@
     //NSString* src = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     //[webView loadHTMLString:src baseURL:[NSURL URLWithString:@""]];
 //    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://nacc2.appiphany.com.au/mobile/info.html"]]];
-    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.nacc.com.au/photomon"]]];
+    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.nacc.com.au/news/photomon-services-taking-over-the-world"]]];
     
 }
 
